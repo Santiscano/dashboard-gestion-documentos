@@ -1,0 +1,15 @@
+.navbar{
+    position: absolute;
+    width: 100vw;
+    padding: 0px 20px;
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #00a7ff;
+    color: white;
+}
+
+.userIcon {
+    color: white;
+}
