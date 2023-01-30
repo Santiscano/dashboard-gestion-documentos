@@ -8,7 +8,6 @@ function index() {
   return (
     <>
       <NavBar/>
-      <div>sideBar</div>
       <Layout/>
     </>
   );

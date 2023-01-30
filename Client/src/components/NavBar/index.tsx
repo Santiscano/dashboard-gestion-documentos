@@ -34,8 +34,16 @@ export default function MenuAppBar() {
 
   // image logo
   const settings = [
-    {name:'Radicacion', logo: <TableChartIcon/>, navigate: '/admin'}, 
-    {name:'Cerrar Sesion', logo: <LogoutIcon/>, navigate: '/login'},
+    {
+      name:'Radicacion', 
+      // logo: <TableChartIcon/>, 
+      navigate: '/admin'
+    }, 
+    {
+      name:'Cerrar Sesion', 
+      // logo: <LogoutIcon/>, 
+      navigate: '/login'
+    },
   ];
 
   // open & close menu user avatar
@@ -47,11 +55,13 @@ export default function MenuAppBar() {
     setAnchorElUser(null);
   };
 
+  // hover button
+
   // theme
   const theme = '#00a1e5'
 
   return (
-    <Box sx={{ flexGrow: 1, bgcolor: theme }}>
+    <Box sx={{ flexGrow: 1,  }}>
       <AppBar position="static">
         <Toolbar>
           
@@ -66,8 +76,13 @@ export default function MenuAppBar() {
           </IconButton>
           
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, display:{xs:'none', sm:'flex'} }}>
-            Enviexpress <span></span>
+            Enviexpress
           </Typography>
+
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1, display:'flex' }} className="cursor-pointer">
+              Historial
+            </Typography>
+
           
           {/* image */}
           <Box sx={{ flexGrow: 0, display: 'flex' }}>
@@ -83,7 +98,7 @@ export default function MenuAppBar() {
                 </Badge>
               </IconButton>
             </Tooltip>
-            <Typography sx={{margin:'20'}}>Name complete <br/> Name Rol </Typography>
+            <Typography sx={{mx:3 ,margin:'20'}}>Name complete <br/> Name Rol </Typography>
             <Tooltip title="Abrir Menu">
                 <IconButton
                 size="large"
@@ -115,7 +130,7 @@ export default function MenuAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={()=> navigate(setting.navigate)}>{setting.name} {setting.logo}</Typography>
+                  <Typography textAlign="center" onClick={()=> navigate(setting.navigate)}>{setting.name} </Typography>
                 </MenuItem>
               ))}
             </Menu>

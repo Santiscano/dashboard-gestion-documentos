@@ -44,10 +44,11 @@ function index() {
         {errors.password?.type === 'minLength' && <span className='form-login-error'>La contraseña debe tener minimo 8 Caracteres</span> }
       </div>
 
+      <Link to='/admin'>
       <input type="submit" 
         value='Entrar'
         className='w-full mt-6 bg-blue-800 text-white rounded cursor-pointer '></input>
-      <Link to='/admin'>Admin "eliminar cuando login este listo"</Link>
+      </Link>
     </form>
   )
 }
