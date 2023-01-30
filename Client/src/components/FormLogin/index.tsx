@@ -47,6 +47,7 @@ function index() {
       <input type="submit" 
         value='Entrar'
         className='w-full mt-6 bg-blue-800 text-white rounded cursor-pointer '></input>
+      <Link to='/admin'>Admin "eliminar cuando login este listo"</Link>
     </form>
   )
 }

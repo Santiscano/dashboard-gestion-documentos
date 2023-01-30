@@ -1,11 +1,17 @@
-import React from 'react'
+import * as React from 'react';
+// components
+import Layout from '../../Layout'
+import NavBar from '../../components/NavBar'
+
 
 function index() {
   return (
-    <div>
-      Admin zone
-    </div>
-  )
+    <>
+      <NavBar/>
+      <div>sideBar</div>
+      <Layout/>
+    </>
+  );
 }
 
 export default index

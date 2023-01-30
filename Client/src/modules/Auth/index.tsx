@@ -35,9 +35,9 @@ function index() {
             <img src={security} alt="segurity login" className='max-w-xs' />
             <div>
               {/* title */}
-              <h2 className='text-white text-4xl mt-8'>Logistica de Gestion</h2>
+              <h2 className='text-white text-4xl mt-8'>Logística de Gestión</h2>
               {/* subtitle */}
-              <h4 className='text-white text-l mt-2'>aliado estrategico para tu negocio</h4>
+              <h4 className='text-white text-l mt-2'>aliado estratégico para tu negocio</h4>
             </div>
         </div>
       </div>
