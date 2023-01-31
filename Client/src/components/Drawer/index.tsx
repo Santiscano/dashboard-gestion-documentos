@@ -47,7 +47,7 @@ function index() {
       >
         <List>
           {sidebarList.map((sidebar, index) => (
-            <ListItem key={sidebar.name} disablePadding>
+            <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   {sidebar.icon}
@@ -60,7 +60,7 @@ function index() {
         <Divider />
         <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}

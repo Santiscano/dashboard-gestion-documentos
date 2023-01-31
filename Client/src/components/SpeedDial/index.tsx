@@ -53,15 +53,16 @@ export default function ControlledOpenSpeedDial() {
         onOpen={handleOpen}
         open={open}
       >
-        {actions.map((action) => (
+        {actions.map((action, index) => (
           <SpeedDialAction
-            key={action.name}
+            key={index}
             icon={action.icon}
             tooltipTitle={action.name}
             onClick={handleModalOpen}
           />
         ))}
       </SpeedDial>
+      
 
       <Modal
         open={openModal}
