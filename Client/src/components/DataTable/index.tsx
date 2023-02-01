@@ -2,12 +2,24 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridValueGetterParams, GridFilterModel, GridToolbar, GridRenderCellParams } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
+import BasicModal from '../ModalForm';
+
+// component
+import { ButtonToggleOpen } from '../ButtonToggleOpen'
 
 
-const handlePDF = (params:any) =>{
 
-  console.log("params evento pdf: ", params)
+
+let open:boolean = false
+
+const openModalPDF = (params:any) =>{
+  console.log('open: ', open);
+  let parameters = params;
+  console.log('parameters: ', parameters);
+  open = true;
+  console.log('open: ', open);
 }
+
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'Radicado', width: 150 },
@@ -40,32 +52,24 @@ const columns: GridColDef[] = [
     field: 'action',
     headerName: 'Abrir Archivo',
     width: 150,
-    renderCell: (params: GridRenderCellParams<Date>) => (
-      <Button
-        variant='contained'
-        size="small"
-        tabIndex={params.hasFocus ? 0 : -1}
-        onClick ={() => handlePDF(params)}
-      >
-        Abrir
-      </Button>
-    )
+    renderCell: ButtonToggleOpen,
   }
 ];
 
 const rows = [
-  { id: 1, provider: 'Snow', stateFile: 'Jon', responsive: "santiago",  },
+  { id: 1, provider: 'Snow', stateFile: 'Jon', responsive: "camilo",  },
   { id: 2, provider: 'Lannister', stateFile: 'Cersei', responsive: "santiago",  },
-  { id: 3, provider: 'Lannister', stateFile: 'Jaime', responsive: "santiago",  },
-  { id: 4, provider: 'Stark', stateFile: 'Arya', responsive: "santiago",  },
-  { id: 5, provider: 'Targaryen', stateFile: 'Daenerys', responsive: "santiago",  },
-  { id: 6, provider: 'Melisandre', stateFile: null, responsive: "santiago",  },
-  { id: 7, provider: 'Clifford', stateFile: 'Ferrara', responsive: "santiago",  },
-  { id: 8, provider: 'Frances', stateFile: 'Rossini', responsive: "santiago",  },
-  { id: 9, provider: 'Roxie', stateFile: 'Harvey', responsive: "santiago",  },
+  { id: 3, provider: 'Lannister', stateFile: 'Jaime', responsive: "andres",  },
+  { id: 4, provider: 'Stark', stateFile: 'Arya', responsive: "stiven",  },
+  { id: 5, provider: 'Targaryen', stateFile: 'Daenerys', responsive: "sergio",  },
+  { id: 6, provider: 'Melisandre', stateFile: null, responsive: "daniel",  },
+  { id: 7, provider: 'Clifford', stateFile: 'Ferrara', responsive: "david",  },
+  { id: 8, provider: 'Frances', stateFile: 'Rossini', responsive: "carlos",  },
+  { id: 9, provider: 'Roxie', stateFile: 'Harvey', responsive: "felipe",  },
 ];
 
 export default function DataGridDemo() {
+  
   return (
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
@@ -76,6 +80,7 @@ export default function DataGridDemo() {
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
       />
+
     </Box>
   );
 }
