@@ -10,16 +10,24 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import Badge from '@mui/material/Badge';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 
 // icons
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import TableChartIcon from '@mui/icons-material/TableChart';
+import logo from '../../assets/images/enviexpress.png'
 
 // react-router-dom
 import { useNavigate } from 'react-router-dom';
+
+// img
+import userIcon from '../../assets/images/userIcon.jpg'
+
+// css
+import './navbar.css'
+import Avatar from '@mui/material/Avatar';
 
 
 
@@ -55,14 +63,11 @@ export default function MenuAppBar() {
     setAnchorElUser(null);
   };
 
-  // hover button
-
-  // theme
-  const theme = '#00a1e5'
+  const name = 'santiago';
 
   return (
     <Box sx={{ flexGrow: 1,  }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{backgroundColor:"white", color:"#000"}}>
         <Toolbar>
           
           <IconButton
@@ -70,18 +75,26 @@ export default function MenuAppBar() {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, display:{xs:"flex", sm:"none"} }}
           >
             <MenuIcon />
           </IconButton>
+          <img src={logo} className="mx-2"/>
           
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, display:{xs:'none', sm:'flex'} }}>
+          <Typography variant="h6" 
+            component="div" 
+            sx={{ flexGrow: 1, display:'flex' }}
+            style={{fontWeight: "bold"}}>
             Enviexpress
           </Typography>
 
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1, display:'flex' }} className="cursor-pointer">
-              Historial
-            </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, display:{xs:"none", sm:"flex"} }} className="cursor-pointer">
+            Administracion
+          </Typography>
+          
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, display:{xs:"none", sm:"flex"} }} className="cursor-pointer">
+            Historial
+          </Typography>
 
           
           {/* image */}
@@ -93,28 +106,51 @@ export default function MenuAppBar() {
                 color="inherit"
                 onClick={()=> toggleBadgeNotification()}
               >
-                <Badge badgeContent={countNotification}  color="error">
-                  <NotificationsIcon />
+                <Badge badgeContent={countNotification}  color="primary">
+                  <NotificationsNoneRoundedIcon sx={{color:"#6b7280"}} />
                 </Badge>
               </IconButton>
             </Tooltip>
-            <Typography sx={{mx:3 ,margin:'20'}}>Name complete <br/> Name Rol </Typography>
+            <Typography sx={{ mx:3 ,my:1, display:{xs:"none", sm:"none", md:"flex"} }}>santiago sierra <br/> desarrollador </Typography>
             <Tooltip title="Abrir Menu">
-                <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenUserMenu}
-                color="inherit"
+              <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenUserMenu}
+              color="inherit"
               >
-                <AccountCircle />
-                {/* <Avatar alt="Remy Sharp" src='/../user.png' /> */}
+                <Avatar alt="Remy Sharp" src={userIcon} style={{objectFit:"fill" }} />
               </IconButton>
             </Tooltip>
+            {/* menu avatar */}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting, index) => (
+                <MenuItem key={index} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={()=> navigate(setting.navigate)}>{setting.name} </Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+            {/* menu notifications */}
+            <Menu
+              sx={{ mt: '45px' }}
+              id="notification-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',

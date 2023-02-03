@@ -41,7 +41,7 @@ export const ButtonToggleOpen = (props: GridRenderCellParams<Date>) => {
           touchRippleRef={rippleRef}
           variant="contained"
           size="small"
-          style={{ marginLeft: 16 }}
+          style={{ marginLeft: 1 }}
           // Remove button from tab sequence when cell does not have focus
           tabIndex={hasFocus ? 0 : -1}
           onKeyDown={(event: React.KeyboardEvent) => {

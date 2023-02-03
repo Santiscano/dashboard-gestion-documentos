@@ -44,7 +44,7 @@ export default function ControlledOpenSpeedDial() {
   const handleModalClose = ()=> {setOpenModal(false)};
 
   return (
-    <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+    <Box sx={{ height:20, marginRight:10, transform: 'translateZ(0px)', flexGrow: 1 }}>
       <SpeedDial
         ariaLabel="SpeedDial controlled open example"
         sx={{ position: 'absolute', bottom: 16, right: 16 }}

@@ -8,8 +8,8 @@ export default function index(props: any) {
   
   return (
     <div>
-      <label className="block mb-2 mt-10 text-base font-semibold dark:text-white" >{props.title}</label>
-      <FormControl sx={{ m: 1, minWidth: 350 }}>
+      <label className="block mb-2 mx-2 mt-4 text-base font-semibold dark:text-white" >{props.title}</label>
+      <FormControl sx={{ m: 1, width: 0.99 }} >
         <InputLabel id={`${props.placeholder}-label`}>{props.placeholder}</InputLabel>
         <Select
           key={props.index}
@@ -28,7 +28,7 @@ export default function index(props: any) {
             <MenuItem 
               key={index}
               value={item.value} 
-              sx={{ m: 1, minWidth: 350 }}>
+              sx={{ m: 1, minWidth: 300 }}>
                 {item.name}
             </MenuItem>
           ))}

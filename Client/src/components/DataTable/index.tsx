@@ -6,6 +6,10 @@ import BasicModal from '../ModalForm';
 
 // component
 import { ButtonToggleOpen } from '../ButtonToggleOpen'
+import FullscreenOutlinedIcon from '@mui/icons-material/FullscreenOutlined';
+
+// pdf
+import pdf from '../../../../../Requerimientos.pdf'
 
 
 
@@ -20,9 +24,15 @@ const openModalPDF = (params:any) =>{
   console.log('open: ', open);
 }
 
+// fullscreen
+const openPdf = () => {
+  console.log('funcionando')
+  window.open(pdf);
+}
+
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'Radicado', width: 150 },
+  { field: 'id', headerName: 'Radicado', width: 170 },
   {
     field: 'provider',
     headerName: 'Proveedor',
@@ -32,55 +42,50 @@ const columns: GridColDef[] = [
   {
     field: 'stateFile',
     headerName: 'Estado Archivo',
-    width: 200,
+    width: 120,
     editable: false,
-  },
-  {
-    field: 'responsive',
-    headerName: 'Responsable Proceso',
-    type: 'string',
-    width: 220,
-    editable: false,
-  },
-  {
-    field: 'pdf',
-    headerName: 'archivo',
-    type: 'file',
-    width: 110
   },
   {
     field: 'action',
-    headerName: 'Abrir Archivo',
-    width: 150,
+    headerName: 'Abrir',
+    width:100,
     renderCell: ButtonToggleOpen,
   }
 ];
 
 const rows = [
-  { id: 1, provider: 'Snow', stateFile: 'Jon', responsive: "camilo",  },
-  { id: 2, provider: 'Lannister', stateFile: 'Cersei', responsive: "santiago",  },
-  { id: 3, provider: 'Lannister', stateFile: 'Jaime', responsive: "andres",  },
-  { id: 4, provider: 'Stark', stateFile: 'Arya', responsive: "stiven",  },
-  { id: 5, provider: 'Targaryen', stateFile: 'Daenerys', responsive: "sergio",  },
-  { id: 6, provider: 'Melisandre', stateFile: null, responsive: "daniel",  },
-  { id: 7, provider: 'Clifford', stateFile: 'Ferrara', responsive: "david",  },
-  { id: 8, provider: 'Frances', stateFile: 'Rossini', responsive: "carlos",  },
-  { id: 9, provider: 'Roxie', stateFile: 'Harvey', responsive: "felipe",  },
+  { id: "MED2023020112345", provider: 'servientrega proovedora sas', stateFile: 'Jon', },
+  { id: "MED2023020212346", provider: 'Lannister', stateFile: 'Cersei', },
+  { id: "MED2023020314345", provider: 'carrulla', stateFile: 'Jaime', },
+  { id: "MED2023020412344", provider: 'Stark', stateFile: 'Arya', },
+  { id: "MED2023020512343", provider: 'Targaryen', stateFile: 'Daenerys', },
+  { id: "MED2023020612342", provider: 'Melisandre', stateFile: "renoberta", },
+  { id: "MED2023020712341", provider: 'Clifford', stateFile: 'Ferrara', },
+  { id: "MED2023020812340", provider: 'Frances', stateFile: 'Rossini', },
+  { id: "MED2023020912347", provider: 'Roxie', stateFile: 'Harvey', },
 ];
 
 export default function DataGridDemo() {
   
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        disableSelectionOnClick
-        experimentalFeatures={{ newEditingApi: true }}
-      />
+    <>
+      <div className='flex flex-row justify-between'>
+        <label className="block mb-2 ml-4 text-base font-semibold dark:text-white">Radicados</label>
+        {/* <div className='mr-4'>
+          <FullscreenOutlinedIcon sx={{color:"#6b7280"}} onClick={openPdf} className="cursor-pointer"/>
+        </div> */}
+      </div>
+      <Box sx={{ height: "90%", width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={7}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+          experimentalFeatures={{ newEditingApi: true }}
+        />
 
-    </Box>
+      </Box>
+    </>
   );
 }

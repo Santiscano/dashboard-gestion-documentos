@@ -1,10 +1,33 @@
 .layout {
-    background-color: #f1f5f9;
+    background-color: #eff5fc;
+    display: flex;
+    flex-direction: row;
+}
+.layout-left {
+    width: 100%;
+}
+.layout-right {
+    width: 100%;
+}
+.container__createFiling{
+    padding: 25px 0 0 50px;
+    margin-left: 1.5rem;
+}
+.createFiling {
+    font-size: 28px;
+    font-weight: bold;
+    color: #182031;
+    font-family: 'Source Sans Pro';
+}
+/* cuadro archivo */
+.filing {
+    padding: 15px;
+    background-color: white;
+    margin: 30px 5vw;
+    border-radius: 25px;
 }
 
-.nameRol {
-    padding: 50px 0 0 80px; 
-}
+
 .inputFile {
     max-width: 350px;
 }
@@ -12,9 +35,40 @@
     border-color: #c4c4c4
 }
 
-.filing {
-    padding: 20px;
+
+/* button */
+.button{
+    display: block;
+    background-color: #003c7b;
+    color: white;
+    padding: .6rem;
+    margin: .5rem;
+    border-radius: .5rem;
+    font-weight: 500;
+    align-items: flex-end;
+}
+
+/* table roudend */
+.viewTable {
+    padding: 15px;
     background-color: white;
-    margin: 30px 80px;
+    margin: 30px 1.5vw;
+    border-radius: 25px;
+    height: 580px;
+}
+
+/* pdf preview */
+.previewPdf {
+    padding: 15px;
+    background-color: white;
+    margin: 95px 1.5vw;
+    border-radius: 25px;
+    height: 580px;
+}
+
+@media screen and (max-width: 768px ) {
+    .layout {
+        flex-wrap: wrap;
+    }
 }
 

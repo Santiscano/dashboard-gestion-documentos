@@ -12,7 +12,7 @@ import logo from '../../assets/images/LOGOTIPO ENVIEXPRESS 85x85.png'
 function index() {
   return (
     <>
-      <div className='flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 min-h-screen '>
+      <div className='login sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 min-h-screen '>
         {/* left */}
         <div className='flex items-center justify-center w-auto min-h-screen md:w-1/2 md:py-4 md:px-4 p-4 md:p-4 rounded-2xl md:rounded-none shadow md:shadow-none'>
           <div className='w-full max-w-80 sm:w-80 mx-auto sm:mx-0 '>

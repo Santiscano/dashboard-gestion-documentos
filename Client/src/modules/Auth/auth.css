@@ -18,6 +18,10 @@
     background-color: var(--primary-color);
     color: white;
 }
+.login{
+    display: flex;
+    flex-direction: column;
+}
 
 
 

@@ -1,7 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+
+html, body{
+    font-family:'Source Sans Pro', sans-serif;
+}
+
 :root {
   --primary-color   :#003c7b;
   --secundary-color :#00a7ff;
   --tertiary-color  :#0c71c3;
+  --text-primary    :#182031;
 
-  font-family: 'Overpass',Helvetica,Arial,Lucida,sans-serif;
+  font-family:'Source Sans Pro', sans-serif;
+  /* font-family: 'Overpass',Helvetica,Arial,Lucida,sans-serif; */
 }
+

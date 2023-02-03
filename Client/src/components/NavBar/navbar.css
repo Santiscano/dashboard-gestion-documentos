@@ -13,3 +13,36 @@
 .userIcon {
     color: white;
 }
+
+/* avatar */
+
+.img-circle-small {
+    width: 53px;
+    height:55px;
+    border-top-left-radius: 50% 50%;
+    border-top-right-radius: 50% 50%;
+    border-bottom-right-radius: 50% 50%;
+    border-bottom-left-radius: 50% 50%;
+    border: 2px solid #CCC;
+    margin-bottom: 2px;
+  }
+
+.status{
+    width: 16px;
+    height:16px;
+    border-top-left-radius: 50% 50%;
+    border-top-right-radius: 50% 50%;
+    border-bottom-right-radius: 50% 50%;
+    border-bottom-left-radius: 50% 50%;
+    border: 2px solid #CCC;
+    margin-bottom: 2px;
+    background-color: green;
+
+    position: absolute;
+
+  }
+
+.temp{
+  position: relative;
+  display: inline-block;
+}
