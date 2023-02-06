@@ -1,7 +1,6 @@
 import React from 'react';
 import './preview.css';
-
-import pdf from '../../../../../Requerimientos.pdf'
+import pdf from '../../assets/Requerimientos.pdf';
 
 // icons
 import FullscreenOutlinedIcon from '@mui/icons-material/FullscreenOutlined';
