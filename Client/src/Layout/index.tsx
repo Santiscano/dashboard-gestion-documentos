@@ -1,31 +1,18 @@
-import React, { useState } from 'react'
-import SpeedDial from '../components/SpeedDial';
+import { useState } from 'react'
+import SpeedDial from '../components/SpeedDial'
 import './layout.css';
-import Input from '@mui/material/Input';
 import { Box } from '@mui/system';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 // components
 import InputSelect from '../components/InputSelect';
 import Upload from '../components/Upload';
 import DataTable from '../components/DataTable' 
-import { Button } from '@mui/material';
 import Preview from '../components/Preview';
+import Button from '../components/Button';
 
-
-const ariaLabel = { 'aria-label': 'description' };
 
 function index() {
-
-  // method selected
-  const [request, setRequest] = useState('');
-  const handleChange = (event: SelectChangeEvent) => {
-    setRequest(event.target.value);
-    console.log('request: ',request);
-  };
 
   /**
    * Array type props to FormControl
@@ -58,18 +45,39 @@ function index() {
     {name: 'Auditor', value: 'auditor'}
   ]
   
+  // radicado valor
+  const [settled, setSettled] = useState('')
+  const handleSettled = () => {setSettled('valor'); console.log(settled)}
+  
+  const handleSubmit = (e:any) => {
+    console.log(e)
+    e.preventDefault();
+  }
+
 
   return (
-    <>
-      {/* radicacion */}
-      <section className='layout'>
+
+    <div className='layout'>
+
+
+      <section className='layout-section'>
         <div className='layout-left'>
           <div className='container__createFiling'>
             <h3 className='createFiling'>Crear Nuevo radicado</h3>
-            <SpeedDial/>
           </div>
-          <section className='filing'>
-            {/* Radicado - archivo PDF */}
+          {settled == '' ? 
+          <article className='filing'>
+            <Button
+              name="Generar numero Radicado"
+              onClick={handleSettled}
+              />
+          </article> :
+          <article className='filing'>
+            <form action="" onSubmit={handleSubmit}>
+              <label htmlFor="">llenar</label>
+              <input type="text"  />
+              <input type="submit" value='enviar' />
+            </form>
             <Upload/>
             <div className='w-full'>
               <InputSelect
@@ -81,8 +89,6 @@ function index() {
                 itemDefault="selecciona una opcion"
                 items={optionsArea}/>
             </div>
-
-            {/* option administrativo */}
             {area == 'administrativo' && 
             <div>
               <div className='md:flex md:flex-wrap'>
@@ -107,21 +113,18 @@ function index() {
                     items={optionsRedirectTo}/>
                 </article>
               </div>
-            <button className='button button--flex'>Crear requerimientos</button>
-          </div>
+              <button className='button button--flex'>Crear requerimientos</button>
+            </div>
             }
 
-            {/* option operativo */}  
             {area == 'operativo' && <div>aun no hay informacion</div>}
-          </section>
+          </article>}
         </div>
       </section>
 
 
 
-      {/* table & pdf */}
-      <section className='layout'>
-        {/* left */}
+      <section className='layout-section'>
         <div className='layout-left'>
           <h3 className='container__createFiling createFiling'>Dashboard</h3>
           <section className='viewTable'>
@@ -129,21 +132,17 @@ function index() {
           </section>
         </div>
 
-        {/* right */}
         <div className='layout-right'>
           <section className='previewPdf'>
             <Preview/>
           </section>
-          <Box>
-            {/* <SpeedDial/> */}
-          </Box>
         </div>
-      </section>
+      </section>  
 
       
 
       
-    </>
+    </div>
   )
 }
 

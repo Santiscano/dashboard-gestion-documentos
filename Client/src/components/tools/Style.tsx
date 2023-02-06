@@ -1,6 +1,6 @@
-import { ThemeOptions } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
-export const themeOptions: ThemeOptions = {
+const Styles = createTheme({
   palette: {
     mode: 'light',
     primary: {
@@ -15,5 +15,8 @@ export const themeOptions: ThemeOptions = {
   },
   typography: {
     fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
-  },
-};
+
+  }
+});
+
+export default Styles

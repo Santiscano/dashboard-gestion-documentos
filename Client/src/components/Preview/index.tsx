@@ -5,6 +5,7 @@ import pdf from '../../../../../Requerimientos.pdf'
 
 // icons
 import FullscreenOutlinedIcon from '@mui/icons-material/FullscreenOutlined';
+import Button from '../Button';
 
 function index() {
   // methods
@@ -24,7 +25,8 @@ function index() {
       <div className='full-view flex items-center justify-center w-full cursor-pointer rounded'>
         <object className='view-pdf' type='application/pdf' data={pdf}></object>
       </div>
-      <button className='button button--flex'>Aprovar</button>
+      <Button
+        name="Aprovar"/>
     </>
   )
 }

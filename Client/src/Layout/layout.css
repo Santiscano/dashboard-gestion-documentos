@@ -1,5 +1,9 @@
 .layout {
+    height: 100%;
     background-color: #eff5fc;
+}
+.layout-section {
+    /* background-color: #eff5fc; */
     display: flex;
     flex-direction: row;
 }
@@ -20,6 +24,12 @@
     font-family: 'Source Sans Pro';
 }
 /* cuadro archivo */
+.filing-first {
+    padding: 15px;
+    background-color: white;
+    margin: 0 5vw 30px;
+    border-radius: 25px;
+}
 .filing {
     padding: 15px;
     background-color: white;
@@ -39,7 +49,7 @@
 /* button */
 .button{
     display: block;
-    background-color: #003c7b;
+    background-color: #2759cd;
     color: white;
     padding: .6rem;
     margin: .5rem;

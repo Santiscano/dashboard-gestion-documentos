@@ -7,16 +7,22 @@ import { Route, Routes } from 'react-router-dom';
 import Auth from './modules/Auth';
 import Admin from './modules/Admin';
 
+// theme mui config
+import { ThemeProvider } from '@mui/material';
+import Styles  from './components/tools/Style'
+
 
 
 function App() {
 
   return (
+    <ThemeProvider theme={Styles}>
       <Routes>
         <Route path='/login' element={ <Auth/> } />
         <Route path='/' element={ <Auth/> } />
-        <Route path='/Admin' element={ <Admin/> } />
+        <Route path='/admin' element={ <Admin/> } />
       </Routes>
+    </ThemeProvider>
   )
 }
 

@@ -80,7 +80,7 @@ export default function DataGridDemo() {
           rows={rows}
           columns={columns}
           pageSize={7}
-          rowsPerPageOptions={[5]}
+          rowsPerPageOptions={[7]}
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
         />

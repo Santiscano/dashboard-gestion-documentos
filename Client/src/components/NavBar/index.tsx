@@ -12,17 +12,19 @@ import Tooltip from '@mui/material/Tooltip';
 import Badge from '@mui/material/Badge';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 
-// icons
+// myself components
+
+// icons mui
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import TableChartIcon from '@mui/icons-material/TableChart';
-import logo from '../../assets/images/enviexpress.png'
 
 // react-router-dom
 import { useNavigate } from 'react-router-dom';
 
 // img
+import logo from '../../assets/images/logo-white.png';
 import userIcon from '../../assets/images/userIcon.jpg'
 
 // css
@@ -30,29 +32,32 @@ import './navbar.css'
 import Avatar from '@mui/material/Avatar';
 
 
-
-export default function MenuAppBar() {
+export default function MenuAppBar(props:any) {
   // navigation 
   const navigate = useNavigate();
 
-  // toggle badgeNotifications
-  const [countNotification , setCountNotification] = React.useState(5)
-  const increaseNotificationsDB = () => {setCountNotification(countNotification + 1)}
-  const toggleBadgeNotification = () => {setCountNotification(0)}
-
-  // image logo
-  const settings = [
+  // menu avatar
+  const menuAvatar = [
     {
-      name:'Radicacion', 
-      // logo: <TableChartIcon/>, 
-      navigate: '/admin'
+      name:'configurar perfil', 
+      navigate: '/config'
     }, 
     {
       name:'Cerrar Sesion', 
-      // logo: <LogoutIcon/>, 
       navigate: '/login'
     },
   ];
+  // menu notifications
+  const menuNotifications = [
+    {
+      name:'notificacion 1',
+      navigate: '/'
+    },
+    {
+      name:'notificacion 2',
+      navigate: '/'
+    },
+  ]
 
   // open & close menu user avatar
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -63,51 +68,55 @@ export default function MenuAppBar() {
     setAnchorElUser(null);
   };
 
-  const name = 'santiago';
+  // open & close menu notifications
+  const [anchorElNotification, setAnchorElNotification] = React.useState<null | HTMLElement>(null);
+  const handleOpenNotification = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNotification(event.currentTarget);
+    setCountNotification(0);
+  };
+  const handleCloseNotification =() => {
+    setAnchorElNotification(null);
+  };
+  // toggle badgeNotifications
+  const [countNotification , setCountNotification] = React.useState(5);
+  // esta ⬇ funcion es para incrementar el numero de notificaciones con la DB
+  const increaseNotificationsDB = () => {setCountNotification(countNotification + 1)}
+
 
   return (
-    <Box sx={{ flexGrow: 1,  }}>
-      <AppBar position="static" style={{backgroundColor:"white", color:"#000"}}>
+    <AppBar position="fixed" >
         <Toolbar>
-          
           <IconButton
-            size="large"
-            edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, display:{xs:"flex", sm:"none"} }}
+            size="large"
+            edge="start"
+            onClick={props.handleDrawerOpen}
+            sx={{ mr:1, ...(props.open && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
-          <img src={logo} className="mx-2"/>
-          
-          <Typography variant="h6" 
-            component="div" 
-            sx={{ flexGrow: 1, display:'flex' }}
-            style={{fontWeight: "bold"}}>
-            Enviexpress
-          </Typography>
+          <img src={logo} 
+            className="mx-3" 
+            style={{width:"150px", height:"auto" }}/>
 
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, display:{xs:"none", sm:"flex"} }} className="cursor-pointer">
-            Administracion
-          </Typography>
-          
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, display:{xs:"none", sm:"flex"} }} className="cursor-pointer">
-            Historial
-          </Typography>
+          <Typography 
+          variant="h6" 
+          component="div" 
+          sx={{ flexGrow: 1 }}/>
 
-          
           {/* image */}
           <Box sx={{ flexGrow: 0, display: 'flex' }}>
-            <Tooltip title="nuevos radicados">
+            <Tooltip title="Ver nuevos radicados">
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
                 color="inherit"
-                onClick={()=> toggleBadgeNotification()}
+                aria-haspopup="true"
+                onClick={handleOpenNotification}
               >
-                <Badge badgeContent={countNotification}  color="primary">
-                  <NotificationsNoneRoundedIcon sx={{color:"#6b7280"}} />
+                <Badge badgeContent={countNotification} color="error" >
+                  <NotificationsNoneRoundedIcon sx={{color:"#fff"}} />
                 </Badge>
               </IconButton>
             </Tooltip>
@@ -124,6 +133,7 @@ export default function MenuAppBar() {
                 <Avatar alt="Remy Sharp" src={userIcon} style={{objectFit:"fill" }} />
               </IconButton>
             </Tooltip>
+
             {/* menu avatar */}
             <Menu
               sx={{ mt: '45px' }}
@@ -141,17 +151,18 @@ export default function MenuAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting, index) => (
+              {menuAvatar.map((setting, index) => (
                 <MenuItem key={index} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center" onClick={()=> navigate(setting.navigate)}>{setting.name} </Typography>
                 </MenuItem>
               ))}
             </Menu>
+            
             {/* menu notifications */}
             <Menu
               sx={{ mt: '45px' }}
               id="notification-appbar"
-              anchorEl={anchorElUser}
+              anchorEl={anchorElNotification}
               anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
@@ -161,19 +172,17 @@ export default function MenuAppBar() {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              open={Boolean(anchorElNotification)}
+              onClose={handleCloseNotification}
             >
-              {settings.map((setting, index) => (
-                <MenuItem key={index} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={()=> navigate(setting.navigate)}>{setting.name} </Typography>
+              {menuNotifications.map((notification, index) => (
+                <MenuItem key={index} onClick={handleCloseNotification}>
+                  <Typography textAlign="center" onClick={()=> navigate(notification.navigate)}>{notification.name} </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          
         </Toolbar>
       </AppBar>
-    </Box>
   );
 }
