@@ -9,12 +9,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 // icons mui
 import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import CloseIcon from '@mui/icons-material/Close';
+import BackupTableIcon from '@mui/icons-material/BackupTable';
+import EditIcon from '@mui/icons-material/Edit';
+import LogoDevIcon from '@mui/icons-material/LogoDev';
 
 // components propios
  
@@ -40,6 +39,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 }));
 
+// ROLES
+const rolTI = true;
+
 function index(props: any) {
   const theme = useTheme();
 
@@ -47,12 +49,22 @@ function index(props: any) {
     {
       name: 'Pago Proveedores',
       navigate: '',
+      icon: <BackupTableIcon/>
     },
     {
       name:'Agregar/Editar Adjuntos',
       navigate:'',
+      icon: <EditIcon/>
     },
-  ]
+  ];
+
+  const menuTI = [
+    {
+      name: 'Administracion TI',
+      navigate: '',
+      icon: <LogoDevIcon/>
+    },
+  ];
 
   return (
     <Drawer
@@ -79,33 +91,32 @@ function index(props: any) {
       <Divider />
         
       <List>
-        {menuAdmin.map((text, index) => (
+        {menuAdmin.map((list, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {list.icon}
               </ListItemIcon>
-              <ListItemText primary={text.name} />
+              <ListItemText primary={list.name} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-        
-      {/* <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+      <Divider />
+      
+      {rolTI && <List>
+        {menuTI.map((list, index) => (
+          <ListItem key={index} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {list.icon}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={list.name} />
             </ListItemButton>
           </ListItem>
         ))}
-      </List> */}
-
-      <Divider/>
+      </List>}
+      {rolTI && <Divider/>}
 
       <img src={working} alt="image working" style={{backgroundColor:"#e4e4e7", width:230 }}/>
     </Drawer>
