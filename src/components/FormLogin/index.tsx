@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './formLogin.css';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'  
 
 
 type Login = {
@@ -11,7 +11,7 @@ type Login = {
 
 function index() {
   
-  // expresion regular
+  // expresion regular 
   const reqExp = {
     email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
   }

@@ -1,86 +1,105 @@
 import { useState } from 'react'
-import SpeedDial from '../components/SpeedDial'
-import './layout.css';
-import { Box } from '@mui/system';
+import './provider.css';
 import { SelectChangeEvent } from '@mui/material/Select';
-import InputSelect from '../components/InputSelect';
-import Upload from '../components/Upload';
-import DataTable from '../components/DataTable' 
-import Preview from '../components/Preview';
-import Button from '../components/Button';
-import { TextField } from '@mui/material';
-
+import InputSelect from '../../components/InputSelect';
+import Upload from '../../components/Upload';
+import DataTable from '../../components/DataTable' 
+import Preview from '../../components/Preview';
+import Button from '../../components/Button';
+import TextFieldOutlined from '../../components/TextFieldOutline';
 
 function index() {
-  // solicitar radicado
-  const [settled, setSettled] = useState('')
-  const handleSettled = () => {setSettled('Med123442412 valor recibido Back'); console.log(settled)}
+  // states
+  const [isCity, setIsCity] = useState('');
+  const [citySelected, setCitySelected] = useState('');
+  const [based, setBased] = useState('');
   
+  
+  const [area, setArea] = useState('');
+  const [provider, setProvider] = useState('');
+  const [redirectTo, setRedirectTo] = useState('');
 
-  /**
-   * Array type props to FormControl
-   * firt array is static
-   */
-  // Assigned area
-  const [area, setArea] = useState('')
+
+  // handles
+  const handleIsCity = (e: SelectChangeEvent) => {
+    setIsCity('hola');
+    setBased(`01-${citySelected}-20230207-1130`)
+  };
+  const handleCitySelected = (e: SelectChangeEvent) => {setCitySelected(e.target.value)}
+  
   const handleArea = (e: SelectChangeEvent) => {setArea(e.target.value);}
+  const handleProvider = (e: SelectChangeEvent) => {setProvider(e.target.value);}
+  const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value);}
+  const handleSubmit = (e:any) => { console.log(e); e.preventDefault(); }
+
+  // objets
+  const optionsCities = [
+    {name: "Barranquilla", value: "Bar"},
+    {name: "Bogota", value: "Bog"},
+    {name: "Cali", value: "Cal"},
+    {name: "Masivos", value: "Mas"},
+    {name: "Medellin", value: "Med"},
+    {name: "Nacionales", value: "Nac"},
+  ];
+
+
   const optionsArea = [
     {name:'Administrativo', value: 'administrativo'},
     {name:'Operativo', value: 'operativo'},
   ];
-
-  /** array of items params formControl dinamics from DB
-   * options provider and redirecTo
-   */
-  // provider
-  const [provider, setProvider] = useState('')
-  const handleProvider = (e: SelectChangeEvent) => {setProvider(e.target.value);}
   const optionsProvider = [
     {name: 'Servientrega', value: 'servientrega'},
     {name: 'Exito medellin', value: 'exitoMDL'},
-  ]
-
-  // redirecto
-  const [redirectTo, setRedirectTo] = useState('')
-  const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value);}
+  ];
   const optionsRedirectTo = [
     {name: 'Gerente', value: 'gerente'},
     {name: 'Auditor', value: 'auditor'}
-  ]
-  
-  
-  const handleSubmit = (e:any) => {
-    console.log(e)
-    e.preventDefault();
-  }
+  ];
 
   return (
-
     <div className='layout'>
-
-
       <section className='layout-section'>
         <div className='layout-left'>
           <div className='container__createFiling'>
             <h3 className='createFiling'>Crear Nuevo radicado</h3>
           </div>
-          {settled == '' ? 
-          <article className='filing'>
-            <Button
-              name="Generar numero Radicado"
-              onClick={handleSettled}
+          {!isCity ? 
+            <article className='filing'>
+              <InputSelect
+                type={"text"}
+                title='Generar Radicado'
+                placeholder="Ciudad a radicar"
+                value={citySelected} 
+                onChange={handleCitySelected}
+                itemDefault="selecciona una opcion"
+                items={optionsCities}
               />
-          </article> :
-          <article className='filing'>
-            <form action="" onSubmit={handleSubmit}>
-              <TextField
-                disabled
-                id="radicado"
-                label="Radicado"
-                defaultValue={settled}
-              />
-              <input type="submit" value='enviar' />
-            </form>
+              <Button
+                name="Generar numero Radicado"
+                onClick={handleIsCity}
+                />
+            </article> :
+            <article className='filing'>
+              <form action="" onSubmit={handleSubmit}>
+                <TextFieldOutlined
+                  type={"text"}
+                  label={"radicado"}
+                  value={based}
+                  setValue={setBased}
+                  required
+                  disabled
+                />
+                <input type="submit" value='enviar' />
+              </form>
+
+
+
+
+
+
+
+
+
             <Upload/>
             <div className='w-full'>
               <InputSelect

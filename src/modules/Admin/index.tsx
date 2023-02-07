@@ -3,29 +3,24 @@ import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-// components mui
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-// icons mui
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-
-// components propios
 import NavBar from '../../components/NavBar'
 import SideBar from '../../components/SideBar';
 import Layout from '../../Layout'
-// navigate react router
-import { useNavigate, Routes, Route } from 'react-router-dom';
+import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
 import Updates from '../../Layout/Updates';
-import Tasks from '../../Layout/Tasks';
+import Provider from '../../Layout/Provider';
 
 // width drawer desplegable
 const drawerWidth = 240;
@@ -123,7 +118,7 @@ function index() {
 
       <Main open={open} sx={{ padding: 0 }}>
         <DrawerHeader />
-        <Layout/>
+        <Outlet/>
       </Main>
 
     </Box>
