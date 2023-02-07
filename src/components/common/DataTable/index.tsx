@@ -9,7 +9,7 @@ import { ButtonToggleOpen } from '../ButtonToggleOpen'
 import FullscreenOutlinedIcon from '@mui/icons-material/FullscreenOutlined';
 
 // pdf
-import pdf from '../../assets/Requerimientos.pdf';
+import pdf from '../../../assets/Requerimientos.pdf';
 
 
 

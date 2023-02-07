@@ -21,8 +21,8 @@ import LogoDevIcon from '@mui/icons-material/LogoDev';
 import { useNavigate } from 'react-router-dom';
 
 // images
-import enviexpress from '../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
-import working from '../../assets/icons/data-analysis-case-study.png'
+import enviexpress from '../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
+import working from '../../../assets/icons/data-analysis-case-study.png'
 
 // width drawer desplegable
 const drawerWidth = 240;
