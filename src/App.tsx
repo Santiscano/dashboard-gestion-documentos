@@ -1,28 +1,32 @@
 import './App.css'
-
-// react Router Dom
 import { Route, Routes } from 'react-router-dom';
-
-// imports modules
 import Auth from './modules/Auth';
 import Admin from './modules/Admin';
-
-// theme mui config
 import { ThemeProvider } from '@mui/material';
 import Styles  from './components/tools/Style'
+import Layout from './Layout';
+import Updates from './Layout/Updates';
+import { AuthProvider} from './context/AuthContext'
+import Provider from './Layout/Provider';
 
 
 
 function App() {
 
   return (
-    <ThemeProvider theme={Styles}>
-      <Routes>
-        <Route path='/login' element={ <Auth/> } />
-        <Route path='/' element={ <Auth/> } />
-        <Route path='/admin' element={ <Admin/> } />
-      </Routes>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={Styles}>
+        <Routes>
+          <Route path='/login' element={ <Auth/> } />
+          <Route path='/' element={ <Auth/> } />
+
+          <Route path='/admin' element={ <Admin/> }>
+            <Route path='provider' element={<Provider/>} />
+            <Route path='updates' element={<Updates/>} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
+    </AuthProvider>
   )
 }
 
