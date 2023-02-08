@@ -4,7 +4,6 @@ import Auth from './modules/Auth';
 import Admin from './modules/Admin';
 import { ThemeProvider } from '@mui/material';
 import Styles  from './components/tools/Style'
-import Layout from './Layout';
 import Updates from './Layout/Updates';
 import { AuthProvider} from './hooks/context/AuthContext'
 import Provider from './Layout/Provider';

@@ -6,7 +6,7 @@ export const optionsCities = [
   {name: "Medellin", value: "Med"},
   {name: "Nacionales", value: "Nac"},
 ];
-export const optionsArea = [
+export const optionsInvoiceType = [
   {name:'Administrativo', value: 'administrativo'},
   {name:'Operativo', value: 'operativo'},
 ];
@@ -18,8 +18,13 @@ export const optionsRedirectTo = [
   {name: 'Gerente', value: 'gerente'},
   {name: 'Auditor', value: 'auditor'}
 ];
-export const optionTypeAccount = [
+export const optionAccountType = [
   {name: 'Cuenta Cobro Proveedor', value: 'cuenta-cobro-proveedor'},
   {name: 'Factura Proveedor', value: 'factura-proveedor'},
   {name: 'Manifiesto Carga', value: 'manifiesto-carga'},
-]
+];
+export const optionDocumentType = [
+  {name: 'Cedula', value: 'cedula'},
+  {name: 'NIT', value: 'nit'},
+  {name: 'Pasaporte', value: 'pasaporte'},
+];

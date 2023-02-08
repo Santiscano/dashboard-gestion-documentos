@@ -16,8 +16,8 @@ export default function index(props: any) {
   
   return (
     <div>
-      <label className="block mb-2 mx-2 mt-4 text-base font-semibold dark:text-white" >{props.title}</label>
-      <Selecting sx={{ m: 1, width: 0.99 }} >
+      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" >{props.title}</label>
+      <Selecting sx={{ m: 1, width: 0.98 }} >
         <InputLabel id={`${props.placeholder}-label`}>{props.placeholder}</InputLabel>
         <Select
           key={props.index}

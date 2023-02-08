@@ -39,6 +39,7 @@ function TextFieldOutlined({
       InputProps={{
         readOnly: readOnly,
       }}
+      sx={{ m: 1, width: 0.98 }}
     />
   );
 }
