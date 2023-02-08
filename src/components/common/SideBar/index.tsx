@@ -14,9 +14,21 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import rutero from "../ruter/Rute";
 import LogoDevIcon from '@mui/icons-material/LogoDev';
+<<<<<<< HEAD:src/components/SideBar/index.tsx
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import enviexpress from '../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
 import working from '../../assets/icons/data-analysis-case-study.png'
+=======
+
+// components propios
+ 
+// navigate react router
+import { useNavigate } from 'react-router-dom';
+
+// images
+import enviexpress from '../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
+import working from '../../../assets/icons/data-analysis-case-study.png'
+>>>>>>> fd2fcf36f5b37791ba0734f13af3fca1c6d93d8a:src/components/common/SideBar/index.tsx
 
 const drawerWidth = 240;
 const DrawerHeader = styled('div')(({ theme }) => ({

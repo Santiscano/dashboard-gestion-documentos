@@ -2,7 +2,7 @@ import React from 'react';
 import './auth.css';
 
 // components
-import FormLogin from '../../components/FormLogin';
+import FormLogin from '../../components/common/FormLogin';
 
 // images
 import security from '../../assets/images/cyber-security.png';

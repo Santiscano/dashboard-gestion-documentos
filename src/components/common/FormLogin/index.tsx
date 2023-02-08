@@ -44,7 +44,7 @@ function index() {
         {errors.password?.type === 'minLength' && <span className='form-login-error'>La contraseña debe tener minimo 8 Caracteres</span> }
       </div>
 
-      <Link to='/admin' className='flex justify-center'>
+      <Link to='/admin/provider' className='flex justify-center'>
       <input type="submit" 
         value='Entrar'
         className='w-full py-2 mt-6  bg-blue-800 text-white rounded cursor-pointer '></input>
