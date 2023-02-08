@@ -1,4 +1,13 @@
 import { TextField } from "@mui/material";
+import { alpha, styled } from '@mui/material/styles'
+
+const CssTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    "&:hover fieldset": {
+      borderColor: "#2759cd",
+    },
+  },
+});
 
 function TextFieldOutlined({
   label,
@@ -12,7 +21,8 @@ function TextFieldOutlined({
   defaultValue,
 }:any) {
   return (
-    <TextField
+    <CssTextField
+      id="custom-css-outlined-input"
       fullWidth
       type={type}
       required={required}
@@ -29,7 +39,7 @@ function TextFieldOutlined({
       InputProps={{
         readOnly: readOnly,
       }}
-      style={{}}
+      sx={{ m: 1, width: 0.98 }}
     />
   );
 }

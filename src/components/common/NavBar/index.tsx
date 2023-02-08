@@ -24,8 +24,8 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import { useNavigate } from 'react-router-dom';
 
 // img
-import logo from '../../assets/images/logo-white.png';
-import userIcon from '../../assets/images/userIcon.jpg'
+import logo from '../../../assets/images/logo-white.png';
+import userIcon from '../../../assets/images/userIcon.jpg'
 
 // css
 import './navbar.css'
