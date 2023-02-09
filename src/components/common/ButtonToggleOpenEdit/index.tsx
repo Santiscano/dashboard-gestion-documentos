@@ -19,7 +19,7 @@ export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
       setOpen(true) 
       console.log('open: ', open);
     };
-    // const handleClose = () => setOpen(false);
+    const handleClose = () => setOpen(false);
 
   
     React.useLayoutEffect(() => {
@@ -54,11 +54,20 @@ export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
           Abrir
         </Button>        
         <BasicModal
+          key={props.row.id}
           open={open}
-          // close={handleClose}
-          responsive={props.row.responsive}
+          close={handleClose}
+          id={props.row.id}
+          cedi={props.row.cedi}
+          account_type={props.row.account_type}
+          document_type={props.row.document_type}
+          document_number={props.row.document_number}
           provider={props.row.provider}
-          stateFile={props.row.stateFile}
+          address={props.row.address}
+          phone={props.row.phone}
+          email={props.row.email}
+          document_date={props.row.document_date}
+          value={props.row.value}
         />
       </>
     );

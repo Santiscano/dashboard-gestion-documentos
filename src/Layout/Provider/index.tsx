@@ -24,14 +24,17 @@ import AttachEmailRoundedIcon from '@mui/icons-material/AttachEmailRounded';
 import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 
+import 'animate.css';
+
+
 function index() {
   // states
   const [isCity, setIsCity]               = useState('');
-  const [citySelected, setCitySelected]   = useState('');
+  const [cedi, setCedi]   = useState('');
   const [settledNumber, setSettledNumber] = useState('');
-  const [typeAccount, setTypeAccount ]    = useState('');
-  const [nit, setNit ]                    = useState('');
-  const [cedula, setCedula ]              = useState('');
+  const [accountType, setAccountType ]    = useState('');
+  const [documentType, setDocumentType ]  = useState('');
+  const [documentNumber,setDocumentNumber]= useState('');
   const [companyName, setCompanyName]     = useState('');
   const [address, setAddress]             = useState('');
   const [telephone, setTelephone]         = useState('');
@@ -47,11 +50,11 @@ function index() {
   // handles
   const handleIsCity = (e: SelectChangeEvent) => {
     setIsCity('hola');
-    setSettledNumber(`10699001-${citySelected}-20230207-1130`);
+    setSettledNumber(`10699001-${cedi}-20230207-1130`);
   };
-  const handleCitySelected = (e: SelectChangeEvent) => {setCitySelected(e.target.value)};
-  const handleTypeAccount = (e: SelectChangeEvent) => {setTypeAccount(e.target.value)};
-  const handleNit = (e: SelectChangeEvent) => {setNit(e.target.value)};
+  const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
+  const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
+  const handleDocumentType = (e: SelectChangeEvent) => {setDocumentType(e.target.value)};
   const handleInvoiceType = (e: SelectChangeEvent) => {
     setInvoiceType(e.target.value);
     console.log("invoice", invoiceType)
@@ -76,14 +79,15 @@ function index() {
             <div className='container__createFiling'>
               <h3 className='createFiling'>Crear Nuevo radicado</h3>
             </div>
-            {!isCity ? 
+            {!isCity 
+              ? 
               <article className='filing'>
                 <InputSelect
                   type={"text"}
                   title='Generar Radicado'
                   placeholder="Ciudad a radicar"
-                  value={citySelected} 
-                  onChange={handleCitySelected}
+                  value={cedi} 
+                  onChange={handleCedi}
                   itemDefault="selecciona una opcion"
                   items={optionsCities}
                 />
@@ -94,7 +98,8 @@ function index() {
               </article> 
               :
               <article className='filing'>
-                <form action="" onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>
+                  
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
@@ -114,8 +119,8 @@ function index() {
                         type={"text"}
                         title='Tipo de cuenta'
                         placeholder="cuenta"
-                        value={typeAccount} 
-                        onChange={handleTypeAccount}
+                        value={accountType} 
+                        onChange={handleAccountType}
                         itemDefault="selecciona el tipo de cuenta"
                         items={optionAccountType}
                       />
@@ -128,8 +133,8 @@ function index() {
                         type={"text"}
                         title='Tipo Documento'
                         placeholder="Tipo Documento*"
-                        value={nit} 
-                        onChange={handleNit}
+                        value={documentType} 
+                        onChange={handleDocumentType}
                         itemDefault="selecciona el tipo de documento"
                         items={optionDocumentType}
                       />
@@ -140,8 +145,8 @@ function index() {
                       <TextFieldOutlined
                         type={"text"}
                         label={"Numero documento"}
-                        value={cedula}
-                        setValue={setCedula}
+                        value={documentNumber}
+                        setValue={setDocumentNumber}
                         required
                         iconEnd={<BrandingWatermarkRoundedIcon/>}
                       />
@@ -231,9 +236,11 @@ function index() {
                     </article>
                   </div>
 
-                  <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                    >Numero identificador Documento</label>
-                  
+                  <label 
+                    className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" >
+                    Numero identificador Documento
+                  </label>
+
                   <Upload/>
 
                   <div className='w-full'>
@@ -271,7 +278,7 @@ function index() {
                   }
                   {redirectTo && <button className='button button--flex'>Crear requerimientos</button>}
                 </form>
-            </article>}
+              </article>}
           </div>
         </section> 
         
