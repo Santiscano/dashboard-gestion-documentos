@@ -7,13 +7,22 @@ import DataTable from '../../components/common/DataTable'
 import Preview from '../../components/common/Preview';
 import Button from '../../components/common/Button';
 import TextFieldOutlined from '../../components/common/TextFieldOutline';
-import { InputLabel } from '@mui/material';
 import { optionsCities, 
   optionsInvoiceType, 
   optionsProvider, 
   optionsRedirectTo, 
   optionAccountType,
-  optionDocumentType } from '../../components/Object/Provider';
+  optionDocumentType } from '../../components/Objects/Provider';
+import DataTableEditable from '../../components/common/DataTableEditable';
+
+import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
+import BrandingWatermarkRoundedIcon from '@mui/icons-material/BrandingWatermarkRounded';
+import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
+import PhoneAndroidRoundedIcon from '@mui/icons-material/PhoneAndroidRounded';
+import AttachEmailRoundedIcon from '@mui/icons-material/AttachEmailRounded';
+import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 
 function index() {
   // states
@@ -29,276 +38,275 @@ function index() {
   const [email, setEmail]                 = useState('');
   const [documentDate, setDocumentDate]   = useState('');
   const [price, setPrice]                 = useState('');
-  
-  const [invoiceType, setInvoiceType] = useState('');
-  const [provider, setProvider] = useState('');
-  const [redirectTo, setRedirectTo] = useState('');
+  const [invoiceType, setInvoiceType]     = useState('');
+  const [provider, setProvider]           = useState('');
+  const [redirectTo, setRedirectTo]       = useState('');
+  const [role, setRole ]                  = useState('radicacion');
 
 
   // handles
   const handleIsCity = (e: SelectChangeEvent) => {
     setIsCity('hola');
     setSettledNumber(`10699001-${citySelected}-20230207-1130`);
-    // handleDate();
   };
   const handleCitySelected = (e: SelectChangeEvent) => {setCitySelected(e.target.value)};
   const handleTypeAccount = (e: SelectChangeEvent) => {setTypeAccount(e.target.value)};
   const handleNit = (e: SelectChangeEvent) => {setNit(e.target.value)};
-  // const handleDate = () => {
-  //   const date = new Date();
-  //   const d = date.getDate();
-  //   const m = date.getMonth() + 1;
-  //   const y = date.getFullYear();
-  //   const today = `${d}/${m}/${y}`;
-  //   setDate(today);
-  //   console.log('today: ', today);
-  // }
+  const handleInvoiceType = (e: SelectChangeEvent) => {
+    setInvoiceType(e.target.value);
+    console.log("invoice", invoiceType)
+    invoiceType == "operativo" 
+    ? setRedirectTo("auditor grupo operativo")
+    : setRedirectTo("")
+    console.log('invoiceType: ', invoiceType);
+    
+  };
+  const handleProvider = (e: SelectChangeEvent) => {setProvider(e.target.value)};
+  const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
+  const handleRedirectToOperationalGroup = (e: SelectChangeEvent) => {setRedirectTo("auditor grupo operativo")};
 
-
-  const handleInvoiceType = (e: SelectChangeEvent) => {setInvoiceType(e.target.value);}
-  const handleProvider = (e: SelectChangeEvent) => {setProvider(e.target.value);}
-  const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value);}
   const handleSubmit = (e:any) => { console.log(e); e.preventDefault(); }
 
   return (
     <div className='layout'>
-      <section className='layout-section'>
-        <div className='layout-left'>
-          <div className='container__createFiling'>
-            <h3 className='createFiling'>Crear Nuevo radicado</h3>
-          </div>
-          {!isCity ? 
-            <article className='filing'>
-              <InputSelect
-                type={"text"}
-                title='Generar Radicado'
-                placeholder="Ciudad a radicar"
-                value={citySelected} 
-                onChange={handleCitySelected}
-                itemDefault="selecciona una opcion"
-                items={optionsCities}
-              />
-              <Button
-                name="Generar numero Radicado"
-                onClick={handleIsCity}
+      {role == "radicacion" && 
+      <div>
+        <section className='layout-section'>
+          <div className='layout-left'>
+            <div className='container__createFiling'>
+              <h3 className='createFiling'>Crear Nuevo radicado</h3>
+            </div>
+            {!isCity ? 
+              <article className='filing'>
+                <InputSelect
+                  type={"text"}
+                  title='Generar Radicado'
+                  placeholder="Ciudad a radicar"
+                  value={citySelected} 
+                  onChange={handleCitySelected}
+                  itemDefault="selecciona una opcion"
+                  items={optionsCities}
                 />
-            </article> 
-            :
-            <article className='filing'>
-              <form action="" onSubmit={handleSubmit}>
-                <div className='md:flex md:flex-wrap'>
-                  <article className='md:w-1/2' >
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                      >Numero de Radicado</label>
-                    <TextFieldOutlined
-                      type={"text"}
-                      label={"radicado"}
-                      value={settledNumber}
-                      setValue={setSettledNumber}
-                      required
-                      disabled
-                    />
-                  </article>
-                  <article className='md:w-1/2' >
-                    <InputSelect
-                      type={"text"}
-                      title='Tipo de cuenta'
-                      placeholder="cuenta de cobro, factura proveedor, manifiesto"
-                      value={typeAccount} 
-                      onChange={handleTypeAccount}
-                      itemDefault="selecciona una opcion"
-                      items={optionAccountType}
-                    />
-                  </article>
-                </div>
-
-                <div className='md:flex md:flex-wrap'>
-                  <article className='md:w-1/2'>
-                    <InputSelect
-                      type={"text"}
-                      title='Tipo Documento'
-                      placeholder="Tipo Documento*"
-                      value={nit} 
-                      onChange={handleNit}
-                      itemDefault="selecciona una opcion"
-                      items={optionDocumentType}
-                    />
-                  </article>
-                  <article className='md:w-1/2'>
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                      >Numero Documento</label>
-                    <TextFieldOutlined
-                      type={"text"}
-                      label={"Numero documento"}
-                      value={cedula}
-                      setValue={setCedula}
-                      required
-                    />
-                  </article>
-                </div>
-
-                <div className='md:flex md:flex-wrap'>
-                  <article className='md:w-1/2' >
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                      >Razon social</label>
-                    <TextFieldOutlined
-                      type={"text"}
-                      label={"automatico"}
-                      value={companyName}
-                      setValue={setCompanyName}
-                      required
-                      disabled
-                    />
-                  </article>
-                  <article className='md:w-1/2' >
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                      >Direccion</label>
-                    <TextFieldOutlined
-                      type={"text"}
-                      label={"automatico"}
-                      value={address}
-                      setValue={setAddress}
-                      required
-                      disabled
-                    />
-                  </article>
-                </div>
-
-                <div className='md:flex md:flex-wrap'>
-                  <article className='md:w-1/2' >
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                      >Telefono</label>
-                    <TextFieldOutlined
-                        type={"text"}
-                        label={"automatico"}
-                        value={telephone}
-                        setValue={setTelephone}
-                        required
-                        disabled
-                      />
-                  </article>
-                  <article className='md:w-1/2' >
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                      >Correo</label>
-                    <TextFieldOutlined
-                    type={"text"}
-                    label={"automatico"}
-                    value={email}
-                    setValue={setEmail}
-                    required
-                    disabled
-                    />
-                  </article>
-                </div>
-
-                <div className='md:flex md:flex-wrap'>
-                  <article className='md:w-1/2' >
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                      >Fecha Documento</label>
-                    <TextFieldOutlined
-                      type={"text"}
-                      label={"Fecha documento"}
-                      value={documentDate}
-                      setValue={setDocumentDate}
-                      required
-                    />
-                  </article>
-                  <article className='md:w-1/2' >
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                      >Valor</label>
-                    <TextFieldOutlined
-                      type={"number"}
-                      label={"valor"}
-                      value={price}
-                      setValue={setPrice}
-                      required
-                    />
-                  </article>
-                </div>
-
-                <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
-                  >Numero identificador Documento</label>
-
-                <div className='w-full'>
-                  <InputSelect
-                    index='1'
-                    title='Seleccionar Area'
-                    placeholder="Requerimiento"
-                    value={invoiceType} 
-                    onChange={handleInvoiceType}
-                    itemDefault="selecciona una opcion"
-                    items={optionsInvoiceType}/>
-                </div>
-                {invoiceType == 'administrativo' && 
-                <div>
+                <Button
+                  name="Generar numero Radicado"
+                  onClick={handleIsCity}
+                  />
+              </article> 
+              :
+              <article className='filing'>
+                <form action="" onSubmit={handleSubmit}>
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2' >
-                      <InputSelect 
-                        index="2"
-                        title='Nombre Proveedor'
-                        placeholder="proveedor"
-                        value={provider}
-                        onChange={handleProvider}
-                        itemDefault="selecciona una opcion"
-                        items={optionsProvider}/>
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                        >Numero de Radicado</label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"radicado"}
+                        value={settledNumber}
+                        setValue={setSettledNumber}
+                        required
+                        disabled
+                        iconEnd={<NumbersRoundedIcon/>}
+                      />
+                    </article>
+                    <article className='md:w-1/2' >
+                      <InputSelect
+                        type={"text"}
+                        title='Tipo de cuenta'
+                        placeholder="cuenta"
+                        value={typeAccount} 
+                        onChange={handleTypeAccount}
+                        itemDefault="selecciona el tipo de cuenta"
+                        items={optionAccountType}
+                      />
+                    </article>
+                  </div>
+
+                  <div className='md:flex md:flex-wrap'>
+                    <article className='md:w-1/2'>
+                      <InputSelect
+                        type={"text"}
+                        title='Tipo Documento'
+                        placeholder="Tipo Documento*"
+                        value={nit} 
+                        onChange={handleNit}
+                        itemDefault="selecciona el tipo de documento"
+                        items={optionDocumentType}
+                      />
                     </article>
                     <article className='md:w-1/2'>
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                        >Numero Documento</label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"Numero documento"}
+                        value={cedula}
+                        setValue={setCedula}
+                        required
+                        iconEnd={<BrandingWatermarkRoundedIcon/>}
+                      />
+                    </article>
+                  </div>
+
+                  <div className='md:flex md:flex-wrap'>
+                    <article className='md:w-1/2' >
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                        >Razon social</label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"automatico"}
+                        value={companyName}
+                        setValue={setCompanyName}
+                        required
+                        disabled
+                        iconEnd={<PermIdentityRoundedIcon/>}
+                      />
+                    </article>
+                    <article className='md:w-1/2' >
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                        >Direccion</label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"automatico"}
+                        value={address}
+                        setValue={setAddress}
+                        required
+                        disabled
+                        iconEnd={<LocationOnRoundedIcon/>}
+                      />
+                    </article>
+                  </div>
+
+                  <div className='md:flex md:flex-wrap'>
+                    <article className='md:w-1/2' >
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                        >Telefono</label>
+                      <TextFieldOutlined
+                          type={"text"}
+                          label={"automatico"}
+                          value={telephone}
+                          setValue={setTelephone}
+                          required
+                          disabled
+                        iconEnd={<PhoneAndroidRoundedIcon/>}
+                        />
+                    </article>
+                    <article className='md:w-1/2' >
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                        >Correo</label>
+                      <TextFieldOutlined
+                      type={"text"}
+                      label={"automatico"}
+                      value={email}
+                      setValue={setEmail}
+                      required
+                      disabled
+                      iconEnd={<AttachEmailRoundedIcon/>}
+                      />
+                    </article>
+                  </div>
+
+                  <div className='md:flex md:flex-wrap'>
+                    <article className='md:w-1/2' >
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                        >Fecha Documento</label>
+                      <TextFieldOutlined
+                        type={"date"}
+                        value={documentDate}
+                        setValue={setDocumentDate}
+                        required
+                      />
+                    </article>
+                    <article className='md:w-1/2' >
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                        >Valor</label>
+                      <TextFieldOutlined
+                        type={"number"}
+                        label={"valor"}
+                        value={price}
+                        setValue={setPrice}
+                        required
+                        iconEnd={<AttachMoneyRoundedIcon/>}
+                      />
+                    </article>
+                  </div>
+
+                  <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+                    >Numero identificador Documento</label>
+                  
+                  <Upload/>
+
+                  <div className='w-full'>
+                    <InputSelect
+                      index='1'
+                      title='Seleccionar Area'
+                      placeholder="Requerimiento" 
+                      value={invoiceType} 
+                      onChange={handleInvoiceType}
+                      itemDefault="selecciona una opcion"
+                      items={optionsInvoiceType}/>
+                  </div>
+                  {invoiceType == 'administrativo' && 
+                    <div>
                       <InputSelect 
                         index="3"
                         title='A quien va Dirigido'
-                        placeholder="dirigido"
+                        placeholder="Dirigido a"
                         value={redirectTo}
                         onChange={handleRedirectTo}
-                        itemDefault="selecciona una opcion"
+                        itemDefault="selecciona el auditor"
                         items={optionsRedirectTo}/>
-                    </article>
-                  </div>
-                  <button className='button button--flex'>Crear requerimientos</button>
-                </div>
-                }
+                    </div>
+                  }
+                  {invoiceType == 'operativo' && 
+                    <TextFieldOutlined
+                      type={"text"}
+                      label={"Dirigido a"}
+                      value={redirectTo}
+                      setValue={setRedirectTo}
+                      required
+                      disabled
+                      iconEnd={<VerifiedUserRoundedIcon/>}
+                    />
+                  }
+                  {redirectTo && <button className='button button--flex'>Crear requerimientos</button>}
+                </form>
+            </article>}
+          </div>
+        </section> 
+        
+        <section className='layout-section'>
+          <div className='layout-left'>
+            <h3 className='container__createFiling createFiling'>Tablas radicados</h3>
+            <div className='filing'>
+              <section className='viewTableEdit'>
+                <DataTableEditable/>
+              </section>
+
+            </div>
+          </div>
+        </section>
+
+      </div>
+      }
 
 
 
-
-
-              </form>
-
-
-
-
-
-
-
-
-
-            <Upload/>
-            
-
-            {invoiceType == 'operativo' && <div>aun no hay informacion</div>}
-          </article>}
-        </div>
-      </section>
-
-
-
-      <section className='layout-section'>
-        <div className='layout-left'>
-          <h3 className='container__createFiling createFiling'>Dashboard</h3>
-          <section className='viewTable'>
-            <DataTable/>
-          </section>
-        </div>
-
-        <div className='layout-right'>
-          <section className='previewPdf'>
-            <Preview/>
-          </section>
-        </div>
-      </section>  
-
-      
-
-      
+      {role == "radicacion" && 
+        <section className='layout-section'>
+          <div className='layout-left'>
+            <h3 className='container__createFiling createFiling'>Tablas radicados</h3>
+            <section className='viewTable'>
+              <DataTable/>
+            </section>
+          </div>
+          <div className='layout-right'>
+            <section className='previewPdf'>
+              <Preview/>
+            </section>
+          </div>
+        </section>
+      } 
     </div>
   )
 }

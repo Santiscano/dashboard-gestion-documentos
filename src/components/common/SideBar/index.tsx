@@ -12,23 +12,11 @@ import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import CloseIcon from '@mui/icons-material/Close';
 
-import rutero from "../ruter/Rute";
-import LogoDevIcon from '@mui/icons-material/LogoDev';
-<<<<<<< HEAD:src/components/SideBar/index.tsx
+import rutero from "../../routes/Rute";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import enviexpress from '../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
-import working from '../../assets/icons/data-analysis-case-study.png'
-=======
-
-// components propios
- 
-// navigate react router
-import { useNavigate } from 'react-router-dom';
-
-// images
 import enviexpress from '../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
 import working from '../../../assets/icons/data-analysis-case-study.png'
->>>>>>> fd2fcf36f5b37791ba0734f13af3fca1c6d93d8a:src/components/common/SideBar/index.tsx
+
 
 const drawerWidth = 240;
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -48,14 +36,6 @@ const rolTI = true;
 function index(props: any) {
   const theme = useTheme();
   const navigate = useNavigate();
-
-  const menuTI = [
-    {
-      name: 'Administracion TI',
-     url:"/jamas",
-      icon: <LogoDevIcon/>
-    },
-  ];
 
   return (
     <Drawer
@@ -96,9 +76,9 @@ function index(props: any) {
       <Divider />
       
       {rolTI && <List>
-        {menuTI.map((list, index) => (
+        {rutero.online.ti.map((list, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate(`${list.url}`)}>
               <ListItemIcon>
                 {list.icon}
               </ListItemIcon>

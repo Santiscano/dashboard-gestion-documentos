@@ -25,7 +25,7 @@ function index() {
         <object className='view-pdf' type='application/pdf' data={pdf}></object>
       </div>
       <Button
-        name="Aprovar"/>
+        name="Aprobar"/>
     </>
   )
 }

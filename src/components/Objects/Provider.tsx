@@ -15,8 +15,11 @@ export const optionsProvider = [
   {name: 'Exito medellin', value: 'exitoMDL'},
 ];
 export const optionsRedirectTo = [
+  {name: 'Auditor 1', value: 'auditor 1'},
+  {name: 'Auditor 2', value: 'auditor 2'},
+  {name: 'Auditor 3', value: 'auditor 3'},
+  {name: 'Auditor 4', value: 'auditor 4'},
   {name: 'Gerente', value: 'gerente'},
-  {name: 'Auditor', value: 'auditor'}
 ];
 export const optionAccountType = [
   {name: 'Cuenta Cobro Proveedor', value: 'cuenta-cobro-proveedor'},

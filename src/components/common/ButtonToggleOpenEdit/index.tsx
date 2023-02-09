@@ -4,8 +4,7 @@ import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { TouchRippleActions } from '@mui/material/ButtonBase/TouchRipple';
 import BasicModal from '../ModalForm';
 
-
-export const ButtonToggleOpen = (props: GridRenderCellParams<Date>) => {
+export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
     const { hasFocus, value } = props;
     const buttonElement = React.useRef<HTMLButtonElement | null>(null);
     const rippleRef = React.useRef<TouchRippleActions | null>(null);
@@ -17,10 +16,10 @@ export const ButtonToggleOpen = (props: GridRenderCellParams<Date>) => {
     // ----------------------------------------
     const handleOpen = () => {
       console.log(props);
-      setOpen(true)
+      setOpen(true) 
       console.log('open: ', open);
     };
-    const handleClose = () => setOpen(false);
+    // const handleClose = () => setOpen(false);
 
   
     React.useLayoutEffect(() => {
@@ -53,11 +52,10 @@ export const ButtonToggleOpen = (props: GridRenderCellParams<Date>) => {
           onClick={handleOpen}
         >
           Abrir
-        </Button>
-        
+        </Button>        
         <BasicModal
           open={open}
-          close={handleClose}
+          // close={handleClose}
           responsive={props.row.responsive}
           provider={props.row.provider}
           stateFile={props.row.stateFile}
@@ -65,4 +63,3 @@ export const ButtonToggleOpen = (props: GridRenderCellParams<Date>) => {
       </>
     );
   };
-

@@ -7,6 +7,7 @@ import Styles  from './components/tools/Style'
 import Updates from './Layout/Updates';
 import { AuthProvider} from './hooks/context/AuthContext'
 import Provider from './Layout/Provider';
+import Ti from './Layout/Ti';
 
 
 
@@ -22,6 +23,7 @@ function App() {
           <Route path='/admin' element={ <Admin/> }>
             <Route path='provider' element={<Provider/>} />
             <Route path='updates' element={<Updates/>} />
+            <Route path='ti' element={<Ti/>} />
           </Route>
         </Routes>
       </ThemeProvider>
