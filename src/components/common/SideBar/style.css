@@ -49,7 +49,7 @@ body {
 .msb .navbar-nav li a {
     padding: 15px;
     color: #5f5f5f;
-    
+
 }
 .msb .navbar-nav li a .glyphicon,
 .msb .navbar-nav li a .fa {
@@ -61,13 +61,13 @@ body {
     padding-left: 10px;
     margin-bottom: 30px;
     overflow: hidden;
-    
+
 }
 ul.nv,
 ul.ns {
     position: relative;
     padding: 0;
-    list-style: none;  
+    list-style: none;
 }
 .nv .ns li a {
     padding: 10px 50px;
@@ -78,7 +78,7 @@ ul.ns {
 }
 .nv li ::before {
     clear: both;
-    content: "";      
+    content: "";
     display: table;
 }
 .nv li a {
@@ -123,7 +123,7 @@ a:hover {
     display: block;
     padding: 10px 20px;
 }
-/* 
+/*
 
 
 
@@ -135,7 +135,7 @@ a:hover {
 
 
 
- 
+
 
   .msb, .mnb {
       -moz-animation: slidein 300ms forwards;
@@ -143,7 +143,7 @@ a:hover {
       -webkit-animation: slidein 300ms forwards;
       animation: slidein 300ms forwards;
       -webkit-transform-style: preserve-3d;
-      transform-style: preserve-3d;  
+      transform-style: preserve-3d;
   }
   .mcw {
       -moz-animation: bodyslidein 300ms forwards;
@@ -151,10 +151,10 @@ a:hover {
       -webkit-animation: bodyslidein 300ms forwards;
       animation: bodyslidein 300ms forwards;
       -webkit-transform-style: preserve-3d;
-      transform-style: preserve-3d;  
+      transform-style: preserve-3d;
   }
   body.msb-x {
-  
+
     .mcw, .mnb {
       margin-left: 0;
   -moz-animation: bodyslideout 300ms forwards;
@@ -173,7 +173,7 @@ a:hover {
       transform-style: preserve-3d;
     }
   } */
-  
+
     /* Slide in animation */
 
 
@@ -227,7 +227,7 @@ a:hover {
         left: -200px;
       }
     } */
-  
+
 
 
 

@@ -64,7 +64,7 @@ export default function BasicModal(props: any) {
         aria-describedby="modal-modal-description"
         className='animate__animated animate__fadeIn'
       >
-        <Box 
+        <Box
           sx={style}
         >
           <h3 className='createFiling'>Actualizar informacion radicado</h3>
@@ -72,7 +72,7 @@ export default function BasicModal(props: any) {
             <InputSelect
               index='1'
               title='Seleccionar Area'
-              placeholder="Requerimiento" 
+              placeholder="Requerimiento"
               value={cedi}
               onChange={handleCedi}
               itemDefault="selecciona una opcion"
@@ -80,7 +80,7 @@ export default function BasicModal(props: any) {
           </div>
           <div className='md:flex md:flex-wrap'>
             <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                 >Numero de Radicado</label>
               <TextFieldOutlined
                 type={"text"}
@@ -97,7 +97,7 @@ export default function BasicModal(props: any) {
                 type={"text"}
                 title='Tipo de cuenta'
                 placeholder="cuenta"
-                value={accountType} 
+                value={accountType}
                 onChange={handleAccountType}
                 itemDefault="selecciona el tipo de cuenta"
                 items={optionAccountType}
@@ -111,14 +111,14 @@ export default function BasicModal(props: any) {
                 type={"text"}
                 title='Tipo Documento'
                 placeholder="Tipo Documento*"
-                value={documentType} 
+                value={documentType}
                 onChange={handleDocumentType}
                 itemDefault="selecciona el tipo de documento"
                 items={optionDocumentType}
               />
             </article>
             <article className='md:w-1/2'>
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                 >Numero Documento</label>
               <TextFieldOutlined
                 type={"text"}
@@ -137,7 +137,7 @@ export default function BasicModal(props: any) {
 
           <div className='md:flex md:flex-wrap'>
             <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                 >Razon social</label>
               <TextFieldOutlined
                 type={"text"}
@@ -150,7 +150,7 @@ export default function BasicModal(props: any) {
               />
             </article>
             <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                 >Direccion</label>
               <TextFieldOutlined
                 type={"text"}
@@ -166,7 +166,7 @@ export default function BasicModal(props: any) {
 
           <div className='md:flex md:flex-wrap'>
             <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                 >Telefono</label>
               <TextFieldOutlined
                   type={"text"}
@@ -179,7 +179,7 @@ export default function BasicModal(props: any) {
                 />
             </article>
             <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                 >Correo</label>
               <TextFieldOutlined
               type={"text"}
@@ -195,7 +195,7 @@ export default function BasicModal(props: any) {
 
           <div className='md:flex md:flex-wrap'>
             <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                 >Fecha Documento</label>
               <TextFieldOutlined
                 type={"date"}
@@ -205,7 +205,7 @@ export default function BasicModal(props: any) {
               />
             </article>
             <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" 
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                 >Valor</label>
               <TextFieldOutlined
                 type={"number"}

@@ -12,7 +12,7 @@ function index() {
     const handleChangeFile = (event: SelectChangeEvent) => {
       setFile(event.target.value);
     }
-  
+
   return (
     <div>
       <label className="block mb-2 text-base font-semibold dark:text-white" >Cargar Archivo</label>
@@ -24,17 +24,17 @@ function index() {
             <CloudUploadOutlinedIcon color="primary"  />
             <p className='mb-2 text-sm text-gray-500 dark:text-gray-400'><span className='font-semibold'>Click aqui</span> para subir archivo</p>
           </div>
-          : 
+          :
           <div className='flex flex-col items-center justify-center pt-5 pb-6 '>
             <VerifiedOutlinedIcon color="primary" sx={{ width: 30 }} />
             <p className='mb-2 text-sm text-gray-500 dark:text-gray-400'><span className='font-semibold'>Archivo cargado</span></p>
           </div>
           }
-          <input id="dropzone-file" 
-            type="file" 
-            className='hidden' 
+          <input id="dropzone-file"
+            type="file"
+            className='hidden'
             value={file}
-            onChange={handleChangeFile} 
+            onChange={handleChangeFile}
           />
         </label>
       </div>

@@ -1,4 +1,4 @@
-import { types } from "../../types/types";
+import { types } from "../types/types";
 
 
 export const authReducer = ( state:any = {}, action:any) => {
@@ -17,7 +17,7 @@ export const authReducer = ( state:any = {}, action:any) => {
                 logged: false,
                 name: null
             };
-        
+
         default:
             return state;
     }

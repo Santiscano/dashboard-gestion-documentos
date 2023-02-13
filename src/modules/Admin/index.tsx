@@ -98,12 +98,11 @@ function index() {
     setAnchorElUser(null);
   };
 
-
   return (
     <>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      
+
       <NavBar
       handleDrawerOpen={handleDrawerOpen}
       open={open}

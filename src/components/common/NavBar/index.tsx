@@ -33,17 +33,17 @@ import Avatar from '@mui/material/Avatar';
 
 
 export default function MenuAppBar(props:any) {
-  // navigation 
+  // navigation
   const navigate = useNavigate();
 
   // menu avatar
   const menuAvatar = [
     {
-      name:'configurar perfil', 
+      name:'configurar perfil',
       navigate: '/config'
-    }, 
+    },
     {
-      name:'Cerrar Sesion', 
+      name:'Cerrar Sesion',
       navigate: '/login'
     },
   ];
@@ -81,6 +81,9 @@ export default function MenuAppBar(props:any) {
   const [countNotification , setCountNotification] = React.useState(5);
   // esta ⬇ funcion es para incrementar el numero de notificaciones con la DB
   const increaseNotificationsDB = () => {setCountNotification(countNotification + 1)}
+  // dark mode
+  const [isDark, setIsDark ] = React.useState(false);
+  const handleMode  = () => setIsDark(!isDark);
 
 
   return (
@@ -96,17 +99,18 @@ export default function MenuAppBar(props:any) {
           >
             <MenuIcon />
           </IconButton>
-          <img src={logo} 
-            className="mx-3" 
+          <img src={logo}
+            className="mx-3"
             style={{width:"150px", height:"auto" }}/>
 
-          <Typography 
-          variant="h6" 
-          component="div" 
+          <Typography
+          variant="h6"
+          component="div"
           sx={{ flexGrow: 1 }}/>
 
           {/* image */}
           <Box sx={{ flexGrow: 0, display: 'flex' }}>
+
             <Tooltip title="Ver nuevos radicados">
               <IconButton
                 size="large"
@@ -157,7 +161,7 @@ export default function MenuAppBar(props:any) {
                 </MenuItem>
               ))}
             </Menu>
-            
+
             {/* menu notifications */}
             <Menu
               sx={{ mt: '45px' }}

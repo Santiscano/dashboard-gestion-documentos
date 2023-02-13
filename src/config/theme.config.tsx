@@ -1,6 +1,8 @@
 import { createTheme } from '@mui/material/styles';
+import { useState } from 'react';
 
-const Styles = createTheme({
+
+export const Styles = createTheme({
   palette: {
     mode: 'light',
     primary: {
@@ -15,8 +17,5 @@ const Styles = createTheme({
   },
   typography: {
     fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
-
   }
 });
-
-export default Styles

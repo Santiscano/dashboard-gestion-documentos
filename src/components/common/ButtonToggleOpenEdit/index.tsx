@@ -16,12 +16,12 @@ export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
     // ----------------------------------------
     const handleOpen = () => {
       console.log(props);
-      setOpen(true) 
+      setOpen(true)
       console.log('open: ', open);
     };
     const handleClose = () => setOpen(false);
 
-  
+
     React.useLayoutEffect(() => {
       if (hasFocus) {
         const input = buttonElement.current?.querySelector('input');
@@ -31,7 +31,7 @@ export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
         rippleRef.current.stop({} as any);
       }
     }, [hasFocus]);
-  
+
     return (
       <>
         <Button
@@ -52,7 +52,7 @@ export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
           onClick={handleOpen}
         >
           Abrir
-        </Button>        
+        </Button>
         <BasicModal
           key={props.row.id}
           open={open}

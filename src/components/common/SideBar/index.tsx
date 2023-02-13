@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import CloseIcon from '@mui/icons-material/Close';
 
-import rutero from "../../routes/Rute";
+import rutero from "../../../routes/Rute";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import enviexpress from '../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
 import working from '../../../assets/icons/data-analysis-case-study.png'
@@ -58,9 +58,9 @@ function index(props: any) {
           <CloseIcon/>
         </IconButton>
       </DrawerHeader>
-      
+
       <Divider />
-        
+
       <List>
         {rutero.online.admin.map((list, index) => (
           <ListItem key={index} disablePadding>
@@ -74,7 +74,7 @@ function index(props: any) {
         ))}
       </List>
       <Divider />
-      
+
       {rolTI && <List>
         {rutero.online.ti.map((list, index) => (
           <ListItem key={index} disablePadding>

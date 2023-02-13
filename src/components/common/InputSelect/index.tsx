@@ -13,7 +13,7 @@ const Selecting = styled(FormControl)({
   },
 });
 export default function index(props: any) {
-  
+
   return (
     <div>
       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" >{props.title}</label>
@@ -36,9 +36,9 @@ export default function index(props: any) {
           </MenuItem>
 
           {props.items.map((item:any, index:any) => (
-            <MenuItem 
+            <MenuItem
               key={index}
-              value={item.value} 
+              value={item.value}
               sx={{ m: 1, minWidth: 300 }}>
                 {item.name}
             </MenuItem>

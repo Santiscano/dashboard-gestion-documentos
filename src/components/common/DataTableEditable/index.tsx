@@ -20,15 +20,15 @@ const openPdf = () => {
   window.open(pdf);
 }
 const columns: GridColDef[] = [
-  { 
-    field: 'id', 
-    headerName: 'Radicado', 
+  {
+    field: 'id',
+    headerName: 'Radicado',
     width: 170,
     filterable: true,
   },
-  { 
-    field: 'cedi', 
-    headerName: 'Cedi', 
+  {
+    field: 'cedi',
+    headerName: 'Cedi',
     width: 110,
     filterable: true,
   },
@@ -37,13 +37,13 @@ const columns: GridColDef[] = [
     headerName: 'Tipo de cuenta',
     width: 165,
   },
-  { field: 'document_type', 
-    headerName: 'Tipo de documento', 
-    width: 130, 
+  { field: 'document_type',
+    headerName: 'Tipo de documento',
+    width: 130,
   },
-  { field: 'document_number', 
-    headerName: 'Numero de documento', 
-    width: 150 
+  { field: 'document_number',
+    headerName: 'Numero de documento',
+    width: 150
   },
   {
     field: 'provider',
@@ -109,7 +109,7 @@ function GridToolbarConfig() {
 
 
 export default function DataGridDemo() {
-  
+
   return (
     <>
       <div className='flex flex-row justify-between'>

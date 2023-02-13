@@ -2,7 +2,7 @@ import { useReducer } from 'react'
 // import { AuthContext } from './AuthContext'
 import { authReducer } from './AuthReducer';
 
-import { types } from '../../types/types';
+import { types } from '../types/types';
 
 const initialState = {
   logged: false,
@@ -23,7 +23,7 @@ const AuthProvider = ({ children }:any) => {
     }
     dispatch(action)
   }
-  
+
   useReducer( authReducer, {})
 
   return (

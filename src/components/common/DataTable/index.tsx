@@ -66,7 +66,7 @@ const rows = [
 ];
 
 export default function DataGridDemo() {
-  
+
   return (
     <>
       <div className='flex flex-row justify-between'>
