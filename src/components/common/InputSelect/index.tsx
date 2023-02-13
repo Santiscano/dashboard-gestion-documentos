@@ -30,6 +30,7 @@ export default function index(props: any) {
           required={props.required}
           disabled={props.disabled}
           autoComplete={"off" || props.autoComplete}
+          name={props.name}
         >
           <MenuItem value="">
             <em>{props.itemDefault}</em>

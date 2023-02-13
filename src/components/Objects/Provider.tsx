@@ -1,10 +1,10 @@
 export const optionsCities = [
-  {name: "Barranquilla", value: "Bar"},
-  {name: "Bogota", value: "Bog"},
-  {name: "Cali", value: "Cal"},
-  {name: "Masivos", value: "Mas"},
-  {name: "Medellin", value: "Med"},
-  {name: "Nacionales", value: "Nac"},
+  {name: "Barranquilla", value: "Barranquilla"},
+  {name: "Bogota", value: "Bogota"},
+  {name: "Cali", value: "Cali"},
+  {name: "Masivos", value: "Masivos"},
+  {name: "Medellin", value: "Medellin"},
+  {name: "Nacionales", value: "Nacionales"},
 ];
 export const optionsInvoiceType = [
   {name:'Administrativo', value: 'administrativo'},

@@ -23,12 +23,14 @@ function TextFieldOutlined({
   iconStart,
   iconEnd,
   defaultValue,
+  name,
 }:any) {
   return (
     <CssTextField
       id="custom-css-outlined-input"
       fullWidth
       type={type}
+      name={name}
       required={required}
       disabled={disabled}
       label={label}

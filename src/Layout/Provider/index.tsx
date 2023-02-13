@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './provider.css';
 import { SelectChangeEvent } from '@mui/material/Select';
 import InputSelect from '../../components/common/InputSelect';
@@ -25,12 +25,14 @@ import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 
 import 'animate.css';
+import { useForm } from 'react-hook-form';
+import { getCedis } from './../../services/Cedis';
 
 
 function index() {
   // states
-  const [isCity, setIsCity]               = useState('');
-  const [cedi, setCedi]   = useState('');
+  const [isSettled, setIsSettled]         = useState(false);
+  const [cedi, setCedi]                   = useState('');
   const [settledNumber, setSettledNumber] = useState('');
   const [accountType, setAccountType ]    = useState('');
   const [documentType, setDocumentType ]  = useState('');
@@ -48,10 +50,17 @@ function index() {
 
 
   // handles
-  const handleIsCity = (e: SelectChangeEvent) => {
-    setIsCity('hola');
+  const handleSettledSubmit = (e:any) => {
+    const documentType = e.target.documentType.value;
+    const documentNumber = e.target.documentNumber.value;
+    const cedi = e.target.cedi.value;
+    console.log(e.target.value)
+    setIsSettled(true);
     setSettledNumber(`10699001-${cedi}-20230207-1130`);
+    e.preventDefault();
   };
+
+
   const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
   const handleDocumentType = (e: SelectChangeEvent) => {setDocumentType(e.target.value)};
@@ -68,7 +77,9 @@ function index() {
   const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
   const handleRedirectToOperationalGroup = (e: SelectChangeEvent) => {setRedirectTo("auditor grupo operativo")};
 
-  const handleSubmit = (e:any) => { console.log(e); e.preventDefault(); }
+  // useEffect( () => {
+  //   getCedis();
+  // },[])
 
   return (
     <div className='layout'>
@@ -79,27 +90,62 @@ function index() {
             <div className='container__createFiling'>
               <h3 className='createFiling'>Crear Nuevo radicado</h3>
             </div>
-            {!isCity
+            {!isSettled
               ?
               <article className='filing'>
-                <InputSelect
-                  type={"text"}
-                  title='Generar Radicado'
-                  placeholder="Ciudad a radicar"
-                  value={cedi}
-                  onChange={handleCedi}
-                  itemDefault="selecciona una opcion"
-                  items={optionsCities}
-                />
-                <Button
-                  name="Generar numero Radicado"
-                  onClick={handleIsCity}
-                  />
+                <form onSubmit={handleSettledSubmit}>
+                  <div className='md:flex md:flex-wrap'>
+                    <article className='md:w-1/2'>
+                      <InputSelect
+                        type={"text"}
+                        name="documentType"
+                        title='Tipo Documento'
+                        placeholder="Tipo Documento*"
+                        value={documentType}
+                        onChange={handleDocumentType}
+                        itemDefault="selecciona el tipo de documento"
+                        items={optionDocumentType}
+                      />
+                    </article>
+                    <article className='md:w-1/2'>
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
+                        >Numero Documento</label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        name="documentNumber"
+                        label={"Numero documento"}
+                        value={documentNumber}
+                        setValue={setDocumentNumber}
+                        required
+                        iconEnd={<BrandingWatermarkRoundedIcon/>}
+                      />
+                    </article>
+                  </div>
+                  <div className='md:flex md:flex-wrap'>
+                    <article className='md:w-1/2'>
+                      <input type="text"
+                      name='prueba' />
+                      <InputSelect
+                        type={"text"}
+                        title='Ciudad a Radicar'
+                        placeholder="Ciudad a radicar"
+                        name="cedi"
+                        value={cedi}
+                        onChange={handleCedi}
+                        itemDefault="selecciona una opcion"
+                        items={optionsCities}
+                      />
+                    </article>
+                  </div>
+                  <Button
+                    name="Generar numero Radicado"
+                  >
+                  </Button>
+                </form>
               </article>
               :
               <article className='filing'>
-                <form onSubmit={handleSubmit}>
-
+                <form >
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
@@ -278,7 +324,8 @@ function index() {
                   }
                   {redirectTo && <button className='button button--flex'>Crear requerimientos</button>}
                 </form>
-              </article>}
+              </article>
+              }
           </div>
         </section>
 

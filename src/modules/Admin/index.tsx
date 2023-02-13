@@ -19,6 +19,8 @@ import SideBar from '../../components/common/SideBar';
 import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
 import Updates from '../../Layout/Updates';
 import Provider from '../../Layout/Provider';
+import { getRoutes } from './../../services/GetRoutes.routes';
+import { getCedis } from './../../services/Cedis';
 
 // width drawer desplegable
 const drawerWidth = 240;
@@ -97,6 +99,10 @@ function index() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  React.useEffect(()=> {
+    getRoutes();
+  },[])
 
   return (
     <>
