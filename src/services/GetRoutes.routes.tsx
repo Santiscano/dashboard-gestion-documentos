@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCedis } from './Cedis';
+import { getCedis } from './Cedis.routes';
 
 const server = "http://localhost:4500"
 
@@ -9,10 +9,9 @@ export const getRoutes = async () => {
   try{
     const response = await axios.get(`${server}/routerApi`)
     const rutas = response.data.rutas
-    // console.log('payload: ', rutas[4]);
     payload = rutas;
     console.log('payload: ', payload);
-    await getCedis();
+    // await getCedis();
     return payload;
   } catch (err) {
     console.log(err)

@@ -1,10 +1,5 @@
-// import * as dotenv from 'dotenv'
 
-// dotenv.config();
-
-const host = "http://localhost:4500"
-
-
+const host = import.meta.env.VITE_BASE_URL
 
 export default {
   host: host,
@@ -28,12 +23,6 @@ export default {
       editUser: `${host}/putUser`,
       deleteUser: `${host}/deleteUser`,
     },
-    stateFiles: {
-      getStateFiles: `${host}/getStatesFiles`,
-      addStateFile: `${host}/postStatesFile`,
-      editStateFile: `${host}/putStatesFile`,
-      deleteStateFile: `${host}/deleteStatesFile`,
-    },
     files: {
       triggerFile: `${host}/genFileRegistered`,
       getFiles: `${host}/getFiles`,
@@ -41,15 +30,31 @@ export default {
       editFile: `${host}/putFile`,
       deleteFile: `${host}/deleteFile`,
     },
-    filesPath: {
-      getFilesPath: `${host}/getFilesPath`,
-      createFilePath: `${host}/postFilePath`,
+    stateFiles: {
+      getStateFiles: `${host}/getStatesFiles`,
+      addStateFile: `${host}/postStatesFile`,
+      editStateFile: `${host}/putStatesFile`,
+      deleteStateFile: `${host}/deleteStatesFile`,
     },
-    costAreas: {
-      getCostArea: `${host}/getCostArea`,
-      createCostArea: `${host}/postCostArea`,
-      editCostArea: `${host}/putCostArea`,
-      deleteCostArea: `${host}/deleteCostArea`,
+    // filesPath: {
+    //   getFilesPath: `${host}/getFilesPath`,
+    //   createFilePath: `${host}/postFilePath`,
+    //   deleteFilePath: `${host}/deleteFilePath`
+    // },
+    centerCost: {
+      area: {
+        getCostArea: `${host}/getCostArea`,
+        createCostArea: `${host}/postCostArea`,
+        editCostArea: `${host}/putCostArea`,
+        deleteCostArea: `${host}/deleteCostArea`,
+      },
+    },
+    uploadFiles: {
+      getFiles: `${host}/pdfFiles`,
+      getFile: `${host}/pdfFile/:radicado`,
+    },
+    routesApi: {
+      getRoutes: `${host}/routerApi`,
     },
   }
 }

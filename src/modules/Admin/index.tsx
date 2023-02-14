@@ -20,7 +20,7 @@ import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
 import Updates from '../../Layout/Updates';
 import Provider from '../../Layout/Provider';
 import { getRoutes } from './../../services/GetRoutes.routes';
-import { getCedis } from './../../services/Cedis';
+import { getCedis } from '../../services/Cedis.routes';
 
 // width drawer desplegable
 const drawerWidth = 240;
@@ -77,8 +77,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
+// METODOS
 function index() {
-  // variables y methodos para visualizacion y navegacion
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
@@ -100,9 +100,10 @@ function index() {
     setAnchorElUser(null);
   };
 
-  React.useEffect(()=> {
-    getRoutes();
-  },[])
+  // USE EFFECT
+  // React.useEffect(()=> {
+  //   getRoutes();
+  // },[])
 
   return (
     <>

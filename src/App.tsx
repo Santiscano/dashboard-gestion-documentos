@@ -9,10 +9,48 @@ import { AuthProvider} from './context/AuthContext'
 import Provider from './Layout/Provider';
 import Ti from './Layout/Ti';
 // import { ThemeModeProvider } from './context/ThemeMode';
-
+import { getRoles, createRol, editRol, deleteRol } from './services/Roles.routes'
+import { getCedis, createCedi, editCedi, deleteCedi } from './services/Cedis.routes'
+import { validateUser, getUsers, createUser, editUser, deleteUser } from './services/Users.routes'
+import { triggerFile, getFiles, addFile, editFile, deleteFile } from './services/Files.routes';
+import { getStatesFiles, addStateFile, editStateFile, deleteStateFile } from './services/StateFiles.routes';
+import { getCostArea, createCostArea, editCostArea, deleteCostArea } from './services/CostAreas.routes';
+import { getFilesPath, createFilePath } from './services/FilesPath.routes';
+import { useEffect } from 'react';
+import Requerimientos from './assets/Requerimientos.pdf'
 
 
 function App() {
+  useEffect(()=>{
+    // getRoles();
+    // createRol();
+    // editRol();
+    // deleteRol();
+    // getCedis();
+    // createCedi();
+    // editCedi();
+    // deleteCedi();
+    // validateUser();
+    // getUsers();
+    // createUser();
+    // editUser();
+    // deleteUser();
+    // triggerFile();
+    // getFiles();
+    // addFile();
+    // editFile();
+    // deleteFile();
+    // getStatesFiles();
+    // addStateFile();
+    // editStateFile();
+    // deleteStateFile();
+    getCostArea();
+    createCostArea();
+    editCostArea();
+    deleteCostArea();
+    // getFilesPath();
+    // createFilePath();
+  },[])
   return (
     <AuthProvider>
       {/* <ThemeModeProvider> */}

@@ -26,7 +26,7 @@ import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 
 import 'animate.css';
 import { useForm } from 'react-hook-form';
-import { getCedis } from './../../services/Cedis';
+import { getCedis } from '../../services/Cedis.routes';
 
 
 function index() {
@@ -77,7 +77,8 @@ function index() {
   const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
   const handleRedirectToOperationalGroup = (e: SelectChangeEvent) => {setRedirectTo("auditor grupo operativo")};
 
-  // useEffect( () => {
+  // USE EFFECT - render inputs - DESCOMENTAR CUANDO SEPA CUALES ASIGNAR AQUI
+  // useEffect(() => {
   //   getCedis();
   // },[])
 

@@ -29,14 +29,10 @@ function index() {
           </div>
         </div>
 
-        {/* rigth */}
-        <div className='bg-rigth relative hidden md:flex flex-auto flex-col items-center justify-start w-1/2 min-h-screen p-16 lg:px-16 overflow-hidden dark:border-l'>
-            {/* image */}
+        <div className='bg-rigth relative hidden md:flex flex-auto flex-col items-center justify-center w-1/2 min-h-screen p-16 lg:px-16 overflow-hidden dark:border-l'>
             <img src={security} alt="segurity login" className='max-w-xs' />
             <div>
-              {/* title */}
               <h2 className='text-white text-4xl mt-8'>Logística de Gestión</h2>
-              {/* subtitle */}
               <h4 className='text-white text-l mt-2'>aliado estratégico para tu negocio</h4>
             </div>
         </div>
