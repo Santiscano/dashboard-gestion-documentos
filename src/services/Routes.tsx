@@ -36,11 +36,11 @@ export default {
       editStateFile: `${host}/putStatesFile`,
       deleteStateFile: `${host}/deleteStatesFile`,
     },
-    // filesPath: {
-    //   getFilesPath: `${host}/getFilesPath`,
-    //   createFilePath: `${host}/postFilePath`,
-    //   deleteFilePath: `${host}/deleteFilePath`
-    // },
+    filesPath: {
+      getFilesPath: `${host}/getFilesPath`,
+      createFilePath: `${host}/postFilePath`,
+      deleteFilePath: `${host}/deleteFilePath`
+    },
     centerCost: {
       area: {
         getCostArea: `${host}/getCostArea`,

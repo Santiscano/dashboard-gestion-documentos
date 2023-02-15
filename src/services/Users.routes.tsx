@@ -19,10 +19,12 @@ export const validateUser = async () => {
 export const getUsers = async () => {
   try{
     const response = await axios.post(Routes.api.users.getUsers,{
-      "api_key": "37323a416eb548626b3e668255c4d436"
+      api_key: import.meta.env.VITE_API_KEY
     })
-    console.log('response: ', response);
-    return response;
+    console.log('response getusers: ', response);
+    const users = response.data
+    // .map( (item: { users_name: string; }) => item.users_name);
+    return users;
   } catch(error) {
     console.log(error)
   }

@@ -7,12 +7,13 @@ import DataTable from '../../components/common/DataTable'
 import Preview from '../../components/common/Preview';
 import Button from '../../components/common/Button';
 import TextFieldOutlined from '../../components/common/TextFieldOutline';
-import { optionsCities,
+import {
   optionsInvoiceType,
   optionsProvider,
   optionsRedirectTo,
   optionAccountType,
-  optionDocumentType } from '../../components/Objects/Provider';
+  optionDocumentType,
+  optionsCities} from '../../components/Objects/Provider';
 import DataTableEditable from '../../components/common/DataTableEditable';
 
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
@@ -25,11 +26,15 @@ import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 
 import 'animate.css';
-import { useForm } from 'react-hook-form';
 import { getCedis } from '../../services/Cedis.routes';
+import { getUsers } from '../../services/Users.routes';
 
 
 function index() {
+  // consumidas con bDB
+  // const
+  const [ optionsUsers, setOptionsUsers ] = useState(['','']);
+  const [ optionsCedis, setOptionsCedis ] = useState(['','']);
   // states
   const [isSettled, setIsSettled]         = useState(false);
   const [cedi, setCedi]                   = useState('');
@@ -44,12 +49,45 @@ function index() {
   const [documentDate, setDocumentDate]   = useState('');
   const [price, setPrice]                 = useState('');
   const [invoiceType, setInvoiceType]     = useState('');
-  const [provider, setProvider]           = useState('');
   const [redirectTo, setRedirectTo]       = useState('');
   const [role, setRole ]                  = useState('radicacion');
 
+  // metodos
+  // const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
+
+  const handleGetUsersCedis = async () => {
+    const allCedis = await getCedis();
+    const citys = allCedis.map((item: {sedes_city: string}) => item.sedes_city);
+    setOptionsCedis(citys);
+
+
+    const allUsers = await getUsers();
+    const providerUsers = allUsers.filter((user: {idroles:number}) => user.idroles === 1 )
+    console.log('providerUsers: ', providerUsers);
+    setOptionsUsers(providerUsers);
+
+
+
+  };
+
+
+  useEffect(() => {
+    handleGetUsersCedis();
+  },[])
+
+
+  // DE AQUI PARA ABAJO NO ESTA ORDENADO
+  // states
+
+
 
   // handles
+
+
+
+
+
+
   const handleSettledSubmit = (e:any) => {
     const documentType = e.target.documentType.value;
     const documentNumber = e.target.documentNumber.value;
@@ -59,8 +97,6 @@ function index() {
     setSettledNumber(`10699001-${cedi}-20230207-1130`);
     e.preventDefault();
   };
-
-
   const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
   const handleDocumentType = (e: SelectChangeEvent) => {setDocumentType(e.target.value)};
@@ -71,16 +107,12 @@ function index() {
     ? setRedirectTo("auditor grupo operativo")
     : setRedirectTo("")
     console.log('invoiceType: ', invoiceType);
-
   };
-  const handleProvider = (e: SelectChangeEvent) => {setProvider(e.target.value)};
+  // const handleProvider = (e: SelectChangeEvent) => {setProvider(e.target.value)};
   const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
   const handleRedirectToOperationalGroup = (e: SelectChangeEvent) => {setRedirectTo("auditor grupo operativo")};
 
-  // USE EFFECT - render inputs - DESCOMENTAR CUANDO SEPA CUALES ASIGNAR AQUI
-  // useEffect(() => {
-  //   getCedis();
-  // },[])
+
 
   return (
     <div className='layout'>
@@ -89,6 +121,7 @@ function index() {
         <section className='layout-section'>
           <div className='layout-left'>
             <div className='container__createFiling'>
+              {/* <code>{optionsUsers}</code> */}
               <h3 className='createFiling'>Crear Nuevo radicado</h3>
             </div>
             {!isSettled
@@ -124,8 +157,6 @@ function index() {
                   </div>
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2'>
-                      <input type="text"
-                      name='prueba' />
                       <InputSelect
                         type={"text"}
                         title='Ciudad a Radicar'
@@ -134,7 +165,7 @@ function index() {
                         value={cedi}
                         onChange={handleCedi}
                         itemDefault="selecciona una opcion"
-                        items={optionsCities}
+                        items={optionsCedis}
                       />
                     </article>
                   </div>

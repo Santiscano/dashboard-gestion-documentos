@@ -26,7 +26,7 @@ function App() {
     // createRol();
     // editRol();
     // deleteRol();
-    // getCedis();
+    getCedis();
     // createCedi();
     // editCedi();
     // deleteCedi();
@@ -44,10 +44,10 @@ function App() {
     // addStateFile();
     // editStateFile();
     // deleteStateFile();
-    getCostArea();
-    createCostArea();
-    editCostArea();
-    deleteCostArea();
+    // getCostArea();
+    // createCostArea();
+    // editCostArea();
+    // deleteCostArea();
     // getFilesPath();
     // createFilePath();
   },[])

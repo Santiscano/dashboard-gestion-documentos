@@ -1,5 +1,4 @@
 import axios from "axios";
-import { accessSync } from "fs";
 import Routes from './Routes'
 
 export const getCedis = async () => {
@@ -7,8 +6,15 @@ export const getCedis = async () => {
     const response = await axios.post(Routes.api.cedis.get,{
       api_key: import.meta.env.VITE_API_KEY
     })
-    console.log('response: ', response);
-    return response;
+    console.log('response get cedis: ', response);
+    const cedis = await response.data
+    // .map((item: {
+    //   sedes_city: string;
+    //   sedes_country: string }) => [{
+    //     city: item.sedes_city,
+    //     country: item.sedes_country
+    //   }]);
+    return cedis;
   } catch (err) {
     console.log(err)
   }
