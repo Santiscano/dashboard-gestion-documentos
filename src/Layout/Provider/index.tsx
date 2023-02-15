@@ -9,11 +9,10 @@ import Button from '../../components/common/Button';
 import TextFieldOutlined from '../../components/common/TextFieldOutline';
 import {
   optionsInvoiceType,
-  optionsProvider,
   optionsRedirectTo,
   optionAccountType,
   optionDocumentType,
-  optionsCities} from '../../components/Objects/Provider';
+  } from '../../components/Objects/Provider';
 import DataTableEditable from '../../components/common/DataTableEditable';
 
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
@@ -24,6 +23,7 @@ import PhoneAndroidRoundedIcon from '@mui/icons-material/PhoneAndroidRounded';
 import AttachEmailRoundedIcon from '@mui/icons-material/AttachEmailRounded';
 import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
+import { Autocomplete, Box, TextField } from '@mui/material';
 
 import 'animate.css';
 import { getCedis } from '../../services/Cedis.routes';
@@ -31,21 +31,22 @@ import { getUsers } from '../../services/Users.routes';
 
 
 function index() {
-  // consumidas con bDB
+  // consumidas con DB
   // const
-  const [ optionsUsers, setOptionsUsers ] = useState(['','']);
-  const [ optionsCedis, setOptionsCedis ] = useState(['','']);
+  const [documentType, setDocumentType ]  = useState('');
+  const [filterProviders, setFilterProviders] = useState(['','']);
+  const [optionsCedis, setOptionsCedis ] = useState(['','']);
+  const [objectUser, setObjectUser ] = useState();
+  const [address, setAddress]             = useState('');
+  const [email, setEmail]                 = useState('');
+  const [companyName, setCompanyName]     = useState('');
+  const [telephone, setTelephone]         = useState('');
   // states
   const [isSettled, setIsSettled]         = useState(false);
   const [cedi, setCedi]                   = useState('');
   const [settledNumber, setSettledNumber] = useState('');
   const [accountType, setAccountType ]    = useState('');
-  const [documentType, setDocumentType ]  = useState('');
   const [documentNumber,setDocumentNumber]= useState('');
-  const [companyName, setCompanyName]     = useState('');
-  const [address, setAddress]             = useState('');
-  const [telephone, setTelephone]         = useState('');
-  const [email, setEmail]                 = useState('');
   const [documentDate, setDocumentDate]   = useState('');
   const [price, setPrice]                 = useState('');
   const [invoiceType, setInvoiceType]     = useState('');
@@ -54,26 +55,63 @@ function index() {
 
   // metodos
   // const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
-
   const handleGetUsersCedis = async () => {
     const allCedis = await getCedis();
     const citys = allCedis.map((item: {sedes_city: string}) => item.sedes_city);
     setOptionsCedis(citys);
 
-
     const allUsers = await getUsers();
-    const providerUsers = allUsers.filter((user: {idroles:number}) => user.idroles === 1 )
-    console.log('providerUsers: ', providerUsers);
-    setOptionsUsers(providerUsers);
-
-
-
+    const filterProviderUsers = allUsers.filter((user: {idroles:number}) => user.idroles !== 1 )
+    console.log('filterproviderUsers: ', filterProviderUsers);
+    setFilterProviders(filterProviderUsers)
   };
+
+  const handleSettledSubmit = (e:any) => {
+    // const documentType = e.target.documentType.value;
+    // const documentNumber = e.target.documentNumber.value;
+    // const cedi = e.target.cedi.value;
+    // console.log(e.target.value)
+    setIsSettled(true);
+    setSettledNumber(`10699001-${cedi}-20230207-1130`);
+    e.preventDefault();
+  };
+
+  const optionsProviders = {
+    options: filterProviders.length > 0 ? filterProviders : ['cargando'],
+    // @ts-ignore
+    getOptionLabel: (options: {users_identification:string }) => options.users_identification,
+    // @ts-ignore
+    renderOption: (props, option, index) => {
+      const key = `listItem-${index}-${option.idusers}`;
+      return (
+        <Box component="li" {...props} key={key} >
+          {option.users_name} - {option.users_identification}
+        </Box>
+      )
+    },
+    renderInput: (params:any) => (
+      <TextField
+        {...params}
+        // label={}
+      >
+      </TextField>
+    )
+  }
+
+  const handleValuesUser = (props:any) => {
+    setObjectUser(props);
+    setAddress(props.users_address);
+    setEmail(props.users_email);
+    setCompanyName(props.users_name);
+    setTelephone(props.users_password);
+  }
 
 
   useEffect(() => {
     handleGetUsersCedis();
   },[])
+
+
 
 
   // DE AQUI PARA ABAJO NO ESTA ORDENADO
@@ -88,15 +126,7 @@ function index() {
 
 
 
-  const handleSettledSubmit = (e:any) => {
-    const documentType = e.target.documentType.value;
-    const documentNumber = e.target.documentNumber.value;
-    const cedi = e.target.cedi.value;
-    console.log(e.target.value)
-    setIsSettled(true);
-    setSettledNumber(`10699001-${cedi}-20230207-1130`);
-    e.preventDefault();
-  };
+
   const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
   const handleDocumentType = (e: SelectChangeEvent) => {setDocumentType(e.target.value)};
@@ -121,7 +151,7 @@ function index() {
         <section className='layout-section'>
           <div className='layout-left'>
             <div className='container__createFiling'>
-              {/* <code>{optionsUsers}</code> */}
+              <code>{email}</code>
               <h3 className='createFiling'>Crear Nuevo radicado</h3>
             </div>
             {!isSettled
@@ -144,14 +174,18 @@ function index() {
                     <article className='md:w-1/2'>
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Numero Documento</label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        name="documentNumber"
-                        label={"Numero documento"}
-                        value={documentNumber}
-                        setValue={setDocumentNumber}
-                        required
-                        iconEnd={<BrandingWatermarkRoundedIcon/>}
+                      {/* @ts-ignore */}
+                      <Autocomplete
+                        sx={{my:2}}
+                        id='filter-providers'
+                        {...optionsProviders}
+                        autoComplete
+                        includeInputInList
+                        value={objectUser}
+                        onChange={(event, newValue) => {
+                          // @ts-ignore
+                          handleValuesUser(newValue)
+                        }}
                       />
                     </article>
                   </div>
@@ -196,7 +230,7 @@ function index() {
                       <InputSelect
                         type={"text"}
                         title='Tipo de cuenta'
-                        placeholder="cuenta"
+                        placeholder="cuenta de"
                         value={accountType}
                         onChange={handleAccountType}
                         itemDefault="selecciona el tipo de cuenta"
@@ -220,13 +254,18 @@ function index() {
                     <article className='md:w-1/2'>
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Numero Documento</label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"Numero documento"}
-                        value={documentNumber}
-                        setValue={setDocumentNumber}
-                        required
-                        iconEnd={<BrandingWatermarkRoundedIcon/>}
+                      {/* @ts-ignore */}
+                      <Autocomplete
+                        sx={{my:2}}
+                        id='filter-providers'
+                        {...optionsProviders}
+                        autoComplete
+                        includeInputInList
+                        value={objectUser}
+                        onChange={(event, newValue) => {
+                          // @ts-ignore
+                          handleValuesUser(newValue)
+                        }}
                       />
                     </article>
                   </div>
@@ -290,7 +329,7 @@ function index() {
                   </div>
 
                   <div className='md:flex md:flex-wrap'>
-                    <article className='md:w-1/2' >
+                    {/* <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Fecha Documento</label>
                       <TextFieldOutlined
@@ -299,7 +338,7 @@ function index() {
                         setValue={setDocumentDate}
                         required
                       />
-                    </article>
+                    </article> */}
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Valor</label>
@@ -313,11 +352,6 @@ function index() {
                       />
                     </article>
                   </div>
-
-                  <label
-                    className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" >
-                    Numero identificador Documento
-                  </label>
 
                   <Upload/>
 
