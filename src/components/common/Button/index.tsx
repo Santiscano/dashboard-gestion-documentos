@@ -4,7 +4,7 @@ import './style.css'
 function index(props:any) {
   return (
     <button
-      className='button button--flex'
+      className='button button--flex mt-6'
       onClick={props.onClick}
       type={props.type}
     >{props.name}</button>

@@ -12,7 +12,7 @@ import Ti from './Layout/Ti';
 import { getRoles, createRol, editRol, deleteRol } from './services/Roles.routes'
 import { getCedis, createCedi, editCedi, deleteCedi } from './services/Cedis.routes'
 import { validateUser, getUsers, createUser, editUser, deleteUser } from './services/Users.routes'
-import { triggerFile, getFiles, addFile, editFile, deleteFile } from './services/Files.routes';
+import { getFiles, addFile, editFile, deleteFile } from './services/Files.routes';
 import { getStatesFiles, addStateFile, editStateFile, deleteStateFile } from './services/StateFiles.routes';
 import { getCostArea, createCostArea, editCostArea, deleteCostArea } from './services/CostAreas.routes';
 import { getFilesPath, createFilePath } from './services/FilesPath.routes';

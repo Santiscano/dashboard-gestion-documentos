@@ -24,7 +24,6 @@ export default {
       deleteUser: `${host}/deleteUser`,
     },
     files: {
-      triggerFile: `${host}/genFileRegistered`,
       getFiles: `${host}/getFiles`,
       addFile: `${host}/postFile`,
       editFile: `${host}/putFile`,
@@ -53,6 +52,7 @@ export default {
       getFiles: `${host}/pdfFiles`,
       getFile: `${host}/pdfFile/:radicado`,
     },
+    generateSettled: `${host}/genFileRegistered`,
     routesApi: {
       getRoutes: `${host}/routerApi`,
     },

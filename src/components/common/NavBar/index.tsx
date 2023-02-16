@@ -30,6 +30,7 @@ import userIcon from '../../../assets/images/userIcon.jpg'
 // css
 import './navbar.css'
 import Avatar from '@mui/material/Avatar';
+import { styled } from '@mui/material/styles';
 
 
 export default function MenuAppBar(props:any) {
@@ -101,7 +102,7 @@ export default function MenuAppBar(props:any) {
           </IconButton>
           <img src={logo}
             className="mx-3"
-            style={{width:"150px", height:"auto" }}/>
+            style={{width:"110px", height:"auto" }}/>
 
           <Typography
           variant="h6"
@@ -124,7 +125,14 @@ export default function MenuAppBar(props:any) {
                 </Badge>
               </IconButton>
             </Tooltip>
-            <Typography sx={{ mx:3 ,my:1, display:{xs:"none", sm:"none", md:"flex"} }}>santiago sierra <br/> desarrollador </Typography>
+            <Typography
+              sx={{ mx:3 ,my:1, display:{xs:"none", sm:"none", md:"block"}}}
+              style={{textAlign:"center"}}
+            >
+              <b>Santiago Sierra </b>
+              <br/>
+              <p>Desarrollador</p>
+            </Typography>
             <Tooltip title="Abrir Menu">
               <IconButton
               size="large"

@@ -2,23 +2,10 @@ import axios from "axios";
 import Routes from './Routes'
 
 
-export const triggerFile = async () => {
-  try{
-  const response = await axios.post(Routes.api.files.triggerFile, {
-    "api_key": "37323a416eb548626b3e668255c4d436",
-    "cedi": "belloquistan"
-  })
-  console.log(response)
-  return response;
-  } catch (error) {
-    console.log('error: ', error);
-  }
-}
-
 export const getFiles = async () => {
   try{
     const response =await axios.post(Routes.api.files.getFiles, {
-      "api_key": "37323a416eb548626b3e668255c4d436"
+      api_key: import.meta.env.VITE_API_KEY,
     })
     console.log('response: ', response);
     return response;

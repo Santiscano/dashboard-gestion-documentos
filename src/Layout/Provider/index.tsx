@@ -28,6 +28,8 @@ import { Autocomplete, Box, TextField } from '@mui/material';
 import 'animate.css';
 import { getCedis } from '../../services/Cedis.routes';
 import { getUsers } from '../../services/Users.routes';
+import { getSettled } from '../../services/generateSettled.service';
+import TextFieldDiner from '../../components/common/TextFieldDiner';
 
 
 function index() {
@@ -66,14 +68,15 @@ function index() {
     setFilterProviders(filterProviderUsers)
   };
 
-  const handleSettledSubmit = (e:any) => {
-    // const documentType = e.target.documentType.value;
-    // const documentNumber = e.target.documentNumber.value;
-    // const cedi = e.target.cedi.value;
-    // console.log(e.target.value)
-    setIsSettled(true);
-    setSettledNumber(`10699001-${cedi}-20230207-1130`);
+  // generate settled
+  const handleSettledSubmit = async (e:any) => {
     e.preventDefault();
+    const newSettled = await getSettled(cedi);
+    console.log('newSettled: ', newSettled);
+    setSettledNumber(newSettled);
+    newSettled ? setIsSettled(true) : setIsSettled(false);
+
+    // setSettledNumber(`10699001-${cedi}-20230207-1130`);
   };
 
   const optionsProviders = {
@@ -105,6 +108,10 @@ function index() {
     setCompanyName(props.users_name);
     setTelephone(props.users_password);
   }
+  const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
+  const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
+  const handleDocumentType = (e: SelectChangeEvent) => {setDocumentType(e.target.value)};
+
 
 
   useEffect(() => {
@@ -127,9 +134,6 @@ function index() {
 
 
 
-  const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
-  const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
-  const handleDocumentType = (e: SelectChangeEvent) => {setDocumentType(e.target.value)};
   const handleInvoiceType = (e: SelectChangeEvent) => {
     setInvoiceType(e.target.value);
     console.log("invoice", invoiceType)
@@ -151,8 +155,9 @@ function index() {
         <section className='layout-section'>
           <div className='layout-left'>
             <div className='container__createFiling'>
-              <code>{email}</code>
+              <code>{settledNumber}</code>
               <h3 className='createFiling'>Crear Nuevo radicado</h3>
+              <button onClick={() => setIsSettled(false)}>regresar</button>
             </div>
             {!isSettled
               ?
@@ -176,7 +181,7 @@ function index() {
                         >Numero Documento</label>
                       {/* @ts-ignore */}
                       <Autocomplete
-                        sx={{my:2}}
+                        sx={{marginLeft:1, my:2}}
                         id='filter-providers'
                         {...optionsProviders}
                         autoComplete
@@ -205,6 +210,7 @@ function index() {
                   </div>
                   <Button
                     name="Generar numero Radicado"
+                    // type="submit"
                   >
                   </Button>
                 </form>
@@ -256,7 +262,7 @@ function index() {
                         >Numero Documento</label>
                       {/* @ts-ignore */}
                       <Autocomplete
-                        sx={{my:2}}
+                        sx={{marginLeft:1, my:2}}
                         id='filter-providers'
                         {...optionsProviders}
                         autoComplete
@@ -342,7 +348,7 @@ function index() {
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Valor</label>
-                      <TextFieldOutlined
+                      <TextFieldDiner
                         type={"number"}
                         label={"valor"}
                         value={price}

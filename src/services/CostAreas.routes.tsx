@@ -5,7 +5,7 @@ import Routes from './Routes'
 export const getCostArea = async () => {
   try{
     const response = await axios.post(Routes.api.centerCost.area.getCostArea,{
-      "api_key": "37323a416eb548626b3e668255c4d436"
+      api_key: import.meta.env.VITE_API_KEY,
     })
     console.log('response: ', response);
     return response;
