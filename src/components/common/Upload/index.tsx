@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 
@@ -24,13 +25,17 @@ function index(props:any) {
           :
           <div className='flex flex-col items-center justify-center pt-5 pb-6 '>
             <VerifiedOutlinedIcon color="primary" sx={{ width: 30 }} />
-            <p className='text-center mb-2 text-sm text-gray-500 dark:text-gray-400'><span className='font-semibold'>Archivo cargado <br/>{props.fileName}</span></p>
+            <p className='text-center mb-2 text-sm text-gray-500 dark:text-gray-400'>
+              <span className='font-semibold'>Archivo cargado <br/>
+                {props.fileName}
+              </span>
+            </p>
           </div>
           }
           <input id="dropzone-file"
             type="file"
             className='hidden'
-            value={props.file}
+            // value={props.file}
             onChange={props.handleChangeFile}
           />
         </label>

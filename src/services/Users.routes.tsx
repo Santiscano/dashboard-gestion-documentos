@@ -23,7 +23,6 @@ export const getUsers = async () => {
     })
     console.log('response getusers: ', response);
     const users = response.data
-    // .map( (item: { users_name: string; }) => item.users_name);
     return users;
   } catch(error) {
     console.log(error)

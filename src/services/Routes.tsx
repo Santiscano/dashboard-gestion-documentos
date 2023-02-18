@@ -23,20 +23,21 @@ export default {
       editUser: `${host}/putUser`,
       deleteUser: `${host}/deleteUser`,
     },
-    files: {
-      getFiles: `${host}/getFiles`,
-      addFile: `${host}/postFile`,
-      editFile: `${host}/putFile`,
-      deleteFile: `${host}/deleteFile`,
-    },
     stateFiles: {
       getStateFiles: `${host}/getStatesFiles`,
       addStateFile: `${host}/postStatesFile`,
       editStateFile: `${host}/putStatesFile`,
       deleteStateFile: `${host}/deleteStatesFile`,
     },
+    files: {
+      getFiles: `${host}/getFiles`,
+      addFile: `${host}/postFile`,
+      editFile: `${host}/putFile`,
+      deleteFile: `${host}/deleteFile`,
+    },
     filesPath: {
       getFilesPath: `${host}/getFilesPath`,
+
       createFilePath: `${host}/postFilePath`,
       deleteFilePath: `${host}/deleteFilePath`
     },
@@ -46,6 +47,11 @@ export default {
         createCostArea: `${host}/postCostArea`,
         editCostArea: `${host}/putCostArea`,
         deleteCostArea: `${host}/deleteCostArea`,
+      },
+      subArea: {
+        getCostSubArea: `${host}/getCostSubArea`,
+        createCostSubArea: `${host}/postCostSubArea`,
+        deleteCostSubArea: `${host}/deleteCostSubArea`,
       },
     },
     Pdf: {
