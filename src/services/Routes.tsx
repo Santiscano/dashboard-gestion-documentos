@@ -48,8 +48,8 @@ export default {
         deleteCostArea: `${host}/deleteCostArea`,
       },
     },
-    uploadFiles: {
-      getFiles: `${host}/pdfFiles`,
+    Pdf: {
+      uploadfile: `${host}/pdfFiles`,
       getFile: `${host}/pdfFile/:radicado`,
     },
     generateSettled: `${host}/genFileRegistered`,

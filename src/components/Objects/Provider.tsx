@@ -21,6 +21,9 @@ export const optionsRedirectTo = [
   'Auditor 4',
   'Gerente'
 ];
+export const optionsRedirectToOperativo = [
+  'Grupo Operativo'
+]
 export const optionAccountType = [
   'Cuenta Cobro Proveedor',
   'Factura Proveedor',

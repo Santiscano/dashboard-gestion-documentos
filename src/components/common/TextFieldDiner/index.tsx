@@ -11,17 +11,26 @@ const CssTextField = styled(TextField)({
   },
 });
 
-// function formatNumber(number:any) {
-//   return new Intl.NumberFormat('DE-de', {
-//     style: 'currency', currency: 'EUR'
-//   }).format(number);
+// function formatNumber(e:any) {
+//   let value = e.target.value;
+//   value = new Intl.NumberFormat('en-US', {
+//     style: 'currency', currency: 'USD'
+//   }).format(value);
+//   return value;
 // };
-function formatNumber (number:any) {
-  return number.toLocaleString("en", {
-    style: "currency",
-    currency: "EUR"
-  });
-}
+// function formatNumber (number:any) {
+//   return number.toLocaleString("en", {
+//     style: "currency",
+//     currency: "EUR"
+//   });
+// }
+// function formatNumber(e:any){
+//   let value = e.target.value;
+//   value =  value.replace(/\D/g, "")
+//                 .replace(/([0-9])([0-9]{2})$/, '$1.$2')
+//                 .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+//   return value
+// }
 
 function TextFieldOutlined({
   label,
@@ -37,6 +46,11 @@ function TextFieldOutlined({
   defaultValue,
   name,
 }:any) {
+  const numericAmount = parseFloat(value);
+  const formattedAmount = numericAmount.toLocaleString('es-CO',{
+    style: 'currency',
+    currency: 'COP',
+  });
   return (
     <CssTextField
       id="custom-css-outlined-input"
@@ -46,9 +60,9 @@ function TextFieldOutlined({
       required={required}
       disabled={disabled}
       label={label}
-      value={value}
+      value={formattedAmount}
       onChange={(e) => {
-        setValue(formatNumber(e.target.value));
+        setValue(e.target.value);
         event && event(e);
       }}
       variant={"outlined"}

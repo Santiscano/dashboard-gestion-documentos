@@ -12,6 +12,7 @@ import {
   optionsRedirectTo,
   optionAccountType,
   optionDocumentType,
+  optionsRedirectToOperativo,
   } from '../../components/Objects/Provider';
 import DataTableEditable from '../../components/common/DataTableEditable';
 
@@ -30,6 +31,7 @@ import { getCedis } from '../../services/Cedis.routes';
 import { getUsers } from '../../services/Users.routes';
 import { getSettled } from '../../services/generateSettled.service';
 import TextFieldDiner from '../../components/common/TextFieldDiner';
+import { uploadfile } from '../../services/Pdf.routes';
 
 
 function index() {
@@ -51,6 +53,8 @@ function index() {
   const [documentNumber,setDocumentNumber]= useState('');
   const [documentDate, setDocumentDate]   = useState('');
   const [price, setPrice]                 = useState('');
+  const [file, setFile]                   = useState('');
+  const [fileName, setFileName]           = useState('');
   const [invoiceType, setInvoiceType]     = useState('');
   const [redirectTo, setRedirectTo]       = useState('');
   const [role, setRole ]                  = useState('radicacion');
@@ -112,6 +116,48 @@ function index() {
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
   const handleDocumentType = (e: SelectChangeEvent) => {setDocumentType(e.target.value)};
 
+  const formattedAmount = (amount:any) => {
+    const numericAmount = parseFloat(amount);
+    const formatted = numericAmount.toLocaleString('es-CO',{
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+    });
+    return formatted;
+  }
+
+  const handleChangeFile = (e: SelectChangeEvent) => {
+    console.log(e.target.value)
+    setFile(e.target.value);
+    const fileNameEvent = e.target.value.replace(/^.*\\/, ''); // renombrar archivo
+    setFileName(fileNameEvent);
+  }
+
+  const handleInvoiceType = (e: SelectChangeEvent) => {
+    setInvoiceType(e.target.value);
+    console.log("invoice", invoiceType)
+    invoiceType == "operativo"
+    ? setRedirectTo("auditor grupo operativo")
+    : setRedirectTo("")
+    console.log('invoiceType: ', invoiceType);
+  };
+
+  const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
+
+  // formulario completo
+  const handleFormSubmit = (e:any) => {
+    e.preventDefault();
+    // clearInputs()
+    // envio archivo
+    const form = new FormData();
+    form.append('file', file);
+    console.log('file: ', file);
+    uploadfile(file)
+
+    // envio demas items
+
+  }
+
 
 
   useEffect(() => {
@@ -134,17 +180,7 @@ function index() {
 
 
 
-  const handleInvoiceType = (e: SelectChangeEvent) => {
-    setInvoiceType(e.target.value);
-    console.log("invoice", invoiceType)
-    invoiceType == "operativo"
-    ? setRedirectTo("auditor grupo operativo")
-    : setRedirectTo("")
-    console.log('invoiceType: ', invoiceType);
-  };
-  // const handleProvider = (e: SelectChangeEvent) => {setProvider(e.target.value)};
-  const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
-  const handleRedirectToOperationalGroup = (e: SelectChangeEvent) => {setRedirectTo("auditor grupo operativo")};
+
 
 
 
@@ -208,16 +244,12 @@ function index() {
                       />
                     </article>
                   </div>
-                  <Button
-                    name="Generar numero Radicado"
-                    // type="submit"
-                  >
-                  </Button>
+                  <Button name="Generar numero Radicado" ></Button>
                 </form>
               </article>
               :
               <article className='filing'>
-                <form >
+                <form onSubmit={handleFormSubmit}>
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
@@ -347,8 +379,10 @@ function index() {
                     </article> */}
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                        >Valor</label>
-                      <TextFieldDiner
+                        >Valor
+                        <b className='mx-12'> {price !== '' && formattedAmount(price)} </b>
+                      </label>
+                      <TextFieldOutlined
                         type={"number"}
                         label={"valor"}
                         value={price}
@@ -359,42 +393,37 @@ function index() {
                     </article>
                   </div>
 
-                  <Upload/>
+                  <Upload
+                    file={file}
+                    fileName={fileName}
+                    handleChangeFile={handleChangeFile}
+                  />
 
-                  <div className='w-full'>
-                    <InputSelect
-                      index='1'
-                      title='Seleccionar Area'
-                      placeholder="Requerimiento"
-                      value={invoiceType}
-                      onChange={handleInvoiceType}
-                      itemDefault="selecciona una opcion"
-                      items={optionsInvoiceType}/>
-                  </div>
-                  {invoiceType == 'administrativo' &&
-                    <div>
+                  <div className='md:flex md:flex-wrap'>
+                    <article className='md:w-1/2'>
+                      <InputSelect
+                        index='1'
+                        title='Seleccionar Area'
+                        placeholder="Requerimiento"
+                        value={invoiceType}
+                        onChange={handleInvoiceType}
+                        itemDefault="selecciona una opcion"
+                        items={optionsInvoiceType}/>
+                    </article>
+                    {invoiceType &&
+                    <article className='md:w-1/2'>
                       <InputSelect
                         index="3"
                         title='A quien va Dirigido'
                         placeholder="Dirigido a"
-                        value={redirectTo}
+                        value={redirectTo }
                         onChange={handleRedirectTo}
                         itemDefault="selecciona el auditor"
-                        items={optionsRedirectTo}/>
-                    </div>
-                  }
-                  {invoiceType == 'operativo' &&
-                    <TextFieldOutlined
-                      type={"text"}
-                      label={"Dirigido a"}
-                      value={redirectTo}
-                      setValue={setRedirectTo}
-                      required
-                      disabled
-                      iconEnd={<VerifiedUserRoundedIcon/>}
-                    />
-                  }
-                  {redirectTo && <button className='button button--flex'>Crear requerimientos</button>}
+                        items={invoiceType === 'Administrativo' ? optionsRedirectTo : optionsRedirectToOperativo}/>
+                    </article>
+                    }
+                  </div>
+                  {redirectTo && <Button name="Crear requerimientos"></Button>}
                 </form>
               </article>
               }
