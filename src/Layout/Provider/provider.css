@@ -85,6 +85,16 @@
     height: 580px;
 }
 
+.buttonHover:hover .arrow{
+  transform: translateX(-5px);
+}
+.buttonHover .arrow{
+  transition: all .3s ease-in-out;
+}
+button:active{
+  transform: scale(0.95);
+}
+
 @media screen and (max-width: 768px ) {
     .layout {
         flex-wrap: wrap;

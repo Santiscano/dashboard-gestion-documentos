@@ -30,8 +30,8 @@ export const optionAccountType = [
   'Manifiesto Carga',
 ];
 export const optionDocumentType = [
-  'Cedula Ciudadania',
+  'CEDULA CIUDADANIA',
   'NIT',
-  'Pasaporte',
-  'Cedula Extranjeria',
+  'CEDULA EXTRANJERIA',
+  'PASAPORTE',
 ];

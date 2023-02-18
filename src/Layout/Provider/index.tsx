@@ -22,6 +22,7 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import PhoneAndroidRoundedIcon from '@mui/icons-material/PhoneAndroidRounded';
 import AttachEmailRoundedIcon from '@mui/icons-material/AttachEmailRounded';
 import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { Autocomplete, Box, TextField } from '@mui/material';
 
 import 'animate.css';
@@ -29,6 +30,7 @@ import { getCedis } from '../../services/Cedis.routes';
 import { getUsers } from '../../services/Users.routes';
 import { getSettled } from '../../services/generateSettled.service';
 import { uploadfile } from '../../services/Pdf.routes';
+import { AllUsers } from '../../interfaces/User';
 
 
 function index() {
@@ -78,12 +80,31 @@ function index() {
     const citys = allCedis.map((item: {sedes_city: string}) => item.sedes_city);
     setOptionsCedis(citys);
 
-    const allUsers = await getUsers();
-    const filterProviderUsers = allUsers.filter((user: {idroles:number}) => user.idroles !== 1 )
-    setOptionsProviders(filterProviderUsers);
+    // const allUsers = await getUsers();
+    // const filterProviderUsers = allUsers.filter((user: {idroles:number}) => user.idroles !== 1 )
+    // setOptionsProviders(filterProviderUsers);
   };
 
+  const handleDocumentType = async (e: SelectChangeEvent) => {
+    const SelectDocumentType = e.target.value;
+    setDocumentType(SelectDocumentType);
+
+    const allUsers = await getUsers();
+
+    const filterProviderUsers = allUsers.filter((user: {
+      idroles:number
+    }) => user.idroles !== 1)
+
+    const filterDocumentType = filterProviderUsers.filter((user:{
+      users_identification_type:string
+      //@ts-ignore
+    }) => user.users_identification_type && user.users_identification_type.toUpperCase() == SelectDocumentType )
+    setOptionsProviders(filterDocumentType);
+  };
+
+
   /**
+   * ?FORMULARIO
    * toma la ciudad que se tenga en estado y hace get para generar radicado
    * @setSettledNumber : actualiza el estado de numero de radicado con la respuesta de la api
    * @param e evento
@@ -103,14 +124,13 @@ function index() {
    * @renderOption : cambia el renderizado del objeto option a como lo seleccione personalizado
    */
   const handleOptionsProviders = {
-    options: optionsProviders.length > 0 ? optionsProviders : ['cargando'],
+    options: optionsProviders.length > 0 ? optionsProviders : [],
     // @ts-ignore
     getOptionLabel: (options: {users_identification:string }) => options.users_identification,
     // @ts-ignore
     renderOption: (props, option, index) => {
-      const key = `listItem-${index}-${option.idusers}`;
       return (
-        <Box component="li" {...props} key={key} >
+        <Box component="li" {...props} key={option.idusers} >
           {option.users_name} - {option.users_identification}
         </Box>
       )
@@ -139,15 +159,13 @@ function index() {
   }
 
   /**
-   *
-   * @param e actualiza el estado en estos tipos de select cedi - accountType - documentType - seleccionar area - redirigido a
+   * actualiza el estado en estos tipos de select cedi - accountType - documentType - seleccionar area - redirigido a
+   * @param e
    */
   const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
-  const handleDocumentType = (e: SelectChangeEvent) => { setDocumentType(e.target.value) };
   const handleInvoiceType = (e: SelectChangeEvent) => { setInvoiceType(e.target.value); };  //tipo de factura "seleccionar area"
   const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
-
 
   /**
    * metodo para formatear los numeros a dinero
@@ -177,49 +195,64 @@ function index() {
     setFileName(fileNameEvent);
   }
 
+  /**
+   * reinicia todos los valores a '';
+   */
+  const handleReset = () => {
+    setIsSettled(false)
+    setIdUser('');
+    setAddress('');
+    setEmail('');
+    setCompanyName('');
+    setTelephone('');
+    setDocumentType('');
+    setInvoiceType('');
+    setAccountType('');
+    setCedi('');
+    setPrice('');
+    setFile('');
+    setFileName('');
+    setRedirectTo('');
+  }
 
 
-  // formulario completo
+
+  /**
+   * ?Formulario
+   * formulario data set DB
+   * se hacen 3 envios de formularios
+   * 1- archivo
+   * 2- datos usuario"proveedor"
+   * 3- metodo relacion de archivo y datos
+   * 4-
+   * @param e
+   */
   const handleFormSubmit = (e:any) => {
     e.preventDefault();
     // clearInputs()
+
     // envio archivo
     const pdfFile = new FormData();
     pdfFile.append('pdf_file', file);
     uploadfile(pdfFile);
 
+    // envio datos proveedor
     const form = new FormData();
     // form.append('idproviders',)
     form.append('idusers', idUser)
     form.append('files_registered', settledNumber)
     // form.append('files_price',)
+
+    // envio relacion archivo - datos
   }
+
+
 
 
 
   useEffect(() => {
     handleGetUsersCedis();
   },[])
-
-
-
-
-  // DE AQUI PARA ABAJO NO ESTA ORDENADO
-  // states
-
-
-
-  // handles
-
-
-
-
-
-
-
-
-
-
 
   return (
     <div className='layout'>
@@ -229,7 +262,10 @@ function index() {
           <div className='layout-left'>
             <div className='container__createFiling'>
               <h3 className='createFiling'>Crear Nuevo radicado</h3>
-              <button onClick={() => setIsSettled(false)}>regresar</button> {/** se debe organizar para limpiar y reiniciar formulario */}
+              <button
+                className='button button--flex mt-6 buttonHover'
+                onClick={handleReset}
+              ><ArrowBackRoundedIcon className='arrow'/> Reiniciar </button> {/** se debe organizar para limpiar y reiniciar formulario */}
             </div>
             {!isSettled
               ?
