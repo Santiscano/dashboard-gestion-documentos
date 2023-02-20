@@ -8,8 +8,8 @@ export const getSettled = async (cedi: any) => {
       cedi: cedi
     })
     const settled = response.data.result;
-    console.log('settled: ', settled);
-    console.log("response getSettled: ", response);
+    // console.log('settled: ', settled);
+    // console.log("response getSettled: ", response);
     return settled;
   } catch (error) {
     console.log('error: ', error);

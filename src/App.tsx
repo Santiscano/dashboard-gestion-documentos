@@ -21,36 +21,6 @@ import Requerimientos from './assets/Requerimientos.pdf'
 
 
 function App() {
-  useEffect(()=>{
-    // getRoles();
-    // createRol();
-    // editRol();
-    // deleteRol();
-    getCedis();
-    // createCedi();
-    // editCedi();
-    // deleteCedi();
-    // validateUser();
-    // getUsers();
-    // createUser();
-    // editUser();
-    // deleteUser();
-    // triggerFile();
-    // getFiles();
-    // addFile();
-    // editFile();
-    // deleteFile();
-    // getStatesFiles();
-    // addStateFile();
-    // editStateFile();
-    // deleteStateFile();
-    // getCostArea();
-    // createCostArea();
-    // editCostArea();
-    // deleteCostArea();
-    // getFilesPath();
-    // createFilePath();
-  },[])
   return (
     <AuthProvider>
       {/* <ThemeModeProvider> */}

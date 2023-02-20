@@ -15,3 +15,8 @@ export interface AllUsers {
   users_providers_expiration_date: string | null;
   users_status: string;
 }
+
+export interface setProviders {
+  idusers: number;
+  users_name: string;
+}

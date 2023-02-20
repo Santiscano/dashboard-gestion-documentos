@@ -14,14 +14,16 @@ export const getFiles = async () => {
   }
 }
 
-export const addFile = async () => {
+export const addFile = async (idUser:number, settledNumber:string, price:string, redirectTo:number) => {
   try{
     const response =await axios.post(Routes.api.files.addFile, {
-      "idproviders": 2,
-      "idusers": 6,
-      "cedi": "medayork"
+      "idusers": redirectTo,
+      "files_registered": settledNumber,
+      "files_price": price,
+      "idproviders": idUser,
     })
     console.log('response: ', response);
+
     return response;
   } catch (error) {
     console.log('error: ', error);

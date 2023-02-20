@@ -9,7 +9,7 @@ import Button from '../../components/common/Button';
 import TextFieldOutlined from '../../components/common/TextFieldOutline';
 import {
   optionsInvoiceType,
-  optionsRedirectTo,
+  // optionsRedirectTo,
   optionAccountType,
   optionDocumentType,
   optionsRedirectToOperativo,
@@ -30,18 +30,22 @@ import { getCedis } from '../../services/Cedis.routes';
 import { getUsers } from '../../services/Users.routes';
 import { getSettled } from '../../services/generateSettled.service';
 import { uploadfile } from '../../services/Pdf.routes';
-import { AllUsers } from '../../interfaces/User';
+import { AllUsers, setProviders } from '../../interfaces/User';
+import { addFile } from '../../services/Files.routes';
 
 
 function index() {
+  // temporal para revisar respuesta
+  const [result, setResult] = useState('');
   // valores actualizables con DB
-  const [optionsProviders, setOptionsProviders] = useState(['','']);    // recibe la lista de opciones de proveedores
-  const [optionsCedis, setOptionsCedis ]        = useState(['','']);    // recibe la lista de cedis
-  const [settledNumber, setSettledNumber]       = useState('');         // numero de radicado generado por DB
+  const [allUsers, setAllUsers]                 = useState([])          // recibi todos los usuarios de DB
+  const [optionsCedis, setOptionsCedis ]        = useState(['','']);    // recibe todas las cedis
+  const [optionsProviders, setOptionsProviders] = useState(['','']);    // filtro de  allUsers los proveedores
+  const [optionsRedirectTo, setOptionsRedirectTo]= useState([])          // filtro allUsers con opciones redirectTo
 
-  // validar para renderizar
+  // validar condicionales para renderizar
   const [documentType, setDocumentType ]        = useState('');         // tipos documentos lo recibe de un type creado
-  const [isSettled, setIsSettled]               = useState(true);       // es true cuando el numero de radicado llega de la DB
+  const [isSettled, setIsSettled]               = useState(false);       // es true cuando el numero de radicado llega de la DB
   const [invoiceType, setInvoiceType]           = useState('');         // define las opciondes de a quien va dirigido
   const [accountType, setAccountType ]          = useState('');         // con esto se hace un filtro para los tipos de usuario
 
@@ -49,7 +53,10 @@ function index() {
   const [cedi, setCedi]                         = useState('');         // con cedi se anexa al numero de radicado
 
   // valores que envio al formulario
-  const [ idUser, setIdUser ]                   = useState('')          //id extraido del objeto objectUser para formulario
+  const [ idUser, setIdUser ]                   = useState('')          //id extraido del objeto objectUser usuario tipo proveedor
+  const [settledNumber, setSettledNumber]       = useState('');         // numero de radicado generado por DB
+  const [price, setPrice]                       = useState('');         // numero escrito en el input
+  const [redirectTo, setRedirectTo]             = useState([]);         // selecionado de usuarios rol !== provider && radication
 
   // captura de valores de formulario que no son necesariamente para el form
   const [objectUser, setObjectUser ]            = useState();           // contiene un objeto con toda la info del usuario "proveedor"
@@ -61,10 +68,8 @@ function index() {
   // sin identificar uso
   const [documentNumber,setDocumentNumber]= useState('');
   const [documentDate, setDocumentDate]   = useState('');
-  const [price, setPrice]                 = useState('');
   const [file, setFile]                   = useState('');
   const [fileName, setFileName]           = useState('');
-  const [redirectTo, setRedirectTo]       = useState('');
   const [role, setRole ]                  = useState('radicacion');
 
   // METHODS
@@ -77,21 +82,23 @@ function index() {
    */
   const handleGetUsersCedis = async () => {
     const allCedis = await getCedis();
+    const getAllUsers = await getUsers();
+    setAllUsers(getAllUsers);
     const citys = allCedis.map((item: {sedes_city: string}) => item.sedes_city);
     setOptionsCedis(citys);
-
-    // const allUsers = await getUsers();
-    // const filterProviderUsers = allUsers.filter((user: {idroles:number}) => user.idroles !== 1 )
-    // setOptionsProviders(filterProviderUsers);
   };
 
+  /**
+   * segun el tipo de documento muestra los usuarios de tipo providers
+   * @param e
+   */
   const handleDocumentType = async (e: SelectChangeEvent) => {
     const SelectDocumentType = e.target.value;
     setDocumentType(SelectDocumentType);
 
-    const allUsers = await getUsers();
+    const allUsersToFilter = allUsers
 
-    const filterProviderUsers = allUsers.filter((user: {
+    const filterProviderUsers = allUsersToFilter.filter((user: {
       idroles:number
     }) => user.idroles !== 1)
 
@@ -100,7 +107,40 @@ function index() {
       //@ts-ignore
     }) => user.users_identification_type && user.users_identification_type.toUpperCase() == SelectDocumentType )
     setOptionsProviders(filterDocumentType);
+
   };
+
+  /**
+   * se ejecutara al cambio de seleccionar area
+   * toma el estado con todos los usuarios, filtra por roles
+   * y entrega al estado de optionsRedirectTo
+   * @param e
+   */
+  const handleInvoiceType = (e: SelectChangeEvent) => {
+    const optionInvoiceType = e.target.value;
+    setInvoiceType(optionInvoiceType);
+
+    const allUsersToFilter = allUsers;
+    console.log('allUsersToFilter: ', allUsersToFilter);
+
+    const filterAuditors = allUsersToFilter.filter((user: {
+      idroles:number
+    }) => user.idroles !== 1 && user.idroles !== 2 && user.idroles !== 7)
+    console.log('filterAuditors: ', filterAuditors);
+
+    // contabilidad
+    const filterAccounting = allUsersToFilter.filter((user: {
+      idroles:number
+    }) => user.idroles === 5)
+
+    if(optionInvoiceType === 'Administrativo'){
+      setOptionsRedirectTo(filterAuditors)
+    };
+    if(optionInvoiceType === 'Operativo'){
+      setOptionsRedirectTo(filterAccounting)
+    }
+
+  };  //tipo de factura "seleccionar area"
 
 
   /**
@@ -113,6 +153,7 @@ function index() {
     e.preventDefault();
     const newSettled = await getSettled(cedi);
     console.log('newSettled: ', newSettled);
+
     setSettledNumber(newSettled);
     newSettled ? setIsSettled(true) : setIsSettled(false);
   };
@@ -145,6 +186,31 @@ function index() {
   }
 
   /**
+   *
+   */
+  const handleOptionsAuditors = {
+    options: optionsRedirectTo.length > 0 ? optionsRedirectTo : [],
+    // @ts-ignore
+    getOptionLabel: (options: {idusers:number}) => options.idusers,
+    // @ts-ignore
+    renderOption: (props, option, index) => {
+      return (
+        <Box component="li" {...props} key={option.idusers}>
+          {option.users_name} {option.users_lastname} -
+          {option.idroles === 3 ? " Auditor" :
+          option.idroles === 4  ? " Gerente" :
+          option.idroles === 5  ? " Contabilidad" : " Tesoreria" }
+        </Box>
+      )
+    },
+    renderInput: (params:any) => (
+      <TextField
+        {...params}
+      ></TextField>
+    )
+  }
+
+  /**
    * se ejecuta cuando el auto complete se actualiza
    * @param props
    */
@@ -164,8 +230,9 @@ function index() {
    */
   const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
-  const handleInvoiceType = (e: SelectChangeEvent) => { setInvoiceType(e.target.value); };  //tipo de factura "seleccionar area"
-  const handleRedirectTo = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
+  //@ts-ignore
+  const handleRedirectTo = (props) => {setRedirectTo(props)};
+
 
   /**
    * metodo para formatear los numeros a dinero
@@ -212,13 +279,13 @@ function index() {
     setPrice('');
     setFile('');
     setFileName('');
-    setRedirectTo('');
+    setRedirectTo([]);
   }
 
 
 
   /**
-   * ?Formulario
+   * ?Formulario parte 2
    * formulario data set DB
    * se hacen 3 envios de formularios
    * 1- archivo
@@ -229,24 +296,28 @@ function index() {
    */
   const handleFormSubmit = (e:any) => {
     e.preventDefault();
-    // clearInputs()
 
-    // envio archivo
+    // @ts-ignore
+    const idRedirectTo = redirectTo.idroles;
+
+    // @ts-ignore
+    setResult(addFile(idUser, settledNumber, price, idRedirectTo))
+  }
+
+  const handleFileSubmit = (e:any) => {
+    e.preventDefault();
+
     const pdfFile = new FormData();
     pdfFile.append('pdf_file', file);
     uploadfile(pdfFile);
 
-    // envio datos proveedor
-    const form = new FormData();
-    // form.append('idproviders',)
-    form.append('idusers', idUser)
-    form.append('files_registered', settledNumber)
-    // form.append('files_price',)
 
     // envio relacion archivo - datos
+
+
+
+    // clearInputs()
   }
-
-
 
 
 
@@ -265,7 +336,7 @@ function index() {
               <button
                 className='button button--flex mt-6 buttonHover'
                 onClick={handleReset}
-              ><ArrowBackRoundedIcon className='arrow'/> Reiniciar </button> {/** se debe organizar para limpiar y reiniciar formulario */}
+              ><ArrowBackRoundedIcon className='arrow'/> Reiniciar </button>
             </div>
             {!isSettled
               ?
@@ -278,6 +349,7 @@ function index() {
                         name="documentType"
                         title='Tipo Documento'
                         placeholder="Tipo Documento*"
+                        required
                         value={documentType}
                         onChange={handleDocumentType}
                         itemDefault="selecciona el tipo de documento"
@@ -311,6 +383,7 @@ function index() {
                         title='Ciudad a Radicar'
                         placeholder="Ciudad a radicar"
                         name="cedi"
+                        required
                         value={cedi}
                         onChange={handleCedi}
                         itemDefault="selecciona una opcion"
@@ -331,12 +404,14 @@ function index() {
                         type={"text"}
                         title='Tipo Documento'
                         placeholder="Tipo Documento*"
+                        required
                         value={documentType}
                         onChange={handleDocumentType}
                         itemDefault="selecciona el tipo de documento"
                         items={optionDocumentType}
                       />
                     </article>
+                    { documentType &&
                     <article className='md:w-1/2'>
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Numero Documento</label>
@@ -354,6 +429,7 @@ function index() {
                         }}
                       />
                     </article>
+                    }
                   </div>
 
                   <div className='md:flex md:flex-wrap'>
@@ -375,6 +451,7 @@ function index() {
                         type={"text"}
                         title='Tipo de cuenta'
                         placeholder="cuenta de"
+                        required
                         value={accountType}
                         onChange={handleAccountType}
                         itemDefault="selecciona el tipo de cuenta"
@@ -383,15 +460,13 @@ function index() {
                     </article>
                   </div>
 
-
-
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Razon social</label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"automatico"}
+                        label={"Razon Social"}
                         value={companyName}
                         setValue={setCompanyName}
                         required
@@ -404,7 +479,7 @@ function index() {
                         >Direccion</label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"automatico"}
+                        label={"Direccion"}
                         value={address}
                         setValue={setAddress}
                         required
@@ -420,7 +495,7 @@ function index() {
                         >Telefono</label>
                       <TextFieldOutlined
                           type={"text"}
-                          label={"automatico"}
+                          label={"Telefono"}
                           value={telephone}
                           setValue={setTelephone}
                           required
@@ -433,7 +508,7 @@ function index() {
                         >Correo</label>
                       <TextFieldOutlined
                       type={"text"}
-                      label={"automatico"}
+                      label={"Email"}
                       value={email}
                       setValue={setEmail}
                       required
@@ -444,16 +519,6 @@ function index() {
                   </div>
 
                   <div className='md:flex md:flex-wrap'>
-                    {/* <article className='md:w-1/2' >
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                        >Fecha Documento</label>
-                      <TextFieldOutlined
-                        type={"date"}
-                        value={documentDate}
-                        setValue={setDocumentDate}
-                        required
-                      />
-                    </article> */}
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Valor
@@ -462,19 +527,13 @@ function index() {
                       <TextFieldOutlined
                         type={"number"}
                         label={"valor"}
+                        required
                         value={price}
                         setValue={setPrice}
-                        required
                         iconEnd={<AttachMoneyRoundedIcon/>}
                       />
                     </article>
                   </div>
-
-                  <Upload
-                    file={file}
-                    fileName={fileName}
-                    handleChangeFile={handleChangeFile}
-                  />
 
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2'>
@@ -482,6 +541,7 @@ function index() {
                         index='1'
                         title='Seleccionar Area'
                         placeholder="Requerimiento"
+                        required
                         value={invoiceType}
                         onChange={handleInvoiceType}
                         itemDefault="selecciona una opcion"
@@ -489,18 +549,33 @@ function index() {
                     </article>
                     {invoiceType &&
                     <article className='md:w-1/2'>
-                      <InputSelect
-                        index="3"
-                        title='A quien va Dirigido'
-                        placeholder="Dirigido a"
-                        value={redirectTo }
-                        onChange={handleRedirectTo}
-                        itemDefault="selecciona el auditor"
-                        items={invoiceType === 'Administrativo' ? optionsRedirectTo : optionsRedirectToOperativo}/>
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
+                        >Dirigido a </label>
+                        {/* @ts-ignore */}
+                      <Autocomplete
+                        sx={{marginLeft:1, my:2}}
+                        id='filter-auditors'
+                        {...handleOptionsAuditors}
+                        autoComplete
+                        includeInputInList
+                        value={redirectTo}
+                        onChange={(event, newValue) => {
+                          // @ts-ignore
+                          handleRedirectTo(newValue)
+                        }}
+                      />
                     </article>
                     }
                   </div>
-                  {redirectTo && <Button name="Crear requerimientos"></Button>}
+                  {redirectTo && <Button name="Adjuntar Archivos"></Button>}
+                </form>
+                <form onSubmit={handleFileSubmit}>
+                <Upload
+                    file={file}
+                    fileName={fileName}
+                    handleChangeFile={handleChangeFile}
+                  />
+                  <Button name="Crear requerimientos"></Button>
                 </form>
               </article>
               }

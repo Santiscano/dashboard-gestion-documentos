@@ -3,24 +3,11 @@ import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import NavBar from '../../components/common/NavBar'
 import SideBar from '../../components/common/SideBar';
-import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
-import Updates from '../../Layout/Updates';
-import Provider from '../../Layout/Provider';
-import { getRoutes } from './../../services/GetRoutes.routes';
-import { getCedis } from '../../services/Cedis.routes';
+import { useNavigate, Outlet } from 'react-router-dom';
+import './admin.css'
+import Loading from '../../components/common/Loading';
 
 // width drawer desplegable
 const drawerWidth = 240;
@@ -80,6 +67,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 // METODOS
 function index() {
   const [open, setOpen] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -100,30 +88,39 @@ function index() {
     setAnchorElUser(null);
   };
 
-  // USE EFFECT
-  // React.useEffect(()=> {
-  //   getRoutes();
-  // },[])
+  React.useEffect(()=>{
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500)
+  },[])
 
   return (
     <>
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', height:"100vh", width:"100vw" }}>
       <CssBaseline />
 
-      <NavBar
-      handleDrawerOpen={handleDrawerOpen}
-      open={open}
-      />
+      {loading ?
+      <div className=" w-screen h-screen">
+        <Loading/>
+      </div>
+      :
+      <>
+        <NavBar
+        handleDrawerOpen={handleDrawerOpen}
+        open={open}
+        />
 
-      <SideBar
-      open={open}
-      handleDrawerClose={handleDrawerClose}
-      />
+        <SideBar
+        open={open}
+        handleDrawerClose={handleDrawerClose}
+        />
 
-      <Main open={open} sx={{ padding: 0 }}>
-        <DrawerHeader />
-        <Outlet/>
-      </Main>
+        <Main open={open} sx={{ padding: 0 }}>
+          <DrawerHeader />
+          <Outlet/>
+        </Main>
+      </>
+      }
 
     </Box>
     </>

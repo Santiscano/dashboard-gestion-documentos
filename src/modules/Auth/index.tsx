@@ -3,15 +3,29 @@ import './auth.css';
 
 // components
 import FormLogin from '../../components/common/FormLogin';
-
+import Loading from '../../components/common/Loading';
 // images
 import security from '../../assets/images/cyber-security.png';
 import logo from '../../assets/images/LOGOTIPO ENVIEXPRESS 85x85.png'
 
 
+
 function index() {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(()=> {
+    setTimeout(()=> {
+      setIsLoading(false);
+    }, 1500)
+  },[])
+
   return (
     <>
+      { isLoading ?
+      <div className='w-screen h-screen'>
+        <Loading/>
+      </div>
+      :
       <div className='login sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 min-h-screen '>
         {/* left */}
         <div className='flex items-center justify-center w-auto min-h-screen md:w-1/2 md:py-4 md:px-4 p-4 md:p-4 rounded-2xl md:rounded-none shadow md:shadow-none'>
@@ -37,6 +51,7 @@ function index() {
             </div>
         </div>
       </div>
+      }
     </>
   )
 }
