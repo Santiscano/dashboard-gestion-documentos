@@ -34,6 +34,8 @@ import { AllUsers, setProviders } from '../../interfaces/User';
 import { addFile } from '../../services/Files.routes';
 import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
 import AutoCompleteRedirectTo from '../../components/common/AutoCompleteRedirectTo';
+import ButtonOpenUploadFile from './../../components/common/ButtonOpenUploadFile';
+import UploadFileModal from '../../components/common/ModalUploadFile';
 
 
 function index() {
@@ -47,9 +49,10 @@ function index() {
 
   // validar condicionales para renderizar
   const [documentType, setDocumentType ]        = useState('');         // tipos documentos lo recibe de un type creado
-  const [isSettled, setIsSettled]               = useState(true);       // es true cuando el numero de radicado llega de la DB
+  const [isSettled, setIsSettled]               = useState(false);       // es true cuando el numero de radicado llega de la DB
   const [invoiceType, setInvoiceType]           = useState('');         // define las opciondes de a quien va dirigido
   const [accountType, setAccountType ]          = useState('');         // con esto se hace un filtro para los tipos de usuario
+  const [statusResponse, setStatusResponse]     = useState(false);      // status 200 para mostrar modal
 
   // valores formulario 1 Get radicado
   const [cedi, setCedi]                         = useState('');         // con cedi se anexa al numero de radicado
@@ -234,7 +237,7 @@ function index() {
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
   // @ts-ignore
   const handleRedirectTo  = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
-
+  const handleCloseModal  = () => setStatusResponse(false)
 
   /**
    * metodo para formatear los numeros a dinero
@@ -296,14 +299,15 @@ function index() {
    * 4-
    * @param e
    */
-  const handleFormSubmit = (e:any) => {
+  const handleFormSubmit = async (e:any) => {
     e.preventDefault();
-
     // @ts-ignore
-    // const idRedirectTo = redirectTo.idroles;
-
+    const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo)
+    const status = addFileResponse?.status;
+    console.log('status: ', status);
     // @ts-ignore
-    setResult(addFile(idUser, settledNumber, price, redirectTo))
+    setResult(addFileResponse);
+    status === 200 && setStatusResponse(true)
   }
 
   const handleFileSubmit = (e:any) => {
@@ -590,8 +594,18 @@ function index() {
                     /> */}
 
                   </div>
-                  {(redirectTo && settledNumber && price && idUser) && <Button name="Crear requerimientos"></Button>}
+                  {(redirectTo && settledNumber && price && idUser) &&
+                  // <button className='button button--flex mt-6' type='submit'>
+                  //   Crear Requerimientos
+                  // </button>
+                  <Button name="Crear requerimientos"></Button>
+                  }
+                  {/* <ButtonOpenUploadFile/> */}
                 </form>
+                <UploadFileModal
+                  open={statusResponse}
+                  close={handleCloseModal}
+                />
 
                 <form onSubmit={handleFileSubmit}>
                 <Upload
