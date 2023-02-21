@@ -32,6 +32,8 @@ import { getSettled } from '../../services/generateSettled.service';
 import { uploadfile } from '../../services/Pdf.routes';
 import { AllUsers, setProviders } from '../../interfaces/User';
 import { addFile } from '../../services/Files.routes';
+import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
+import AutoCompleteRedirectTo from '../../components/common/AutoCompleteRedirectTo';
 
 
 function index() {
@@ -45,7 +47,7 @@ function index() {
 
   // validar condicionales para renderizar
   const [documentType, setDocumentType ]        = useState('');         // tipos documentos lo recibe de un type creado
-  const [isSettled, setIsSettled]               = useState(false);       // es true cuando el numero de radicado llega de la DB
+  const [isSettled, setIsSettled]               = useState(true);       // es true cuando el numero de radicado llega de la DB
   const [invoiceType, setInvoiceType]           = useState('');         // define las opciondes de a quien va dirigido
   const [accountType, setAccountType ]          = useState('');         // con esto se hace un filtro para los tipos de usuario
 
@@ -165,7 +167,7 @@ function index() {
    * @renderOption : cambia el renderizado del objeto option a como lo seleccione personalizado
    */
   const handleOptionsProviders = {
-    options: optionsProviders.length > 0 ? optionsProviders : [],
+    options: optionsProviders,
     // @ts-ignore
     getOptionLabel: (options: {users_identification:string }) => options.users_identification,
     // @ts-ignore
@@ -228,10 +230,10 @@ function index() {
    * actualiza el estado en estos tipos de select cedi - accountType - documentType - seleccionar area - redirigido a
    * @param e
    */
-  const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
+  const handleCedi        = (e: SelectChangeEvent) => {setCedi(e.target.value)};
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
-  //@ts-ignore
-  const handleRedirectTo = (props) => {setRedirectTo(props)};
+  // @ts-ignore
+  const handleRedirectTo  = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
 
 
   /**
@@ -298,10 +300,10 @@ function index() {
     e.preventDefault();
 
     // @ts-ignore
-    const idRedirectTo = redirectTo.idroles;
+    // const idRedirectTo = redirectTo.idroles;
 
     // @ts-ignore
-    setResult(addFile(idUser, settledNumber, price, idRedirectTo))
+    setResult(addFile(idUser, settledNumber, price, redirectTo))
   }
 
   const handleFileSubmit = (e:any) => {
@@ -548,34 +550,56 @@ function index() {
                         items={optionsInvoiceType}/>
                     </article>
                     {invoiceType &&
-                    <article className='md:w-1/2'>
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                        >Dirigido a </label>
-                        {/* @ts-ignore */}
-                      <Autocomplete
-                        sx={{marginLeft:1, my:2}}
-                        id='filter-auditors'
-                        {...handleOptionsAuditors}
-                        autoComplete
-                        includeInputInList
+                    // <article className='md:w-1/2'>
+                    //   <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
+                    //     >Dirigido a </label>
+                    //     {/* @ts-ignore */}
+                    //   <Autocomplete
+                    //     sx={{marginLeft:1, my:2}}
+                    //     id='filter-auditors'
+                    //     autoComplete
+                    //     includeInputInList
+                    //     {...handleOptionsAuditors}
+                    //     // @ts-ignore
+                    //     value={redirectTo}
+                    //     onChange={(event, newValue) => {
+                    //       // @ts-ignore
+                    //       handleRedirectTo(newValue)
+                    //     }}
+                    //   />
+                    // </article>
+                    <article className='md:w-1/2' >
+                      <InputSelectRedirectTo
+                        type={"text"}
+                        title='Dirigido '
+                        placeholder="Para"
+                        required
                         value={redirectTo}
-                        onChange={(event, newValue) => {
-                          // @ts-ignore
-                          handleRedirectTo(newValue)
-                        }}
+                        onChange={handleRedirectTo}
+                        // onChange={(e:any, newValue:any) => handleRedirectTo(newValue)}
+                        itemDefault="selecciona el Auditor"
+                        items={optionsRedirectTo}
                       />
                     </article>
                     }
+                    {/* @ts-ignore */}
+                    {/* <AutoCompleteRedirectTo
+                      value={redirectTo}
+                      setValue={handleRedirectTo}
+                      listUsers={optionsRedirectTo}
+                    /> */}
+
                   </div>
-                  {redirectTo && <Button name="Adjuntar Archivos"></Button>}
+                  {(redirectTo && settledNumber && price && idUser) && <Button name="Crear requerimientos"></Button>}
                 </form>
+
                 <form onSubmit={handleFileSubmit}>
                 <Upload
                     file={file}
                     fileName={fileName}
                     handleChangeFile={handleChangeFile}
                   />
-                  <Button name="Crear requerimientos"></Button>
+                  <Button name="Adjuntar Archivos"></Button>
                 </form>
               </article>
               }
