@@ -3,7 +3,7 @@ import './provider.css';
 import { SelectChangeEvent } from '@mui/material/Select';
 import InputSelect from '../../components/common/InputSelect';
 import Upload from '../../components/common/Upload';
-import DataTable from '../../components/common/DataTable'
+import { DataTableHalfScreen } from '../../components/common/DataTableHalfScreen'
 import Preview from '../../components/common/Preview';
 import Button from '../../components/common/Button';
 import TextFieldOutlined from '../../components/common/TextFieldOutline';
@@ -34,19 +34,20 @@ import { getCedis } from '../../services/Cedis.routes';
 import { getUsers } from '../../services/Users.routes';
 import { getSettled } from '../../services/generateSettled.service';
 import { uploadfile } from '../../services/Pdf.routes';
-import { addFile } from '../../services/Files.routes';
+import { getFiles, addFile } from '../../services/Files.routes';
 import { AllUsers, setProviders } from '../../interfaces/User';
 
 import { formattedAmount } from '../../Utilities/formatted.utility';
 
 function index() {
   // temporal para revisar respuesta
-  const [result, setResult] = useState('');
+  const [result, setResult]                     = useState('');         // respuesta envio formulario datos
   // valores actualizables con DB
   const [allUsers, setAllUsers]                 = useState([])          // recibi todos los usuarios de DB
   const [optionsCedis, setOptionsCedis ]        = useState(['','']);    // recibe todas las cedis
   const [optionsProviders, setOptionsProviders] = useState(['','']);    // filtro de  allUsers los proveedores
-  const [optionsRedirectTo, setOptionsRedirectTo]= useState([])          // filtro allUsers con opciones redirectTo
+  const [optionsRedirectTo, setOptionsRedirectTo]= useState([])         // filtro allUsers con opciones redirectTo
+  const [ allFiles, setAllFiles ]               = useState([])          //
 
   // validar condicionales para renderizar
   const [documentType, setDocumentType ]        = useState('');         // tipos documentos lo recibe de un type creado
@@ -90,10 +91,15 @@ function index() {
    */
   const handleGetUsersCedis = async () => {
     const allCedis = await getCedis();
-    const getAllUsers = await getUsers();
-    setAllUsers(getAllUsers);
     const citys = allCedis.map((item: {sedes_city: string}) => item.sedes_city);
     setOptionsCedis(citys);
+
+    const getAllUsers = await getUsers();
+    setAllUsers(getAllUsers);
+
+    const getAllFiles = await getFiles();
+    setAllFiles(getAllFiles?.data);
+    console.log('getAllFiles: ', getAllFiles?.data);
   };
 
   /**
@@ -279,8 +285,6 @@ function index() {
     setRedirectTo(undefined);
   }
 
-
-
   /**
    * ?Formulario parte 2
    * formulario data set DB
@@ -294,9 +298,8 @@ function index() {
   const handleFormSubmit = async (e:any) => {
     e.preventDefault();
     // @ts-ignore
-    const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo)
+    const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo);
     const status = addFileResponse?.status;
-    console.log('status: ', status);
     // @ts-ignore
     setResult(addFileResponse);
     status === 200 && setStatusResponse(true)
@@ -610,11 +613,9 @@ function index() {
               <section className='viewTableEdit'>
                 <DataTableEditable/>
               </section>
-
             </div>
           </div>
         </section>
-
       </div>
       }
 
@@ -625,7 +626,7 @@ function index() {
           <div className='layout-left'>
             <h3 className='container__createFiling createFiling'>Tablas radicados</h3>
             <section className='viewTable'>
-              <DataTable/>
+              <DataTableHalfScreen/>
             </section>
           </div>
           <div className='layout-right'>

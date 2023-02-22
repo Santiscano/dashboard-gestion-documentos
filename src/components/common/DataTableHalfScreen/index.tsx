@@ -108,7 +108,7 @@ function GridToolbarConfig() {
 
 
 
-export default function DataGridDemo() {
+export function DataTableHalfScreen() {
 
   return (
     <>
@@ -129,7 +129,10 @@ export default function DataGridDemo() {
           initialState={{
             columns: {
               columnVisibilityModel: {
+                cedi: false,
                 account_type: false,
+                document_type: false,
+                document_number: false,
                 address: false,
                 phone: false,
                 email: false,

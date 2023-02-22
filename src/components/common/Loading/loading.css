@@ -11,6 +11,7 @@
   transform-style: preserve-3d;
   position: absolute;
   background: #003c7b;
+  /* background: #fff; */
   top: 50%;
   left: 50%;
   width: 30px;
@@ -20,11 +21,13 @@
   animation: blob-grow_2 linear 3.4s infinite;
   border-radius: 50%;
   box-shadow: 0 -10px 40px -5px #003c7b;
+  /* box-shadow: 0 -10px 40px -5px #fff; */
 }
 
 .blob {
   position: absolute;
   background: #003c7b;
+  /* background: #fff; */
   top: 50%;
   left: 50%;
   width: 30px;

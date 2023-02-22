@@ -100,7 +100,7 @@ function index() {
       <CssBaseline />
 
       {loading ?
-      <div className=" w-screen h-screen">
+      <div className="bg-sky-600 w-screen h-screen">
         <Loading/>
       </div>
       :

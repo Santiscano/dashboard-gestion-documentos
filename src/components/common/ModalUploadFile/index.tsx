@@ -18,7 +18,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: "70vw",
+  width: "90vw",
   height: "85vh",
   overflow: 'scroll',
   bgcolor: 'background.paper',
@@ -69,8 +69,7 @@ const  UploadFileModal: FC<Props>= ({
     )
     console.log('auditorSelected', auditorSelected)
     const nameSelected = `${auditorSelected[0].users_name} ${auditorSelected[0].users_lastname}`;
-    const edited = capitalizeFirstLatterUppercase(nameSelected);
-    setNameAuditorSelected(edited)
+    setNameAuditorSelected(nameSelected)
   }
 
 
@@ -95,41 +94,47 @@ const  UploadFileModal: FC<Props>= ({
           </h1>
           <div className='border-neutral-300 border-2 rounded p-2.5 mb-5'>
             <section>
-              <div className='flex justify-between'>
-                <div className='' >
-                  <span className='text-2xl font-bold mr-8'>{companyName} {lastname}</span>
-                  <span className='text-blue-700 text-lg'>(ID: {docIdentity})</span>
+
+              <div className='flex justify-between flex-wrap'>
+                <div className='text-2xl font-bold mr-8' >
+                  {capitalizeFirstLatterUppercase(companyName)} {capitalizeFirstLatterUppercase(lastname)}
                 </div>
+                <span className='text-blue-700 text-lg'>(ID: {docIdentity})</span>
                 <p className='mr-8 font-bold text-lg'>{formattedAmount(price)}</p>
               </div>
-              <div className='mt-4'>
-                <p className='font-bold inline-block mr-4'>
+
+              <div className='flex mt-4'>
+                <p className='font-bold inline-block mr-4 w-1/2'>
                   Tipo De Cuenta:
                   <span className='text-slate-600 font-normal'>
-                    {` ${accountType}`}
+                    {` ${capitalizeFirstLatterUppercase(accountType)}`}
                   </span>
                 </p>
                 <p className='font-bold inline-block mr-4'>
                   Area:
                   <span className='text-slate-600 font-normal'>
-                    {` ${invoiceType}`}
+                    {` ${capitalizeFirstLatterUppercase(invoiceType)}`}
                   </span>
                 </p>
-                <p className='font-bold inline-block mr-4'>
+              </div>
+
+              <div className='flex'>
+                <p className='font-bold inline-block mr-4 w-1/2'>
                   Para:
                   <span className='text-slate-600 font-normal'>
-                    {` ${nameAuditorSelected}`}
+                    {` ${capitalizeFirstLatterUppercase(nameAuditorSelected)}`}
                   </span>
                 </p>
                 <p className='font-bold inline-block'>
                   Cedi:
                   <span className='text-slate-600 font-normal'>
-                    {` ${cedi}`}
+                    {` ${capitalizeFirstLatterUppercase(cedi)}`}
                   </span>
                 </p>
               </div>
-              <div>
-                <p className='font-bold inline-block mr-4'>
+
+              <div className='flex'>
+                <p className='font-bold inline-block mr-4 w-1/2'>
                   Radicado:
                   <span className='text-slate-600 font-normal'>
                     {` ${settledNumber}`}
@@ -138,10 +143,11 @@ const  UploadFileModal: FC<Props>= ({
                 <p className='font-bold inline-block mr-4'>
                   correo:
                   <span className='text-slate-600 font-normal'>
-                    {` ${email}`}
+                    {` ${email.toLowerCase()}`}
                   </span>
                 </p>
               </div>
+
             </section>
           </div>
           {children}
