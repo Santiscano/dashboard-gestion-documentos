@@ -23,7 +23,6 @@ export const addFile = async (idUser:number, settledNumber:string, price:string,
       "files_price": price,
       "idproviders": idUser,
     })
-
     return response;
   } catch (error) {
     console.log('error: ', error);

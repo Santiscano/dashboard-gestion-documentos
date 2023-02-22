@@ -15,6 +15,10 @@ import {
   optionsRedirectToOperativo,
   } from '../../components/Objects/Provider';
 import DataTableEditable from '../../components/common/DataTableEditable';
+import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
+import AutoCompleteRedirectTo from '../../components/common/AutoCompleteRedirectTo';
+import ButtonOpenUploadFile from './../../components/common/ButtonOpenUploadFile';
+import UploadFileModal from '../../components/common/ModalUploadFile';
 
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
 import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
@@ -30,13 +34,10 @@ import { getCedis } from '../../services/Cedis.routes';
 import { getUsers } from '../../services/Users.routes';
 import { getSettled } from '../../services/generateSettled.service';
 import { uploadfile } from '../../services/Pdf.routes';
-import { AllUsers, setProviders } from '../../interfaces/User';
 import { addFile } from '../../services/Files.routes';
-import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
-import AutoCompleteRedirectTo from '../../components/common/AutoCompleteRedirectTo';
-import ButtonOpenUploadFile from './../../components/common/ButtonOpenUploadFile';
-import UploadFileModal from '../../components/common/ModalUploadFile';
+import { AllUsers, setProviders } from '../../interfaces/User';
 
+import { formattedAmount } from '../../Utilities/formatted.utility';
 
 function index() {
   // temporal para revisar respuesta
@@ -49,7 +50,7 @@ function index() {
 
   // validar condicionales para renderizar
   const [documentType, setDocumentType ]        = useState('');         // tipos documentos lo recibe de un type creado
-  const [isSettled, setIsSettled]               = useState(false);       // es true cuando el numero de radicado llega de la DB
+  const [isSettled, setIsSettled]               = useState(true);       // es true cuando el numero de radicado llega de la DB
   const [invoiceType, setInvoiceType]           = useState('');         // define las opciondes de a quien va dirigido
   const [accountType, setAccountType ]          = useState('');         // con esto se hace un filtro para los tipos de usuario
   const [statusResponse, setStatusResponse]     = useState(false);      // status 200 para mostrar modal
@@ -65,9 +66,11 @@ function index() {
 
   // captura de valores de formulario que no son necesariamente para el form
   const [objectUser, setObjectUser ]            = useState();           // contiene un objeto con toda la info del usuario "proveedor"
+  const [docIdentity, setDocIdentity]           = useState('');         //
   const [address, setAddress]                   = useState('');         // su valor es extraido del objectUser
   const [email, setEmail]                       = useState('');         // su valor es extraido del objectUser
   const [companyName, setCompanyName]           = useState('');         // su valor es extraido del objectUser
+  const [lastname, setLastname]                 = useState('');         // su valor es extraido del objectUser
   const [telephone, setTelephone]               = useState('');         // su valor es extraido del objectUser
 
   // sin identificar uso
@@ -191,7 +194,7 @@ function index() {
   }
 
   /**
-   *
+   * por ahora cambie esta opcion por un SELECT
    */
   const handleOptionsAuditors = {
     options: optionsRedirectTo.length > 0 ? optionsRedirectTo : [],
@@ -222,10 +225,12 @@ function index() {
   const handleValuesUser = (props:any) => {
     setObjectUser(props);
     console.log('handleValueUser: ', props);
+    setDocIdentity(props.users_identification);
     setIdUser(props.idusers)
     setAddress(props.users_address);
     setEmail(props.users_email);
     setCompanyName(props.users_name);
+    setLastname(props.users_lastname);
     setTelephone(props.users_password);
   }
 
@@ -238,21 +243,6 @@ function index() {
   // @ts-ignore
   const handleRedirectTo  = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
   const handleCloseModal  = () => setStatusResponse(false)
-
-  /**
-   * metodo para formatear los numeros a dinero
-   * @param amount
-   * @returns
-   */
-  const formattedAmount = (amount:any) => {
-    const numericAmount = parseFloat(amount);
-    const formatted = numericAmount.toLocaleString('es-CO',{
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-    });
-    return formatted;
-  }
 
   /**
    * metodo para mostrar a la vista el nombre del archivo seleccionado
@@ -554,24 +544,6 @@ function index() {
                         items={optionsInvoiceType}/>
                     </article>
                     {invoiceType &&
-                    // <article className='md:w-1/2'>
-                    //   <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                    //     >Dirigido a </label>
-                    //     {/* @ts-ignore */}
-                    //   <Autocomplete
-                    //     sx={{marginLeft:1, my:2}}
-                    //     id='filter-auditors'
-                    //     autoComplete
-                    //     includeInputInList
-                    //     {...handleOptionsAuditors}
-                    //     // @ts-ignore
-                    //     value={redirectTo}
-                    //     onChange={(event, newValue) => {
-                    //       // @ts-ignore
-                    //       handleRedirectTo(newValue)
-                    //     }}
-                    //   />
-                    // </article>
                     <article className='md:w-1/2' >
                       <InputSelectRedirectTo
                         type={"text"}
@@ -580,41 +552,46 @@ function index() {
                         required
                         value={redirectTo}
                         onChange={handleRedirectTo}
-                        // onChange={(e:any, newValue:any) => handleRedirectTo(newValue)}
                         itemDefault="selecciona el Auditor"
                         items={optionsRedirectTo}
                       />
                     </article>
                     }
-                    {/* @ts-ignore */}
-                    {/* <AutoCompleteRedirectTo
-                      value={redirectTo}
-                      setValue={handleRedirectTo}
-                      listUsers={optionsRedirectTo}
-                    /> */}
-
                   </div>
                   {(redirectTo && settledNumber && price && idUser) &&
-                  // <button className='button button--flex mt-6' type='submit'>
-                  //   Crear Requerimientos
-                  // </button>
                   <Button name="Crear requerimientos"></Button>
                   }
-                  {/* <ButtonOpenUploadFile/> */}
                 </form>
+
+                <button
+                  className='button button--flex mt-6'
+                  onClick={() => setStatusResponse(true)}
+
+                  >abrir modal</button>
+
                 <UploadFileModal
                   open={statusResponse}
                   close={handleCloseModal}
-                />
+                  companyName={companyName}
+                  lastname={lastname}
+                  docIdentity={docIdentity}
+                  price={price}
+                  invoiceType={invoiceType}
+                  redirectTo={redirectTo}
+                  cedi={cedi}
+                  settledNumber={settledNumber}
+                  email={email}
+                >
+                  <form onSubmit={handleFileSubmit}>
+                  <Upload
+                      file={file}
+                      fileName={fileName}
+                      handleChangeFile={handleChangeFile}
+                    />
+                    <Button name="Adjuntar Archivos"></Button>
+                  </form>
+                </UploadFileModal>
 
-                <form onSubmit={handleFileSubmit}>
-                <Upload
-                    file={file}
-                    fileName={fileName}
-                    handleChangeFile={handleChangeFile}
-                  />
-                  <Button name="Adjuntar Archivos"></Button>
-                </form>
               </article>
               }
           </div>
