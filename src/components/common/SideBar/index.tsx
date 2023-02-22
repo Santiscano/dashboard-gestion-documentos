@@ -51,7 +51,8 @@ function index(props: any) {
       }}
       variant="persistent"
       anchor="left"
-      open={props.open}>
+      open={props.open}
+    >
       <DrawerHeader>
         <img src={enviexpress} width={160} className="inline " />
         <IconButton onClick={props.handleDrawerClose}>
