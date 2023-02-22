@@ -62,7 +62,7 @@ function index() {
   const [ idUser, setIdUser ]                   = useState('')          //id extraido del objeto objectUser usuario tipo proveedor
   const [settledNumber, setSettledNumber]       = useState('');         // numero de radicado generado por DB
   const [price, setPrice]                       = useState('');         // numero escrito en el input
-  const [redirectTo, setRedirectTo]             = useState([]);         // selecionado de usuarios rol !== provider && radication
+  const [redirectTo, setRedirectTo]             = useState<number>();         // selecionado de usuarios rol !== provider && radication
 
   // captura de valores de formulario que no son necesariamente para el form
   const [objectUser, setObjectUser ]            = useState();           // contiene un objeto con toda la info del usuario "proveedor"
@@ -148,6 +148,8 @@ function index() {
       setOptionsRedirectTo(filterAccounting)
     }
 
+    //
+
   };  //tipo de factura "seleccionar area"
 
 
@@ -175,7 +177,7 @@ function index() {
   const handleOptionsProviders = {
     options: optionsProviders,
     // @ts-ignore
-    getOptionLabel: (options: {users_identification:string }) => options.users_identification,
+    getOptionLabel: (options: {users_identification: string}) => options.users_identification,
     // @ts-ignore
     renderOption: (props, option, index) => {
       return (
@@ -184,7 +186,7 @@ function index() {
         </Box>
       )
     },
-    renderInput: (params:any) => (
+    renderInput: (params: any) => (
       <TextField
         {...params}
         // label={}
@@ -274,7 +276,7 @@ function index() {
     setPrice('');
     setFile('');
     setFileName('');
-    setRedirectTo([]);
+    setRedirectTo(undefined);
   }
 
 
@@ -300,6 +302,10 @@ function index() {
     status === 200 && setStatusResponse(true)
   }
 
+  /**
+   * envia el archivo adjunto
+   * @param e detiene el reset del la pantalla
+   */
   const handleFileSubmit = (e:any) => {
     e.preventDefault();
 
@@ -314,8 +320,6 @@ function index() {
 
     // clearInputs()
   }
-
-
 
   useEffect(() => {
     handleGetUsersCedis();
@@ -576,8 +580,10 @@ function index() {
                   lastname={lastname}
                   docIdentity={docIdentity}
                   price={price}
+                  accountType={accountType}
                   invoiceType={invoiceType}
                   redirectTo={redirectTo}
+                  optionsRedirectTo={optionsRedirectTo}
                   cedi={cedi}
                   settledNumber={settledNumber}
                   email={email}

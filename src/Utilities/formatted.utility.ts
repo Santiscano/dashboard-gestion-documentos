@@ -12,3 +12,11 @@ export const  formattedAmount = (amount:any) => {
   });
   return formatted;
 }
+
+export function capitalizeFirstLatterUppercase(text: string): string {
+  const words = text.toLowerCase().split(' ');
+  const capitalizedWords = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  })
+  return capitalizedWords.join(' ');
+}
