@@ -21,7 +21,7 @@ export default {
       {
         name: "Auditar Radicado",
         url: "/admin/custom",
-        icon: <ScreenSearchDesktopRoundedIcon sx={{color:"#293184"}} />
+        icon: <ScreenSearchDesktopRoundedIcon sx={{color:"#293184"}} />,
       },
     ],
     ti: [

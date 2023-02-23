@@ -18,6 +18,7 @@ import { getCostArea, createCostArea, editCostArea, deleteCostArea } from './ser
 import { getFilesPath, createFilePath } from './services/FilesPath.routes';
 import { useEffect } from 'react';
 import Requerimientos from './assets/Requerimientos.pdf'
+import { NotFound } from './modules/NotFound';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                 <Route path='updates' element={<Updates/>} />
                 <Route path='ti' element={<Ti/>} />
               </Route>
+              <Route path="*" element={ <NotFound/>}/>
             </Routes>
           </Paper>
         </ThemeProvider>

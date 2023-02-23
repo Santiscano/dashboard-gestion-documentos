@@ -38,10 +38,12 @@ import { getFiles, addFile } from '../../services/Files.routes';
 import { AllUsers, setProviders } from '../../interfaces/User';
 
 import { formattedAmount } from '../../Utilities/formatted.utility';
+import { createFilePath } from '../../services/FilesPath.routes';
 
 function index() {
   // temporal para revisar respuesta
-  const [result, setResult]                     = useState('');         // respuesta envio formulario datos
+  const [result, setResult]                     = useState([]);         // respuesta envio formulario datos
+  const [statusFileResponse, setStatusFileResponse]= useState(false);
   // valores actualizables con DB
   const [allUsers, setAllUsers]                 = useState([])          // recibi todos los usuarios de DB
   const [optionsCedis, setOptionsCedis ]        = useState(['','']);    // recibe todas las cedis
@@ -59,11 +61,16 @@ function index() {
   // valores formulario 1 Get radicado
   const [cedi, setCedi]                         = useState('');         // con cedi se anexa al numero de radicado
 
-  // valores que envio al formulario
+  // valores que envio al formulario 2
   const [ idUser, setIdUser ]                   = useState('')          //id extraido del objeto objectUser usuario tipo proveedor
   const [settledNumber, setSettledNumber]       = useState('');         // numero de radicado generado por DB
   const [price, setPrice]                       = useState('');         // numero escrito en el input
   const [redirectTo, setRedirectTo]             = useState<number>();         // selecionado de usuarios rol !== provider && radication
+
+  // valores formulario file
+  const [file, setFile]                         = useState('');
+  // relacionamiento radicado y archivo
+  const [ comments, setComments]                = useState('')
 
   // captura de valores de formulario que no son necesariamente para el form
   const [objectUser, setObjectUser ]            = useState();           // contiene un objeto con toda la info del usuario "proveedor"
@@ -77,7 +84,6 @@ function index() {
   // sin identificar uso
   const [documentNumber,setDocumentNumber]= useState('');
   const [documentDate, setDocumentDate]   = useState('');
-  const [file, setFile]                   = useState('');
   const [fileName, setFileName]           = useState('');
   const [role, setRole ]                  = useState('radicacion');
 
@@ -299,29 +305,33 @@ function index() {
     e.preventDefault();
     // @ts-ignore
     const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo);
+
+    //abro modal
     const status = addFileResponse?.status;
+    status === 200 && setStatusFileResponse(true)
+
+    // guardo respuesta completa en variable result
     // @ts-ignore
     setResult(addFileResponse);
-    status === 200 && setStatusResponse(true)
   }
 
   /**
    * envia el archivo adjunto
    * @param e detiene el reset del la pantalla
    */
-  const handleFileSubmit = (e:any) => {
+  const handleFileSubmit = async (e:any) => {
     e.preventDefault();
 
     const pdfFile = new FormData();
     pdfFile.append('pdf_file', file);
-    uploadfile(pdfFile);
+    const responseUploadFile = await uploadfile(pdfFile);
+    const pathFileUpload = await responseUploadFile?.data.path;
 
+    // @ts-ignore
+    const idFiles = result?.data.file[0].idfiles;
+    console.log('idFiles: ', idFiles);
 
-    // envio relacion archivo - datos
-
-
-
-    // clearInputs()
+    // createFilePath(idFiles, pathFileUpload, );
   }
 
   useEffect(() => {
@@ -399,7 +409,7 @@ function index() {
               </article>
               :
               <article className='filing'>
-                <form onSubmit={handleFormSubmit}>
+                <section >
 
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2'>
@@ -565,16 +575,14 @@ function index() {
                     </article>
                     }
                   </div>
-                  {(redirectTo && settledNumber && price && idUser) &&
-                  <Button name="Crear requerimientos"></Button>
-                  }
-                </form>
+                  {/* {(objectUser && cedi && settledNumber && price && redirectTo  && idUser) && */}
+                  <button
+                    className='button button--flex mt-6'
+                    onClick={() => setStatusResponse(true)}
+                    >Validar Informacion</button>
+                  {/* } */}
+                </section>
 
-                <button
-                  className='button button--flex mt-6'
-                  onClick={() => setStatusResponse(true)}
-
-                  >abrir modal</button>
 
                 <UploadFileModal
                   open={statusResponse}
@@ -591,14 +599,29 @@ function index() {
                   settledNumber={settledNumber}
                   email={email}
                 >
-                  <form onSubmit={handleFileSubmit}>
-                  <Upload
-                      file={file}
-                      fileName={fileName}
-                      handleChangeFile={handleChangeFile}
-                    />
-                    <Button name="Adjuntar Archivos"></Button>
+                  <form onSubmit={handleFormSubmit}>
+                    <Button name="Crear requerimientos"></Button>
                   </form>
+
+                  {/* { statusFileResponse && */}
+                  <div className='flex rounded justify-between'>
+                    <form onSubmit={handleFileSubmit} className="border-neutral-300 border-2 division--containers" >
+                        <Upload
+                          file={file}
+                          fileName={fileName}
+                          handleChangeFile={handleChangeFile}
+                        />
+                      <Button name="Adjuntar Archivos"></Button>
+                    </form>
+                    <textarea
+                      name="Comentario" id="comentary"
+                      placeholder='si necesita comentarios ingreselos aquí'
+                      className='border-neutral-300 border-2 division--containers'
+                      value={comments}
+                      onChange={setComments}
+                    ></textarea>
+                  </div>
+                  {/* } */}
                 </UploadFileModal>
 
               </article>

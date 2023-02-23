@@ -15,7 +15,7 @@ export const getFilesPath = async () => {
 export const createFilePath = async () => {
   try{
     const response = await axios.post(Routes.api.filesPath.createFilePath,{
-      "idfiles": 1,
+      // "idfiles": ,
       "files_path": "Taas gud",
       "files_path_observation": "el primer archivo no fue"
     })

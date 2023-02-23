@@ -12,6 +12,7 @@ import InputSelect from '../InputSelect';
 import { SelectChangeEvent } from '@mui/material';
 
 import { formattedAmount, capitalizeFirstLatterUppercase } from '../../../Utilities/formatted.utility';
+import { addFile } from '../../../services/Files.routes';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -72,6 +73,12 @@ const  UploadFileModal: FC<Props>= ({
     setNameAuditorSelected(nameSelected)
   }
 
+  // const handleFormSubmit = async (e:any) => {
+  //   e.preventDefault();
+  //   // @ts-ignore
+  //   const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo)
+  // }
+
 
   useEffect(() => {
     if(open){
@@ -92,7 +99,7 @@ const  UploadFileModal: FC<Props>= ({
           <h1 className='border-neutral-300 border-2 rounded p-2.5 text-3xl font-bold mb-3 '>
             Informacion Cliente
           </h1>
-          <div className='border-neutral-300 border-2 rounded p-2.5 mb-5'>
+          <div className='border-neutral-300 border-2 rounded p-2.5 '>
             <section>
 
               <div className='flex justify-between flex-wrap'>

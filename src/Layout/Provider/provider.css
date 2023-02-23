@@ -46,6 +46,11 @@
     border-color: #c4c4c4
 }
 
+.division--containers {
+  width: 49.5%;
+}
+
+
 
 /* button */
 .button{

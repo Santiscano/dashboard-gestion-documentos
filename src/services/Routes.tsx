@@ -37,7 +37,6 @@ export default {
     },
     filesPath: {
       getFilesPath: `${host}/getFilesPath`,
-
       createFilePath: `${host}/postFilePath`,
       deleteFilePath: `${host}/deleteFilePath`
     },

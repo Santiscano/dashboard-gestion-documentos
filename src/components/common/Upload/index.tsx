@@ -8,12 +8,10 @@ import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
 
 function index(props:any) {
 
-    // method file value
-
 
   return (
-    <div>
-      <label className="block mb-2 text-base font-semibold dark:text-white" >Cargar Archivo</label>
+    <>
+      <label className="block my-4 text-base font-semibold dark:text-white" >Cargar Archivo</label>
       {/* input */}
       <div className='flex items-center justify-center w-full cursor-pointer bg-zinc-200 rounded'>
         <label htmlFor="dropzone-file" className='flex flex-col items-center justify-center cursor-pointer'>
@@ -34,13 +32,13 @@ function index(props:any) {
           }
           <input id="dropzone-file"
             type="file"
-            className='hidden'
+            className='hidden '
             // value={props.file}
             onChange={props.handleChangeFile}
           />
         </label>
       </div>
-    </div>
+    </>
   )
 }
 
