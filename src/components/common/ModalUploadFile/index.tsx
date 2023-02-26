@@ -7,12 +7,13 @@ import 'animate.css';
 import TextFieldOutlined from '../TextFieldOutline';
 // mui
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
-import { optionAccountType, optionDocumentType, optionsCities } from '../../Objects/Provider';
+import { optionAccountType, optionDocumentType, optionsCities } from '../../tools/OptionsValuesSelects';
 import InputSelect from '../InputSelect';
 import { SelectChangeEvent } from '@mui/material';
 
 import { formattedAmount, capitalizeFirstLatterUppercase } from '../../../Utilities/formatted.utility';
 import { addFile } from '../../../services/Files.routes';
+import ModalSuccess from '../ModalSuccess';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -45,7 +46,7 @@ interface Props {
   children: ReactNode;
 }
 
-const  UploadFileModal: FC<Props>= ({
+const  UploadFileModal: FC<Props> = ({
   open,
   close,
   companyName,
@@ -61,7 +62,8 @@ const  UploadFileModal: FC<Props>= ({
   email,
   children,
 }) => {
-  const [nameAuditorSelected, setNameAuditorSelected] = useState('nombre por defecto');
+  const [nameAuditorSelected, setNameAuditorSelected] = useState('');
+  const [openSuccess, setOpenSuccess] =  useState(false);
 
   const filterAuditorSelected = () => {
     const allAuditors = optionsRedirectTo;
@@ -72,13 +74,6 @@ const  UploadFileModal: FC<Props>= ({
     const nameSelected = `${auditorSelected[0].users_name} ${auditorSelected[0].users_lastname}`;
     setNameAuditorSelected(nameSelected)
   }
-
-  // const handleFormSubmit = async (e:any) => {
-  //   e.preventDefault();
-  //   // @ts-ignore
-  //   const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo)
-  // }
-
 
   useEffect(() => {
     if(open){
@@ -158,6 +153,7 @@ const  UploadFileModal: FC<Props>= ({
             </section>
           </div>
           {children}
+
         </Box>
       </Modal>
     </>

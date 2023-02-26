@@ -13,7 +13,7 @@ function index(props:any) {
     <>
       <label className="block my-4 text-base font-semibold dark:text-white" >Cargar Archivo</label>
       {/* input */}
-      <div className='flex items-center justify-center w-full cursor-pointer bg-zinc-200 rounded'>
+      <div className='flex h-4/6 items-center justify-center w-full cursor-pointer bg-zinc-200 rounded'>
         <label htmlFor="dropzone-file" className='flex flex-col items-center justify-center cursor-pointer'>
           { props.file == '' ?
           <div className='flex flex-col items-center justify-center pt-5 pb-6 '>

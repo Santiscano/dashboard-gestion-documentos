@@ -7,7 +7,7 @@ import ScreenSearchDesktopRoundedIcon from '@mui/icons-material/ScreenSearchDesk
 
 export default {
   online: {
-    admin: [
+    settling: [
       {
         name: "Provedores",
         url: "/admin/provider",
@@ -30,6 +30,15 @@ export default {
         url: "/admin/ti",
         icon: <LogoDevIcon sx={{color:"#293184"}} />,
       }
-    ]
+    ],
+    provider: [],
+    auditor: [],
+    manager: [],
+    accounting: [],
+    treasury: [],
+
   },
+  offline: [
+
+  ]
 };

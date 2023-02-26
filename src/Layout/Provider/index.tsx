@@ -13,7 +13,7 @@ import {
   optionAccountType,
   optionDocumentType,
   optionsRedirectToOperativo,
-  } from '../../components/Objects/Provider';
+  } from '../../components/tools/OptionsValuesSelects';
 import DataTableEditable from '../../components/common/DataTableEditable';
 import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
 import AutoCompleteRedirectTo from '../../components/common/AutoCompleteRedirectTo';
@@ -39,6 +39,7 @@ import { AllUsers, setProviders } from '../../interfaces/User';
 
 import { formattedAmount } from '../../Utilities/formatted.utility';
 import { createFilePath } from '../../services/FilesPath.routes';
+import ModalSuccess from '../../components/common/ModalSuccess';
 
 function index() {
   // temporal para revisar respuesta
@@ -57,6 +58,7 @@ function index() {
   const [invoiceType, setInvoiceType]           = useState('');         // define las opciondes de a quien va dirigido
   const [accountType, setAccountType ]          = useState('');         // con esto se hace un filtro para los tipos de usuario
   const [statusResponse, setStatusResponse]     = useState(false);      // status 200 para mostrar modal
+  const [modalSuccess, setModalSuccess]           = useState(false);      // status 200 filePath para mostrar hijo modal
 
   // valores formulario 1 Get radicado
   const [cedi, setCedi]                         = useState('');         // con cedi se anexa al numero de radicado
@@ -70,7 +72,7 @@ function index() {
   // valores formulario file
   const [file, setFile]                         = useState('');
   // relacionamiento radicado y archivo
-  const [ comments, setComments]                = useState('')
+  const [comments, setComments]                 = useState('')
 
   // captura de valores de formulario que no son necesariamente para el form
   const [objectUser, setObjectUser ]            = useState();           // contiene un objeto con toda la info del usuario "proveedor"
@@ -256,7 +258,9 @@ function index() {
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
   // @ts-ignore
   const handleRedirectTo  = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
-  const handleCloseModal  = () => setStatusResponse(false)
+  const handleCloseModal  = () => setStatusResponse(false);
+  const handleCloseModalChild = () => setModalSuccess(false);
+  const handleComments    = (e: SelectChangeEvent) => {setComments(e.target.value)};
 
   /**
    * metodo para mostrar a la vista el nombre del archivo seleccionado
@@ -308,6 +312,7 @@ function index() {
 
     //abro modal
     const status = addFileResponse?.status;
+
     status === 200 && setStatusFileResponse(true)
 
     // guardo respuesta completa en variable result
@@ -330,8 +335,14 @@ function index() {
     // @ts-ignore
     const idFiles = result?.data.file[0].idfiles;
     console.log('idFiles: ', idFiles);
+    console.log('pathFileUpload: ', pathFileUpload);
+    console.log("comments: ",comments)
 
-    // createFilePath(idFiles, pathFileUpload, );
+
+    const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments );
+    // @ts-ignore
+    const status = responseConcatFilePath?.status
+    status === 200 && setModalSuccess(true);
   }
 
   useEffect(() => {
@@ -583,7 +594,6 @@ function index() {
                   {/* } */}
                 </section>
 
-
                 <UploadFileModal
                   open={statusResponse}
                   close={handleCloseModal}
@@ -603,25 +613,32 @@ function index() {
                     <Button name="Crear requerimientos"></Button>
                   </form>
 
-                  {/* { statusFileResponse && */}
-                  <div className='flex rounded justify-between'>
-                    <form onSubmit={handleFileSubmit} className="border-neutral-300 border-2 division--containers" >
-                        <Upload
-                          file={file}
-                          fileName={fileName}
-                          handleChangeFile={handleChangeFile}
-                        />
-                      <Button name="Adjuntar Archivos"></Button>
-                    </form>
-                    <textarea
-                      name="Comentario" id="comentary"
-                      placeholder='si necesita comentarios ingreselos aquí'
-                      className='border-neutral-300 border-2 division--containers'
-                      value={comments}
-                      onChange={setComments}
-                    ></textarea>
-                  </div>
-                  {/* } */}
+                  { statusFileResponse &&
+                    <div className='flex rounded justify-between'>
+                      <form onSubmit={handleFileSubmit} className="border-neutral-300 border-2 division--containers" >
+                          <Upload
+                            file={file}
+                            fileName={fileName}
+                            handleChangeFile={handleChangeFile}
+                          />
+                        <button className="button button--flex mt-4 relative top-4" >Adjuntar Archivos</button>
+                      </form>
+                      <textarea
+                        name="Comentario" id="comentary"
+                        placeholder='si necesita comentarios ingreselos aquí'
+                        className='border-neutral-300 border-2 division--containers'
+                        value={comments}
+                        // @ts-ignore
+                        onChange={handleComments}
+                      ></textarea>
+                    </div>
+                  }
+                  <ModalSuccess
+                    open={modalSuccess}
+                    close={handleCloseModalChild}
+                    setModalSuccess={setModalSuccess}
+                    settledNumber={settledNumber}
+                  />
                 </UploadFileModal>
 
               </article>

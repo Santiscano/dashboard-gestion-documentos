@@ -1,0 +1,75 @@
+import { Box, Modal } from '@mui/material'
+import { FC, useEffect, useState } from 'react'
+import './modalSuccess.css'
+import 'animate.css';
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "50vw",
+  height: "50vh",
+  overflow: 'scroll',
+  bgcolor: 'background.paper',
+  borderRadius: '5px',
+  boxShadow: 24,
+  p: 4,
+}
+
+interface Props {
+  open: boolean;
+  close: ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void) | undefined;
+  setModalSuccess: React.Dispatch<React.SetStateAction<boolean>> ;
+  settledNumber: string;
+}
+
+const ModalSuccess: FC<Props> = ({
+  open,
+  close,
+  setModalSuccess,
+  settledNumber,
+}) => {
+  const [showCheckmark, setShowCheckmark] = useState(false);
+
+  useEffect(()=> {
+    setShowCheckmark(true);
+    setTimeout(() => {
+      setShowCheckmark(false);
+    }, 10);
+  },[])
+  return (
+    <>
+      <Modal
+        open={open}
+        onClose={close}
+      >
+        <Box sx={style} >
+          {/* <div className={`success-checkmark ${showCheckmark ? "show" : ""}`}>
+            <div className="check-icon">
+              <span className="icon-line line-tip"></span>
+              <span className="icon-line line-long"></span>
+              <div className="icon-circle"></div>
+              <div className="icon-fix"></div>
+            </div>
+          </div> */}
+          <div className="main-container">
+            <div className="check-container">
+              <div className="check-background">
+                <svg viewBox="0 0 65 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 25L27.3077 44L58.5 7" stroke="white" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div className="check-shadow"></div>
+            </div>
+          </div>
+          <h3 className='animate__animated animate__fadeIn'>numero de radicado {settledNumber} guardado con exito</h3>
+          <button className='button button--flex mt-4 relative top-4 animate__animated animate__fadeIn'
+            onClick={() => setModalSuccess(false)}>Finalizar</button>
+        </Box>
+      </Modal>
+    </>
+  )
+}
+
+export default ModalSuccess

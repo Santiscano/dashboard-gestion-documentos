@@ -63,7 +63,7 @@ function index(props: any) {
       <Divider />
 
       <List>
-        {rutero.online.admin.map((list, index) => (
+        {rutero.online.settling.map((list, index) => (
           <ListItem key={index} disablePadding>
           <ListItemButton  onClick={ ()=> navigate(`${list.url}`)}>
               <ListItemIcon>

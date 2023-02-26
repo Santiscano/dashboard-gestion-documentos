@@ -20,3 +20,7 @@ export interface setProviders {
   idusers: number;
   users_name: string;
 }
+
+export interface LoginData {
+  id: number;
+}

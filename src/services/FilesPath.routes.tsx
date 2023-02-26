@@ -12,14 +12,15 @@ export const getFilesPath = async () => {
     console.log('error: ', error);
   }
 }
-export const createFilePath = async () => {
+export const createFilePath = async (idFiles:number, pathFileUpload:string, comments:string) => {
   try{
     const response = await axios.post(Routes.api.filesPath.createFilePath,{
-      // "idfiles": ,
-      "files_path": "Taas gud",
-      "files_path_observation": "el primer archivo no fue"
+      "idfiles": idFiles,
+      "files_path": pathFileUpload,
+      "files_path_observation": comments,
     })
     console.log("response createFilepath: ", response)
+    return response;
   } catch (error) {
     console.log('error: ', error);
   }

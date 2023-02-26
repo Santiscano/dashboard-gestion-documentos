@@ -7,7 +7,7 @@ import 'animate.css';
 import TextFieldOutlined from '../TextFieldOutline';
 // mui
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
-import { optionAccountType, optionDocumentType, optionsCities } from '../../Objects/Provider';
+import { optionAccountType, optionDocumentType, optionsCities } from '../../tools/OptionsValuesSelects';
 import InputSelect from '../InputSelect';
 import { SelectChangeEvent } from '@mui/material';
 
