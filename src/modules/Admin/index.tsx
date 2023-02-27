@@ -66,6 +66,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 // METODOS
 function index() {
+
+
   const [open, setOpen] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
 
@@ -100,7 +102,7 @@ function index() {
       <CssBaseline />
 
       {loading ?
-      <div className="bg-sky-600 w-screen h-screen">
+      <div className="w-screen h-screen">
         <Loading/>
       </div>
       :

@@ -40,21 +40,26 @@ import { AllUsers, setProviders } from '../../interfaces/User';
 import { formattedAmount } from '../../Utilities/formatted.utility';
 import { createFilePath } from '../../services/FilesPath.routes';
 import ModalSuccess from '../../components/common/ModalSuccess';
+import { AllCedis, CedisId, CedisIdName } from './../../interfaces/Cedis';
+import InputSelectCedi from '../../components/common/InputSelectCedi';
 
 function index() {
   // temporal para revisar respuesta
-  const [result, setResult]                     = useState([]);         // respuesta envio formulario datos
+  const [result, setResult]                     = useState(['']);         // respuesta envio formulario datos
   const [statusFileResponse, setStatusFileResponse]= useState(false);
   // valores actualizables con DB
-  const [allUsers, setAllUsers]                 = useState([])          // recibi todos los usuarios de DB
-  const [optionsCedis, setOptionsCedis ]        = useState(['','']);    // recibe todas las cedis
+  const [allUsers, setAllUsers]                 = useState([''])          // recibi todos los usuarios de DB
+  const [optionsCedisIdName, setOptionsCedisIdName ] = useState<CedisIdName[]>([]); // recibe nombre y id de todas las cedis
+  // const [optionsCedisId, setOptionsCedisId]     = useState<number[]>([])   //solo id de sede seleccionada
+  // const [optionsCedisName, setOptionsCedisName] = useState<string[]>([]);
+
   const [optionsProviders, setOptionsProviders] = useState(['','']);    // filtro de  allUsers los proveedores
-  const [optionsRedirectTo, setOptionsRedirectTo]= useState([])         // filtro allUsers con opciones redirectTo
-  const [ allFiles, setAllFiles ]               = useState([])          //
+  const [optionsRedirectTo, setOptionsRedirectTo]= useState([''])         // filtro allUsers con opciones redirectTo
+  const [ allFiles, setAllFiles ]               = useState([''])          //
 
   // validar condicionales para renderizar
   const [documentType, setDocumentType ]        = useState('');         // tipos documentos lo recibe de un type creado
-  const [isSettled, setIsSettled]               = useState(true);       // es true cuando el numero de radicado llega de la DB
+  const [isSettled, setIsSettled]               = useState(false);       // es true cuando el numero de radicado llega de la DB
   const [invoiceType, setInvoiceType]           = useState('');         // define las opciondes de a quien va dirigido
   const [accountType, setAccountType ]          = useState('');         // con esto se hace un filtro para los tipos de usuario
   const [statusResponse, setStatusResponse]     = useState(false);      // status 200 para mostrar modal
@@ -98,16 +103,31 @@ function index() {
    * envio cedi para generar radicado
    */
   const handleGetUsersCedis = async () => {
-    const allCedis = await getCedis();
-    const citys = allCedis.map((item: {sedes_city: string}) => item.sedes_city);
-    setOptionsCedis(citys);
+    const allCedis: AllCedis[] = await getCedis();
+    const cedisIdName: CedisIdName[] = allCedis?.map( item => {
+      return {
+        idsedes: item.idsedes,
+        sedes_city: item.sedes_city
+      }
+    });
+    setOptionsCedisIdName(cedisIdName);
+
+    // const citysId = allCedis.map((item: { idsedes: number }) => item.idsedes );
+    // setOptionsCedisId(citysId);
+    // console.log('cedisId: ', citysId);
+
+    // const citysName = allCedis.map((item: {sedes_city: string}) => item.sedes_city);
+    // setOptionsCedisName(citysName);
+    // console.log('citysName: ', citysName);
+
+
 
     const getAllUsers = await getUsers();
     setAllUsers(getAllUsers);
 
     const getAllFiles = await getFiles();
     setAllFiles(getAllFiles?.data);
-    console.log('getAllFiles: ', getAllFiles?.data);
+    // console.log('getAllFiles: ', getAllFiles?.data);
   };
 
   /**
@@ -120,10 +140,12 @@ function index() {
 
     const allUsersToFilter = allUsers
 
+    // @ts-ignore
     const filterProviderUsers = allUsersToFilter.filter((user: {
       idroles:number
     }) => user.idroles !== 1)
 
+    // @ts-ignore
     const filterDocumentType = filterProviderUsers.filter((user:{
       users_identification_type:string
       //@ts-ignore
@@ -145,11 +167,13 @@ function index() {
     const allUsersToFilter = allUsers;
     console.log('allUsersToFilter: ', allUsersToFilter);
 
+    // @ts-ignore
     const filterAuditors = allUsersToFilter.filter((user: {
       idroles:number
     }) => user.idroles !== 1 && user.idroles !== 2 && user.idroles !== 7)
     console.log('filterAuditors: ', filterAuditors);
 
+    // @ts-ignore
     // contabilidad
     const filterAccounting = allUsersToFilter.filter((user: {
       idroles:number
@@ -175,7 +199,8 @@ function index() {
    */
   const handleSettledSubmit = async (e:any) => {
     e.preventDefault();
-    const newSettled = await getSettled(cedi);
+    // @ts-ignore
+    const newSettled = await getSettled(cedi.sedes_city);
     console.log('newSettled: ', newSettled);
 
     setSettledNumber(newSettled);
@@ -189,7 +214,7 @@ function index() {
    * @renderOption : cambia el renderizado del objeto option a como lo seleccione personalizado
    */
   const handleOptionsProviders = {
-    options: optionsProviders,
+    options: optionsProviders.length > 0 ? optionsProviders : [''],
     // @ts-ignore
     getOptionLabel: (options: {users_identification: string}) => options.users_identification,
     // @ts-ignore
@@ -254,7 +279,7 @@ function index() {
    * actualiza el estado en estos tipos de select cedi - accountType - documentType - seleccionar area - redirigido a
    * @param e
    */
-  const handleCedi        = (e: SelectChangeEvent) => {setCedi(e.target.value)};
+  const handleCedi        = (e: SelectChangeEvent) => {setCedi(e.target.value), console.log("cedi: ", cedi)};
   const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
   // @ts-ignore
   const handleRedirectTo  = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
@@ -278,20 +303,19 @@ function index() {
   /**
    * reinicia todos los valores a '';
    */
-  const handleReset = () => {
+  const  handleReset = () => {
     setIsSettled(false)
     setIdUser('');
-    setAddress('');
-    setEmail('');
-    setCompanyName('');
-    setTelephone('');
+    setSettledNumber('');
     setDocumentType('');
-    setInvoiceType('');
-    setAccountType('');
     setCedi('');
+    setAccountType('');
+    setCompanyName('');
+    setAddress('');
+    setTelephone('');
+    setEmail('');
     setPrice('');
-    setFile('');
-    setFileName('');
+    setInvoiceType('');
     setRedirectTo(undefined);
   }
 
@@ -308,7 +332,7 @@ function index() {
   const handleFormSubmit = async (e:any) => {
     e.preventDefault();
     // @ts-ignore
-    const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo);
+    const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo, cedi.idsedes );
 
     //abro modal
     const status = addFileResponse?.status;
@@ -334,15 +358,38 @@ function index() {
 
     // @ts-ignore
     const idFiles = result?.data.file[0].idfiles;
-    console.log('idFiles: ', idFiles);
-    console.log('pathFileUpload: ', pathFileUpload);
-    console.log("comments: ",comments)
-
 
     const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments );
     // @ts-ignore
     const status = responseConcatFilePath?.status
     status === 200 && setModalSuccess(true);
+  }
+
+  /**
+   * genero el nuevo numero de radicado
+   * seteo los valores para esconder modales y limpiar las partes del formulario que son necesarias volver a llenar.
+   */
+  const newSettledSameUser = async () => {
+    const newSettled = await getSettled(cedi);
+    setSettledNumber(newSettled);
+    // setAccountType('');
+    setPrice('');
+    setStatusFileResponse(false);
+    setFile('');
+    setComments('');
+    setModalSuccess(false);
+    setStatusResponse(false);
+  }
+
+  const resetFullForm = () => {
+    handleReset();
+
+    setObjectUser(undefined);
+    setStatusFileResponse(false);
+    setFile('');
+    setComments('');
+    setModalSuccess(false);
+    setStatusResponse(false);
   }
 
   useEffect(() => {
@@ -357,10 +404,10 @@ function index() {
           <div className='layout-left'>
             <div className='container__createFiling'>
               <h3 className='createFiling'>Crear Nuevo radicado</h3>
-              <button
+              {isSettled && <button
                 className='button button--flex mt-6 buttonHover'
                 onClick={handleReset}
-              ><ArrowBackRoundedIcon className='arrow'/> Reiniciar </button>
+              ><ArrowBackRoundedIcon className='arrow'/> Reiniciar </button>}
             </div>
             {!isSettled
               ?
@@ -396,13 +443,44 @@ function index() {
                           // @ts-ignore
                           handleValuesUser(newValue)
                         }}
+                        onInputChange={(event, newValue) => {
+                          // @ts-ignore
+                          setObjectUser(newValue);
+                        }}
                       />
+                      {/* <Autocomplete
+                        disablePortal
+                        filterSelectedOptions
+                        options={optionsProviders.map(
+                          (user) =>
+                          // @ts-ignore
+                            ` ${user.users_name} - ${user.users_identification}`
+                        )}
+                        getOptionLabel={(user) => user}
+                        // @ts-ignore
+                        getOptionDisabled={(user) => user === value}
+                        isOptionEqualToValue={(user, value) => user === value}
+                        itemID={"idusers"}
+                        value={objectUser}
+                        onChange={(event, newValue) => handleValuesUser(newValue)}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            // label={!label ? "Usuarios" : label}
+                            variant={"filled"}
+                            InputProps={{
+                              ...params.InputProps,
+                              autoComplete: "off",
+                            }}
+                          />
+                        )}
+                      /> */}
                     </article>
                     }
                   </div>
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2'>
-                      <InputSelect
+                      <InputSelectCedi
                         type={"text"}
                         title='Ciudad a Radicar'
                         placeholder="Ciudad a radicar"
@@ -411,7 +489,10 @@ function index() {
                         value={cedi}
                         onChange={handleCedi}
                         itemDefault="selecciona una opcion"
-                        items={optionsCedis}
+                        isSettled={isSettled}
+                        // @ts-ignore
+                        // items={optionsCedisName}
+                        items={optionsCedisIdName}
                       />
                     </article>
                   </div>
@@ -557,6 +638,7 @@ function index() {
                         iconEnd={<AttachMoneyRoundedIcon/>}
                       />
                     </article>
+
                   </div>
 
                   <div className='md:flex md:flex-wrap'>
@@ -605,7 +687,8 @@ function index() {
                   invoiceType={invoiceType}
                   redirectTo={redirectTo}
                   optionsRedirectTo={optionsRedirectTo}
-                  cedi={cedi}
+                  // @ts-ignore
+                  cedi={cedi.sedes_city}
                   settledNumber={settledNumber}
                   email={email}
                 >
@@ -638,6 +721,8 @@ function index() {
                     close={handleCloseModalChild}
                     setModalSuccess={setModalSuccess}
                     settledNumber={settledNumber}
+                    newSettledSameUser={newSettledSameUser}
+                    resetFullForm={resetFullForm}
                   />
                 </UploadFileModal>
 

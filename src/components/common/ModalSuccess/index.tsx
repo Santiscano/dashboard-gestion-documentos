@@ -22,6 +22,8 @@ interface Props {
   close: ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void) | undefined;
   setModalSuccess: React.Dispatch<React.SetStateAction<boolean>> ;
   settledNumber: string;
+  newSettledSameUser:any;
+  resetFullForm: any;
 }
 
 const ModalSuccess: FC<Props> = ({
@@ -29,6 +31,8 @@ const ModalSuccess: FC<Props> = ({
   close,
   setModalSuccess,
   settledNumber,
+  newSettledSameUser,
+  resetFullForm,
 }) => {
   const [showCheckmark, setShowCheckmark] = useState(false);
 
@@ -45,14 +49,6 @@ const ModalSuccess: FC<Props> = ({
         onClose={close}
       >
         <Box sx={style} >
-          {/* <div className={`success-checkmark ${showCheckmark ? "show" : ""}`}>
-            <div className="check-icon">
-              <span className="icon-line line-tip"></span>
-              <span className="icon-line line-long"></span>
-              <div className="icon-circle"></div>
-              <div className="icon-fix"></div>
-            </div>
-          </div> */}
           <div className="main-container">
             <div className="check-container">
               <div className="check-background">
@@ -63,9 +59,15 @@ const ModalSuccess: FC<Props> = ({
               <div className="check-shadow"></div>
             </div>
           </div>
-          <h3 className='animate__animated animate__fadeIn'>numero de radicado {settledNumber} guardado con exito</h3>
+          <h3 className='animate__animated animate__fadeIn'>Radicado {settledNumber} guardado con exito</h3>
+
           <button className='button button--flex mt-4 relative top-4 animate__animated animate__fadeIn'
-            onClick={() => setModalSuccess(false)}>Finalizar</button>
+            onClick={resetFullForm}
+            style={{background:"#55e08c",display:"inline"}}>Finalizar</button>
+
+          <button className='button button--flex mt-4 relative top-4 animate__animated animate__fadeIn'
+            onClick={newSettledSameUser}
+            style={{display:"inline"}}>Nuevo radicado - Mismo usuario</button>
         </Box>
       </Modal>
     </>

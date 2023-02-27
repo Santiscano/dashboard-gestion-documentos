@@ -21,6 +21,7 @@ export interface setProviders {
   users_name: string;
 }
 
-export interface LoginData {
-  id: number;
-}
+// export interface LoginData {
+//   email: string;
+//   password: string;
+// }

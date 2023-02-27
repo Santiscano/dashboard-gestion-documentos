@@ -8,10 +8,14 @@ import Updates from './Layout/Updates';
 import Provider from './Layout/Provider';
 import Ti from './Layout/Ti';
 import { NotFound } from './modules/NotFound';
+import { useState } from 'react';
 
 
 
 function App() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <ThemeProvider theme={Styles}>
       <Paper>

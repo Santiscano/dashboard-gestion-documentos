@@ -1,7 +1,7 @@
 import axios from "axios";
 import Routes from "./Routes";
 
-export const getSettled = async (cedi: any) => {
+export const getSettled = async (cedi: string) => {
   try{
     const response = await axios.post(Routes.api.generateSettled,{
       api_key: import.meta.env.VITE_API_KEY,

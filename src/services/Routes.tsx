@@ -63,6 +63,11 @@ export default {
     routesApi: {
       getRoutes: `${host}/routerApi`,
     },
-    pdfSettledNumber: `${hostPdf}/pdf`
+    firebase: {
+      createUser: `${host}/createUser`,
+      login: `${host}/logIn`,
+      validateUser: `${host}/validateUser`,
+    },
+    pdfSettledNumber: `${hostPdf}/pdf`,
   }
 }
