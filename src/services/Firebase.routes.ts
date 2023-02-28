@@ -24,12 +24,12 @@ export const login = async (users_email:string, users_password:string) => {
     return response;
   } catch(error) {
     console.log('error: ', error);
-
   }
 }
 export const validateUser = async () => {
   try{
     const response = await axios.post(Routes.api.firebase.validateUser,{},getHeader())
+    return response;
   } catch(error) {
     console.log('error: ', error);
 

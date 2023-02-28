@@ -15,19 +15,18 @@ import { Styles }  from './config/theme.config'
 import { Route, Routes } from 'react-router-dom';
 import WithAuthentication from './Middlewares/WithAuthentication';
 
-
 function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+
 
 
   return (
     <ThemeProvider theme={Styles}>
       <Paper>
         <Routes>
-          <Route index element={ <Auth isLoading={isLoading} setIsLoading={setIsLoading}/> } />
-          <Route path='/login' element={ <Auth isLoading={isLoading} setIsLoading={setIsLoading}/> } />
+          <Route index element={ <Auth /> } />
+          <Route path='/login' element={ <Auth /> } />
 
           <Route
             element={<WithAuthentication/>}

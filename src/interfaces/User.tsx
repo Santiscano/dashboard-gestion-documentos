@@ -21,7 +21,15 @@ export interface setProviders {
   users_name: string;
 }
 
-// export interface LoginData {
-//   email: string;
-//   password: string;
-// }
+export interface ValidatedUserInLogin {
+  idroles: number;
+  idsedes: number;
+  idusers: number;
+  users_email: string;
+  users_identification: string;
+  users_identification_digital_check: string;
+  users_identification_type: string;
+  users_lastname: string;
+  users_name: string;
+  users_status: string;
+}

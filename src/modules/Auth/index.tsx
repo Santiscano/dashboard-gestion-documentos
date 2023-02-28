@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './auth.css';
 
 // components
@@ -7,17 +7,13 @@ import Loading from '../../components/common/Loading';
 // images
 import security from '../../assets/images/cyber-security.png';
 import logo from '../../assets/images/LOGOTIPO ENVIEXPRESS 85x85.png'
-
-type PropsType = {
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-}
+import { GeneralValuesContext } from '../../Context/GeneralValuesContext';
 
 
-function index({
-  isLoading,
-  setIsLoading,
-}: PropsType) {
+
+function index() {
+  const { isLoading, setIsLoading } = useContext(GeneralValuesContext);
+
 
   React.useEffect(()=> {
     setTimeout(()=> {
@@ -44,8 +40,7 @@ function index({
             {/* titulo */}
             <h3 className='mt-8 text-2xl font-extrabold tracking-tight leading-tight'>Ingresar</h3>
 
-            {/* form */}
-            <FormLogin/>
+            <FormLogin />
           </div>
         </div>
 

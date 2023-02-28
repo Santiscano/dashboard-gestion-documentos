@@ -1,6 +1,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './formLogin.css';
 import { login, validateUser } from '../../../services/Firebase.routes';
+import { useContext } from 'react';
+import { IsLoadingType } from '../../../interfaces/Loading';
+import { GeneralValuesContext } from '../../../Context/GeneralValuesContext';
 
 
 type Login = {
@@ -9,6 +12,8 @@ type Login = {
 };
 
 function index() {
+  const { user, setUser, setIsLoading } = useContext(GeneralValuesContext);
+
 
   const reqExp = {
     email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
@@ -18,12 +23,16 @@ function index() {
 
   const onSubmit:SubmitHandler<Login> = async (data) => {
     try{
-      const log = await login(data.email, data.password);
-      console.log('log: ', log);
-      const user = await validateUser();
-      console.log('user: ', user);
+      setIsLoading(true);
+      await login(data.email, data.password);
+      const userValidate = await validateUser();
+      setUser(userValidate?.data);
+      console.log('User: ', user);
     }catch(error){
       console.log('error: ', error);
+    }
+    finally{
+      setIsLoading(false);
     }
   };
 
