@@ -1,8 +1,6 @@
-import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './formLogin.css';
-import { Link } from 'react-router-dom'
-import { login } from '../../../services/Firebase.routes';
+import { login, validateUser } from '../../../services/Firebase.routes';
 
 
 type Login = {
@@ -12,18 +10,22 @@ type Login = {
 
 function index() {
 
-  // expresion regular
   const reqExp = {
     email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
   }
 
   const {register, handleSubmit, watch, formState: { errors }} = useForm<Login>();
-  const onSubmit:SubmitHandler<Login> = data => {
-    login(data.email, data.password);
-    console.log(data)
+
+  const onSubmit:SubmitHandler<Login> = async (data) => {
+    try{
+      const log = await login(data.email, data.password);
+      console.log('log: ', log);
+      const user = await validateUser();
+      console.log('user: ', user);
+    }catch(error){
+      console.log('error: ', error);
+    }
   };
-
-
 
   return (
     <form
@@ -41,18 +43,16 @@ function index() {
       <div>
         <label className='block mb-2 text-sm font-medium text-gray-900 '>Contraseña</label>
         <input type="password"
-          {...register("password",  { required: true, minLength: 8 })}
+          {...register("password",  { required: true, minLength: 4 })}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rouded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           placeholder='Contraseña' />
         {errors.password?.type === 'required' && <span className='form-login-error'>Contraseña requerida</span> }
         {errors.password?.type === 'minLength' && <span className='form-login-error'>La contraseña debe tener minimo 8 Caracteres</span> }
       </div>
 
-      {/* <Link to='/admin/provider' className='flex justify-center'> */}
       <input type="submit"
         value='Entrar'
         className='w-full py-2 mt-6  bg-blue-800 text-white rounded cursor-pointer '></input>
-      {/* </Link> */}
     </form>
   )
 }

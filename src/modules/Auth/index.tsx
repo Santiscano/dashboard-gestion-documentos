@@ -8,10 +8,16 @@ import Loading from '../../components/common/Loading';
 import security from '../../assets/images/cyber-security.png';
 import logo from '../../assets/images/LOGOTIPO ENVIEXPRESS 85x85.png'
 
+type PropsType = {
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 
-function index() {
-  const [isLoading, setIsLoading] = React.useState(true);
+function index({
+  isLoading,
+  setIsLoading,
+}: PropsType) {
 
   React.useEffect(()=> {
     setTimeout(()=> {
@@ -22,7 +28,7 @@ function index() {
   return (
     <>
       { isLoading ?
-      <div className='w-screen h-screen'>
+      <div className='w-screen h-screen flex flex-col justify-center'>
         <Loading/>
       </div>
       :

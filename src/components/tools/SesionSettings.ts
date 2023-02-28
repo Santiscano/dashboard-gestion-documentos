@@ -21,17 +21,21 @@ const roleDisplay:DisplayRoles = {
   7:"Tecnoligia & Informacion",
 }
 
-export function remove(item:any): void {
+export function set(key:string, item:string): void {
+  sessionStorage.setItem(key, item);
+}
+
+export function get(item:string): string | null | undefined {
+  return sessionStorage.getItem(item) ?? '';
+}
+
+export function remove(item:string): void {
   sessionStorage.removeItem(item);
 }
 
-export function get(item:any): string | null | undefined {
-  return sessionStorage.getItem(item);
-}
 
-export function set(key:any, item:any): void {
-  sessionStorage.setItem(key, item);
-}
+
+
 
 export function getJWT(key = null):any {
   // const jwt = jwt_decode(get("jwt"));
@@ -77,7 +81,7 @@ export function getHeader() {
   return {
     headers: {
       "Content-Type": "application/json",
-      // Authorization: `Bearer ` + get("jwt"),
+      authorization: `Bearer ` + get("accessToken"),
     },
   };
 }
@@ -90,7 +94,7 @@ export function getHeaderMultipart() {
   return {
     headers: {
       "Content-Type": "multipart/form-data",
-      // Authorization: `Bearer ` + get("jwt"),
+      Authorization: `Bearer ` + get("accessToken"),
     },
   };
 }
@@ -98,5 +102,5 @@ export function getHeaderMultipart() {
 
 export function session() {
   // @ts-ignore
-  return [undefined, null].includes(get("jwt")) ? false : true;
+  return [undefined, null].includes(get("accessToken")) ? false : true;
 }

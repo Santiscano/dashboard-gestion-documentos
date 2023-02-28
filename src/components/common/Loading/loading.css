@@ -9,16 +9,18 @@
 
 .blobs .blob-center {
   transform-style: preserve-3d;
-  position: absolute;
+  /* position: absolute; */
   background: #003c7b;
   /* background: #fff; */
-  top: 50%;
+  /* top: 50%; */
   left: 50%;
+  display: grid;
+  place-items: center;
   width: 30px;
   height: 30px;
   transform-origin: left top;
   transform: scale(0.9) translate(-50%, -50%);
-  animation: blob-grow_2 linear 3.4s infinite;
+  animation: blob-grow_2 linear 3.4s infinite; /* 2.26 es otra opcion mas rapida */
   border-radius: 50%;
   box-shadow: 0 -10px 40px -5px #003c7b;
   /* box-shadow: 0 -10px 40px -5px #fff; */
@@ -28,7 +30,7 @@
   position: absolute;
   background: #003c7b;
   /* background: #fff; */
-  top: 50%;
+  /* top: 50%; */
   left: 50%;
   width: 30px;
   height: 30px;
@@ -40,7 +42,7 @@
 }
 
 .blob:nth-child(1) {
-  -webkit-animation-delay: 0.2s;
+  -webkit-animation-delay: 0.2s; /* 0.15s es otra opcion de incrementando*/
   animation-delay: 0.2s;
 }
 
