@@ -99,8 +99,19 @@ export function getHeaderMultipart() {
   };
 }
 
-
 export function session() {
-  // @ts-ignore
-  return [undefined, null].includes(get("accessToken")) ? false : true;
+  return !!get("accessToken");
 }
+
+/**
+ *
+ * @returns comprueba si el valor almacenado en la clave
+ * @accessToken en el sesionStorage es undefined o null. si es asi devuelve true
+ */
+// export function session() {
+//   // @ts-ignore
+//   return [undefined, null].includes(get("accessToken")) ? false : true;
+// }
+
+
+

@@ -4,6 +4,7 @@ import { login, validateUser } from '../../../services/Firebase.routes';
 import { useContext } from 'react';
 import { IsLoadingType } from '../../../interfaces/Loading';
 import { GeneralValuesContext } from '../../../Context/GeneralValuesContext';
+import { useNavigate } from 'react-router-dom';
 
 
 type Login = {
@@ -12,7 +13,8 @@ type Login = {
 };
 
 function index() {
-  const { user, setUser, setIsLoading } = useContext(GeneralValuesContext);
+  const { setUser, setIsLoading } = useContext(GeneralValuesContext);
+  const navigate = useNavigate();
 
 
   const reqExp = {
@@ -26,10 +28,13 @@ function index() {
       setIsLoading(true);
       await login(data.email, data.password);
       const userValidate = await validateUser();
-      setUser(userValidate?.data);
-      console.log('User: ', user);
+      if (userValidate?.status === 201 && userValidate?.data.users_status === "ACTIVO"){
+        console.log('userValidate: ', userValidate);
+        setUser(userValidate?.data);
+        navigate("/dashboard")
+      }
     }catch(error){
-      console.log('error: ', error);
+      console.log('error login: ', error);
     }
     finally{
       setIsLoading(false);

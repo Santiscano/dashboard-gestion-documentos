@@ -16,11 +16,6 @@ import { Route, Routes } from 'react-router-dom';
 import WithAuthentication from './Middlewares/WithAuthentication';
 
 function App() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-
-
   return (
     <ThemeProvider theme={Styles}>
       <Paper>
