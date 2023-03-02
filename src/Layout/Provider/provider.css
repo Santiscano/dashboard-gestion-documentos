@@ -3,7 +3,6 @@
     background-color: #eff5fc;
 }
 .layout-section {
-    /* background-color: #eff5fc; */
     display: flex;
     flex-direction: row;
 }

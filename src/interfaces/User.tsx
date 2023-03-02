@@ -22,14 +22,16 @@ export interface setProviders {
 }
 
 export interface ValidatedUserInLogin {
-  idroles: number;
-  idsedes: number;
-  idusers: number;
-  users_email: string;
-  users_identification: string;
-  users_identification_digital_check: string;
-  users_identification_type: string;
-  users_lastname: string;
-  users_name: string;
-  users_status: string;
+  idroles?: number;
+  idsedes?: number;
+  idusers?: number;
+  roles: string;
+  sedes_city: string;
+  sedes_name: string;
+  users_email?: string;
+  users_identification?: string;
+  users_identification_type?: string;
+  users_lastname?: string;
+  users_name?: string;
+  users_status?: string;
 }

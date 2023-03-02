@@ -13,7 +13,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import CloseIcon from '@mui/icons-material/Close';
 
 import rutero from "../../../routes/Rute";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import enviexpress from '../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
 import working from '../../../assets/icons/data-analysis-case-study.png'
 
@@ -54,7 +54,9 @@ function index(props: any) {
       open={props.open}
     >
       <DrawerHeader>
-        <img src={enviexpress} width={160} className="inline " />
+        <Link to="/dashboard/home">
+          <img src={enviexpress} width={160} className="inline " />
+        </Link>
         <IconButton onClick={props.handleDrawerClose}>
           <CloseIcon/>
         </IconButton>

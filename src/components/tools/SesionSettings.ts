@@ -42,13 +42,9 @@ export function getJWT(key = null):any {
   // return key === null ? jwt : getJWT.data[key];
 }
 
-export function getRol(rol:any, display = false): any {
-  if (!display) {
-    // @ts-ignore
-    return roles[rol];
-  }
+export function viewDisplayRol(role: number): string {
   // @ts-ignore
-  return roleDisplay[rol];
+  return roleDisplay[role] || "role desconocido"
 }
 
 export function navigationLiks() {

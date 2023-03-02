@@ -1,28 +1,38 @@
-import React, { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import './auth.css';
 
 // components
 import FormLogin from '../../components/common/FormLogin';
 import Loading from '../../components/common/Loading';
+// mui
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 // images
 import security from '../../assets/images/cyber-security.png';
 import logo from '../../assets/images/LOGOTIPO ENVIEXPRESS 85x85.png'
 import { GeneralValuesContext } from '../../Context/GeneralValuesContext';
+import { Navigate, redirect } from 'react-router-dom';
 
 
 
 function index() {
-  const { isLoading, setIsLoading } = useContext(GeneralValuesContext);
+  const { user, preLoad, isLoading, errorLogin, setIsLoading } = useContext(GeneralValuesContext);
 
 
-  React.useEffect(()=> {
+  useEffect(()=> {
+    if(user){
+      redirect("/dashboard/home")
+    }
     setTimeout(()=> {
       setIsLoading(false);
-    }, 1500)
+    }, 1500);
   },[])
 
   return (
     <>
+      {/* {!user && <Navigate to="/dashboard/home"/> } */}
       { isLoading ?
       <div className='w-screen h-screen flex flex-col justify-center'>
         <Loading/>
@@ -37,9 +47,32 @@ function index() {
               <img src={logo} alt="logo enviexpress" className='w-40' />
             </div>
 
+            {errorLogin && <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {
+                errorLogin === "auth/too-many-requests" ? 'Tienes demasiados intentos fallidos'
+                : errorLogin === "auth/user-not-found" ? 'Usuario no registrado'
+                : errorLogin === "auth/wrong-password" ? 'Contraseña erronea'
+                : 'Algo a Fallado'
+              } — <strong>
+              {
+                errorLogin === "auth/too-many-requests" ? 'Comuniquese con TI'
+                : 'Verifique de nuevo!' }
+              </strong>
+            </Alert>
+            }
+
+
             {/* titulo */}
             <h3 className='mt-8 text-2xl font-extrabold tracking-tight leading-tight'>Ingresar</h3>
 
+            <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              // @ts-ignore
+              open={preLoad}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
             <FormLogin />
           </div>
         </div>

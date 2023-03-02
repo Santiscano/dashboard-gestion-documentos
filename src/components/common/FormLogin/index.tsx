@@ -1,10 +1,10 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './formLogin.css';
 import { login, validateUser } from '../../../services/Firebase.routes';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { IsLoadingType } from '../../../interfaces/Loading';
 import { GeneralValuesContext } from '../../../Context/GeneralValuesContext';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, redirect, useNavigate } from 'react-router-dom';
 
 
 type Login = {
@@ -13,9 +13,8 @@ type Login = {
 };
 
 function index() {
-  const { setUser, setIsLoading } = useContext(GeneralValuesContext);
+  const { setPreLoad, setErrorLogin, setUser, setIsLoading } = useContext(GeneralValuesContext);
   const navigate = useNavigate();
-
 
   const reqExp = {
     email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
@@ -25,49 +24,64 @@ function index() {
 
   const onSubmit:SubmitHandler<Login> = async (data) => {
     try{
-      setIsLoading(true);
-      await login(data.email, data.password);
-      const userValidate = await validateUser();
-      if (userValidate?.status === 201 && userValidate?.data.users_status === "ACTIVO"){
+      setPreLoad(true);
+      const loger = await login(data.email, data.password);
+      setErrorLogin(loger?.data.message);
+      console.log('loger: ', loger);
+      if (loger?.status === 200){
+        const userValidate = await validateUser();
         console.log('userValidate: ', userValidate);
-        setUser(userValidate?.data);
-        navigate("/dashboard")
+        if (userValidate?.status === 201 && userValidate?.data.users_status === "ACTIVO"){
+          setPreLoad(false);
+          setIsLoading(true);
+          setUser(userValidate?.data);
+          navigate("/dashboard/radicados")
+        }
+        // else if (userValidate?.data.users_status !== "ACTIVO") {
+        //   navigate("/forbidden403")
+        // }
       }
-    }catch(error){
+    } catch(error){
       console.log('error login: ', error);
+      navigate("/errorServer500")
     }
     finally{
-      setIsLoading(false);
+      setPreLoad(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mt-8">
-      <div className='mb-6'>
-        <label className='block mb-2 text-sm font-medium text-gray-900 '>Correo</label>
-        <input type="text"
-          {...register("email", { required: true, pattern: reqExp.email })}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rouded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          placeholder='correo@dominio.com'/>
-        {errors.email?.type === 'required' && <span className='form-login-error'>Correo requerido</span> }
-        {errors.email?.type === 'pattern' && <span className='form-login-error'>Revisa bien, no es un formato de correo</span> }
-      </div>
-      <div>
-        <label className='block mb-2 text-sm font-medium text-gray-900 '>Contraseña</label>
-        <input type="password"
-          {...register("password",  { required: true, minLength: 4 })}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rouded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          placeholder='Contraseña' />
-        {errors.password?.type === 'required' && <span className='form-login-error'>Contraseña requerida</span> }
-        {errors.password?.type === 'minLength' && <span className='form-login-error'>La contraseña debe tener minimo 8 Caracteres</span> }
-      </div>
+    <>
+      {/* {!user && (<Navigate to="/dashboard/radicados" replace={true} />)} */}
+      {/* <code>{user}</code> */}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-8"
+      >
+        <div className='mb-6'>
+          <label className='block mb-2 text-sm font-medium text-gray-900 '>Correo</label>
+          <input type="text"
+            {...register("email", { required: true, pattern: reqExp.email })}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rouded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            placeholder='correo@dominio.com'/>
+          {errors.email?.type === 'required' && <span className='form-login-error'>Correo requerido</span> }
+          {errors.email?.type === 'pattern' && <span className='form-login-error'>Revisa bien, no es un formato de correo</span> }
+        </div>
+        <div>
+          <label className='block mb-2 text-sm font-medium text-gray-900 '>Contraseña</label>
+          <input type="password"
+            {...register("password",  { required: true, minLength: 4 })}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rouded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+            placeholder='Contraseña' />
+          {errors.password?.type === 'required' && <span className='form-login-error'>Contraseña requerida</span> }
+          {errors.password?.type === 'minLength' && <span className='form-login-error'>La contraseña debe tener minimo 8 Caracteres</span> }
+        </div>
 
-      <input type="submit"
-        value='Entrar'
-        className='w-full py-2 mt-6  bg-blue-800 text-white rounded cursor-pointer '></input>
-    </form>
+        <input type="submit"
+          value='Entrar'
+          className='w-full py-2 mt-6  bg-blue-800 text-white rounded cursor-pointer '></input>
+      </form>
+    </>
   )
 }
 

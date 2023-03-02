@@ -8,6 +8,9 @@ import SideBar from '../../components/common/SideBar';
 import { useNavigate, Outlet } from 'react-router-dom';
 import './admin.css'
 import Loading from '../../components/common/Loading';
+import { validateUser } from '../../services/Firebase.routes';
+import { GeneralValuesContext } from './../../Context/GeneralValuesContext';
+import { useContext } from 'react';
 
 // width drawer desplegable
 const drawerWidth = 240;
@@ -66,7 +69,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 // METODOS
 function index() {
-
+  const { user, setUser, setIsLoading } = useContext(GeneralValuesContext)
 
   const [open, setOpen] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
@@ -89,8 +92,18 @@ function index() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const loadingUser = async () => {
+    const userValidate = await validateUser();
+    if (userValidate?.status === 201 && userValidate?.data.users_status === "ACTIVO"){
+      setUser(userValidate?.data);
+    }
+    else if (userValidate?.data.users_status !== "ACTIVO") {
+      navigate("/forbidden403")
+    }
+  }
 
   React.useEffect(()=>{
+    loadingUser();
     setTimeout(() => {
       setLoading(false);
     }, 1500)
@@ -102,7 +115,7 @@ function index() {
       <CssBaseline />
 
       {loading ?
-      <div className="w-screen h-screen">
+      <div className="w-screen h-screen flex flex-col justify-center">
         <Loading/>
       </div>
       :

@@ -9,25 +9,26 @@ export default {
   online: {
     settling: [
       {
-        name: "Provedores",
-        url: "/admin/provider",
-        icon: <LocalShippingRoundedIcon sx={{color:"#293184"}} />,
-      },
-      {
         name: "Generar Radicado",
-        url: "/admin/provider",
+        url: "/dashboard/radicados",
         icon: <ReceiptRoundedIcon sx={{color:"#293184"}} />,
       },
       {
+        name: "Provedores",
+        url: "/dashboard/radicados",
+        icon: <LocalShippingRoundedIcon sx={{color:"#293184"}} />,
+      },
+
+      {
         name: "Auditar Radicado",
-        url: "/admin/custom",
+        url: "/dashboard/updates",
         icon: <ScreenSearchDesktopRoundedIcon sx={{color:"#293184"}} />,
       },
     ],
     ti: [
       {
         name: "Administracion TI",
-        url: "/admin/ti",
+        url: "/dashboard/ti",
         icon: <LogoDevIcon sx={{color:"#293184"}} />,
       }
     ],

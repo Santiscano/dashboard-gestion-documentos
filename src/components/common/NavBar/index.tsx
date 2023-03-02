@@ -25,17 +25,24 @@ import { useNavigate } from 'react-router-dom';
 
 // img
 import logo from '../../../assets/images/logo-white.png';
-import userIcon from '../../../assets/images/userIcon.jpg'
+import userIcon from '../../../assets/images/user2.jpg'
 
 // css
 import './navbar.css'
 import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
+import { get, viewDisplayRol } from '../../tools/SesionSettings'
+import { useContext } from 'react';
+import { GeneralValuesContext } from '../../../Context/GeneralValuesContext';
+
 
 
 export default function MenuAppBar(props:any) {
   // navigation
   const navigate = useNavigate();
+
+  const { user } = useContext(GeneralValuesContext);
+  const { users_name, users_lastname, idroles, roles } = user;
 
   // menu avatar
   const menuAvatar = [
@@ -112,7 +119,7 @@ export default function MenuAppBar(props:any) {
           {/* image */}
           <Box sx={{ flexGrow: 0, display: 'flex' }}>
 
-            <Tooltip title="Ver nuevos radicados">
+            {/* <Tooltip title="Ver nuevos radicados">
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
@@ -124,14 +131,14 @@ export default function MenuAppBar(props:any) {
                   <NotificationsNoneRoundedIcon sx={{color:"#fff"}} />
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Typography
               sx={{ mx:3 ,my:1, display:{xs:"none", sm:"none", md:"block"}}}
               style={{textAlign:"center"}}
             >
-              <b>Santiago Sierra </b>
+              <b>{users_name} {users_lastname}</b>
               <br/>
-              <p>Desarrollador</p>
+              <p>{roles}</p>
             </Typography>
             <Tooltip title="Abrir Menu">
               <IconButton

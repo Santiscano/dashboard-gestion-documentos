@@ -216,12 +216,12 @@ function index() {
   const handleOptionsProviders = {
     options: optionsProviders.length > 0 ? optionsProviders : [''],
     // @ts-ignore
-    getOptionLabel: (options: {users_identification: string}) => options.users_identification,
+    getOptionLabel: (options: {users_identification: string}) => `${options.users_identification}`,
     // @ts-ignore
     renderOption: (props, option, index) => {
       return (
         <Box component="li" {...props} key={option.idusers} >
-          {option.users_name} - {option.users_identification}
+          {option.users_name} - {option.users_identification} - {option.users_identification_digital_check}
         </Box>
       )
     },
@@ -448,33 +448,6 @@ function index() {
                           setObjectUser(newValue);
                         }}
                       />
-                      {/* <Autocomplete
-                        disablePortal
-                        filterSelectedOptions
-                        options={optionsProviders.map(
-                          (user) =>
-                          // @ts-ignore
-                            ` ${user.users_name} - ${user.users_identification}`
-                        )}
-                        getOptionLabel={(user) => user}
-                        // @ts-ignore
-                        getOptionDisabled={(user) => user === value}
-                        isOptionEqualToValue={(user, value) => user === value}
-                        itemID={"idusers"}
-                        value={objectUser}
-                        onChange={(event, newValue) => handleValuesUser(newValue)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            // label={!label ? "Usuarios" : label}
-                            variant={"filled"}
-                            InputProps={{
-                              ...params.InputProps,
-                              autoComplete: "off",
-                            }}
-                          />
-                        )}
-                      /> */}
                     </article>
                     }
                   </div>
