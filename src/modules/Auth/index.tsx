@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './auth.css';
 
 // components
@@ -14,11 +14,16 @@ import security from '../../assets/images/cyber-security.png';
 import logo from '../../assets/images/LOGOTIPO ENVIEXPRESS 85x85.png'
 import { GeneralValuesContext } from '../../Context/GeneralValuesContext';
 import { Navigate, redirect } from 'react-router-dom';
+import ModalResetPassword from '../../components/common/ModalResetPassword';
 
 
 
 function index() {
   const { user, preLoad, isLoading, errorLogin, setIsLoading } = useContext(GeneralValuesContext);
+
+  const [open, setOpen] = useState(false);
+  const handleOpenResetPassword  = () => setOpen(true);
+  const handleCloseResetPassword = () => setOpen(false);
 
 
   useEffect(()=> {
@@ -49,25 +54,35 @@ function index() {
 
             {errorLogin && <Alert severity="error">
               <AlertTitle>Error</AlertTitle>
+              <strong>
               {
                 errorLogin === "auth/too-many-requests" ? 'Tienes demasiados intentos fallidos'
                 : errorLogin === "auth/user-not-found" ? 'Usuario no registrado'
                 : errorLogin === "auth/wrong-password" ? 'Contraseña erronea'
                 : 'Algo a Fallado'
-              } — <strong>
+              }
+              </strong> <br/>
               {
-                errorLogin === "auth/too-many-requests" ? 'Comuniquese con TI'
-                : 'Verifique de nuevo!' }
-              </strong>
+                errorLogin === "auth/too-many-requests"
+                &&
+                <button
+                  className='text-blue-800 mt-2 font-bold underline'
+                  onClick={handleOpenResetPassword}
+                >¿Olvidaste la contraseña?</button>
+              }
             </Alert>
             }
+            <ModalResetPassword
+              open={open}
+              close={handleCloseResetPassword}
+            />
 
 
             {/* titulo */}
             <h3 className='mt-8 text-2xl font-extrabold tracking-tight leading-tight'>Ingresar</h3>
 
             <Backdrop
-              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              sx={{ color: '#fff', zIndex: "1000" }}
               // @ts-ignore
               open={preLoad}
             >

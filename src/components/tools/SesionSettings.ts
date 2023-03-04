@@ -9,6 +9,7 @@ const roles:Roles = {
   accounting  : 5,
   treasury    : 6,
   TI          : 7,
+  Delete      : 8,
 }
 
 const roleDisplay:DisplayRoles = {
@@ -18,7 +19,8 @@ const roleDisplay:DisplayRoles = {
   4:"Gerencia",
   5:"Contaduria",
   6:"Tesoreria",
-  7:"Tecnoligia & Informacion",
+  7:"Tecnologia & Informacion",
+  8:"Eliminar",
 }
 
 export function set(key:string, item:string): void {

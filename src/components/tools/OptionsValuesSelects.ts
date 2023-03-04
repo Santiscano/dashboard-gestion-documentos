@@ -35,3 +35,7 @@ export const optionDocumentType = [
   'CEDULA EXTRANJERIA',
   'PASAPORTE',
 ];
+export const optionCediType = [
+  'Cedi Propio',
+  'Cedi Nacionales',
+];

@@ -12,7 +12,7 @@ const Selecting = styled(FormControl)({
     },
   },
 });
-export default function index(props: any) {
+export default function InputSelect(props: any) {
 
   return (
     <div>

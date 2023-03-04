@@ -13,6 +13,7 @@ import {
   optionAccountType,
   optionDocumentType,
   optionsRedirectToOperativo,
+  optionCediType,
   } from '../../components/tools/OptionsValuesSelects';
 import DataTableEditable from '../../components/common/DataTableEditable';
 import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
@@ -67,6 +68,7 @@ function index() {
 
   // valores formulario 1 Get radicado
   const [cedi, setCedi]                         = useState('');         // con cedi se anexa al numero de radicado
+  const [cediType, setCediType]                 = useState('')          //define si son cedis propias o nacionales
 
   // valores que envio al formulario 2
   const [ idUser, setIdUser ]                   = useState('')          //id extraido del objeto objectUser usuario tipo proveedor
@@ -272,7 +274,7 @@ function index() {
     setEmail(props.users_email);
     setCompanyName(props.users_name);
     setLastname(props.users_lastname);
-    setTelephone(props.users_password);
+    setTelephone(props.users_phone);
   }
 
   /**
@@ -286,6 +288,7 @@ function index() {
   const handleCloseModal  = () => setStatusResponse(false);
   const handleCloseModalChild = () => setModalSuccess(false);
   const handleComments    = (e: SelectChangeEvent) => {setComments(e.target.value)};
+  const handleCediType    = (e: SelectChangeEvent) => {setCediType(e.target.value)};
 
   /**
    * metodo para mostrar a la vista el nombre del archivo seleccionado
@@ -453,6 +456,19 @@ function index() {
                   </div>
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2'>
+                      <InputSelect
+                          type={"text"}
+                          name="cediType"
+                          title='Tipo de Cedi'
+                          placeholder="Tipo de Cedi"
+                          required
+                          value={cediType}
+                          onChange={handleCediType}
+                          itemDefault="selecciona el tipo de documento"
+                          items={optionCediType}
+                        />
+                    </article>
+                    <article className='md:w-1/2'>
                       <InputSelectCedi
                         type={"text"}
                         title='Ciudad a Radicar'
@@ -474,8 +490,7 @@ function index() {
               </article>
               :
               <article className='filing'>
-                <section >
-
+                <section>
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2'>
                       <InputSelect
@@ -508,34 +523,6 @@ function index() {
                       />
                     </article>
                     }
-                  </div>
-
-                  <div className='md:flex md:flex-wrap'>
-                    <article className='md:w-1/2' >
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                        >Numero de Radicado</label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"radicado"}
-                        value={settledNumber}
-                        setValue={setSettledNumber}
-                        required
-                        disabled
-                        iconEnd={<NumbersRoundedIcon/>}
-                      />
-                    </article>
-                    <article className='md:w-1/2' >
-                      <InputSelect
-                        type={"text"}
-                        title='Tipo de cuenta'
-                        placeholder="cuenta de"
-                        required
-                        value={accountType}
-                        onChange={handleAccountType}
-                        itemDefault="selecciona el tipo de cuenta"
-                        items={optionAccountType}
-                      />
-                    </article>
                   </div>
 
                   <div className='md:flex md:flex-wrap'>
@@ -599,6 +586,19 @@ function index() {
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
+                        >Numero de Radicado</label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"radicado"}
+                        value={settledNumber}
+                        setValue={setSettledNumber}
+                        required
+                        disabled
+                        iconEnd={<NumbersRoundedIcon/>}
+                      />
+                    </article>
+                    <article className='md:w-1/2' >
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Valor
                         <b className='mx-12'> {price !== '' && formattedAmount(price)} </b>
                       </label>
@@ -610,6 +610,36 @@ function index() {
                         setValue={setPrice}
                         iconEnd={<AttachMoneyRoundedIcon/>}
                       />
+                    </article>
+                  </div>
+
+
+
+                  <div className='md:flex md:flex-wrap'>
+                    <article className='md:w-1/2' >
+                      <InputSelect
+                        type={"text"}
+                        title='Tipo de cuenta'
+                        placeholder="cuenta de"
+                        required
+                        value={accountType}
+                        onChange={handleAccountType}
+                        itemDefault="selecciona el tipo de cuenta"
+                        items={optionAccountType}
+                      />
+                    </article>
+                    <article className='md:w-1/2' >
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
+                          >Numero de Radicado</label>
+                        <TextFieldOutlined
+                            type={"text"}
+                            label={"Telefono"}
+                            value={telephone}
+                            setValue={setTelephone}
+                            required
+                            disabled
+                            iconEnd={<PhoneAndroidRoundedIcon/>}
+                          />
                     </article>
 
                   </div>

@@ -74,7 +74,7 @@ function index() {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rouded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             placeholder='Contraseña' />
           {errors.password?.type === 'required' && <span className='form-login-error'>Contraseña requerida</span> }
-          {errors.password?.type === 'minLength' && <span className='form-login-error'>La contraseña debe tener minimo 8 Caracteres</span> }
+          {errors.password?.type === 'minLength' && <span className='form-login-error'>La contraseña debe tener minimo 6 caracteres</span> }
         </div>
 
         <input type="submit"

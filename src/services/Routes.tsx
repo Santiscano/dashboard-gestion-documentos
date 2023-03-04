@@ -67,6 +67,7 @@ export default {
       createUser: `${host}/createUser`,
       login: `${host}/logIn`,
       validateUser: `${host}/validateUser`,
+      changePassword: `${host}/changePassword`
     },
     pdfSettledNumber: `${hostPdf}/pdf`,
   }

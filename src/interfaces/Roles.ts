@@ -6,6 +6,7 @@ export interface Roles {
   accounting: number;
   treasury  : number;
   TI        : number;
+  Delete    : number;
 }
 
 export interface DisplayRoles {
@@ -16,4 +17,5 @@ export interface DisplayRoles {
   5: string;
   6: string;
   7: string;
+  8: string;
 }

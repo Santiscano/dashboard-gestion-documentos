@@ -51,17 +51,26 @@ export const login = async (users_email:string, users_password:string) => {
   } catch(error) {
     console.log('error login: ', error);
   }
-}
+};
 
 export const validateUser = async () => {
   try{
     const response = await axios.post(Routes.api.firebase.validateUser,{},getHeader())
     const user = response?.data;
-    // console.log('user: ', user);
     set('user', user);
     return response;
   } catch(error) {
-    // console.log('error: ', error);
 
   }
-}
+};
+
+export const changePassword = async (users_email: string) => {
+  try{
+
+    const response = await axios.post(Routes.api.firebase.changePassword,{
+      users_email,
+    },getHeader())
+    console.log('response: ', response);
+    return response;
+  } catch(error) {}
+};
