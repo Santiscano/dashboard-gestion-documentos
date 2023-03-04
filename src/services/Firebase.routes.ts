@@ -66,7 +66,6 @@ export const validateUser = async () => {
 
 export const changePassword = async (users_email: string) => {
   try{
-
     const response = await axios.post(Routes.api.firebase.changePassword,{
       users_email,
     },getHeader())

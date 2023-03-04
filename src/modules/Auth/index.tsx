@@ -15,6 +15,7 @@ import logo from '../../assets/images/LOGOTIPO ENVIEXPRESS 85x85.png'
 import { GeneralValuesContext } from '../../Context/GeneralValuesContext';
 import { Navigate, redirect } from 'react-router-dom';
 import ModalResetPassword from '../../components/common/ModalResetPassword';
+import LoadingMUI from './../../components/common/LoadingMUI/index';
 
 
 
@@ -81,13 +82,14 @@ function index() {
             {/* titulo */}
             <h3 className='mt-8 text-2xl font-extrabold tracking-tight leading-tight'>Ingresar</h3>
 
-            <Backdrop
-              sx={{ color: '#fff', zIndex: "1000" }}
+            {/* <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
               // @ts-ignore
               open={preLoad}
             >
               <CircularProgress color="inherit" />
-            </Backdrop>
+            </Backdrop> */}
+            <LoadingMUI/>
             <FormLogin />
           </div>
         </div>

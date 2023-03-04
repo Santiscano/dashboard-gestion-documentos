@@ -7,6 +7,11 @@ import TextFieldOutlined from "../TextFieldOutline";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import { changePassword } from "../../../services/Firebase.routes";
 import { GeneralValuesContext } from "./../../../Context/GeneralValuesContext";
+import LoadingMUI from "../LoadingMUI";
+
+const reqExp = {
+  email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+}
 
 const style = {
   position: "absolute" as "absolute",
@@ -36,12 +41,16 @@ export default function ModalResetPassword(props: any) {
   const handleSubmitResetPassword = async () => {
     try {
       setPreLoad(true);
-      const response = await changePassword(email);
-      if (response?.data.data?.code === "auth/invalid-email") {
-        setResponseResetInvalid("email invalido");
-      }
-      if(response?.data.message === "Verificar el correo: david.giraldo@teclab.com.co") {
-        setResponseReset(response.data.message);
+      if(reqExp.email.test(email)) {
+        const response = await changePassword(email);
+        if (response?.data.data?.code === "auth/invalid-email") {
+          setResponseResetInvalid("invalid email");
+        }
+        if(response?.data.message === "Verificar el correo: david.giraldo@teclab.com.co") {
+          setResponseReset(response.data.message);
+        }
+      } else {
+        setResponseResetInvalid('Not format email')
       }
     } catch (error) {
       console.log("error: ", error);
@@ -66,6 +75,7 @@ export default function ModalResetPassword(props: any) {
         aria-describedby="modal-modal-description"
         className="animate__animated animate__fadeIn"
       >
+        <>
         <Box sx={style}>
           {responseReset == "" ? (
             <>
@@ -81,11 +91,12 @@ export default function ModalResetPassword(props: any) {
                     label={"Correo Electronico"}
                     value={email}
                     setValue={setEmail}
-                    required
+                    required={true}
                     iconEnd={<EmailRoundedIcon />}
                   />
                 </article>
-                {responseResetInvalid && <span className='form-login-error'>Revisa bien, el correo no existe en la base de datos</span>}
+                {responseResetInvalid === "invalid email" && <span className='form-login-error'>Revisa bien, el correo no existe en la base de datos</span>}
+                {responseResetInvalid === "Not format email" && <span className='form-login-error'>{email} No es un email valido</span>}
               </div>
               <button
                 className="w-28 py-2 mt-6  bg-blue-800 text-white rounded cursor-pointer"
@@ -116,12 +127,17 @@ export default function ModalResetPassword(props: any) {
                   <div className="check-shadow"></div>
                 </div>
               </div>
-              <h3 className="animate__animated animate__fadeIn">
+              <h1 className="my-2 text-2xl font-extrabold tracking-tight leading-tight text-center">
+                Hemos enviado un correo para que puedas recuperar tu contraseña
+              </h1>
+              <h3 className="text-center text-xl animate__animated animate__fadeIn">
                 {responseReset}
               </h3>
             </>
           )}
         </Box>
+        <LoadingMUI/>
+        </>
       </Modal>
     </>
   );
