@@ -2,16 +2,13 @@ import { useState, useEffect, useContext } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import "animate.css";
-import TextFieldOutlined from "../TextFieldOutline";
 
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import { changePassword } from "../../../services/Firebase.routes";
 import { GeneralValuesContext } from "./../../../Context/GeneralValuesContext";
 import LoadingMUI from "../LoadingMUI";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-const reqExp = {
-  email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
-}
+
 
 const style = {
   position: "absolute" as "absolute",
@@ -31,38 +28,43 @@ const style = {
   zIndex: "1",
 };
 
+type email = {
+  email: string,
+};
+
 export default function ModalResetPassword(props: any) {
-  const [email, setEmail] = useState("");
-  const [responseResetInvalid, setResponseResetInvalid] = useState("");
-  const [responseReset, setResponseReset] = useState("");
+  const [responseReset, setResponseReset] = useState('');
+  const [responseError, setResponseError] = useState('');
 
   const { setPreLoad } = useContext(GeneralValuesContext);
 
-  const handleSubmitResetPassword = async () => {
-    try {
+  const reqExp = {
+    email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+  }
+
+  const {register, handleSubmit, watch, reset,formState: { errors }} = useForm<email>();
+
+  const handleSubmitResetPassword: SubmitHandler<email> = async (data) => {
+    try{
       setPreLoad(true);
-      if(reqExp.email.test(email)) {
-        const response = await changePassword(email);
-        if (response?.data.data?.code === "auth/invalid-email") {
-          setResponseResetInvalid("invalid email");
-        }
-        if(response?.data.message === "Verificar el correo: david.giraldo@teclab.com.co") {
-          setResponseReset(response.data.message);
-        }
-      } else {
-        setResponseResetInvalid('Not format email')
+      const response = await changePassword(data.email);
+      if (response?.data.message === `Verificar el correo: ${data.email}`){
+        setResponseError('');
+        setResponseReset(`Verificar el correo: ${data.email}`);
+        reset({email:''});
+      } else if(response?.data.data.code === "auth/user-not-found"){
+        setResponseError("auth/user-not-found")
       }
-    } catch (error) {
-      console.log("error: ", error);
+    } catch(error) {
+      console.log('error: ', error);
     } finally {
       setPreLoad(false);
     }
-  };
-
+  }
   useEffect(() => {
     return () => {
-      setEmail("");
-      setResponseResetInvalid("");
+      setResponseReset('');
+      setResponseError('');
     };
   }, []);
 
@@ -79,31 +81,33 @@ export default function ModalResetPassword(props: any) {
         <Box sx={style}>
           {responseReset == "" ? (
             <>
-              <h3 className="createFiling">Reestablecer contraseña</h3>
-              <div className="md:flex md:flex-wrap">
-                <article className="w-full">
-                  <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                    Te enviaremos un correo donde podras reestablecer la
-                    contraseña
-                  </label>
-                  <TextFieldOutlined
-                    type={"email"}
-                    label={"Correo Electronico"}
-                    value={email}
-                    setValue={setEmail}
-                    required={true}
-                    iconEnd={<EmailRoundedIcon />}
-                  />
-                </article>
-                {responseResetInvalid === "invalid email" && <span className='form-login-error'>Revisa bien, el correo no existe en la base de datos</span>}
-                {responseResetInvalid === "Not format email" && <span className='form-login-error'>{email} No es un email valido</span>}
-              </div>
-              <button
-                className="w-28 py-2 mt-6  bg-blue-800 text-white rounded cursor-pointer"
-                onClick={handleSubmitResetPassword}
+              <form
+                onSubmit={handleSubmit(handleSubmitResetPassword)}
               >
-                Recuperar
-              </button>
+                <h3 className="createFiling">Reestablecer Contraseña</h3>
+                <div className="md:flex md:flex-wrap">
+                  <article className="w-full">
+                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                      Te enviaremos un correo donde podras reestablecer la
+                      contraseña
+                    </label>
+                    <input type="text"
+                      {...register("email", { required: true, pattern: reqExp.email })}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rouded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                      placeholder='correo@dominio.com'
+                    />
+                    {errors.email?.type === 'required' && <span className='form-login-error'>Correo requerido</span> }
+                    {errors.email?.type === 'pattern' && <span className='form-login-error'>Revisa bien, no es un formato de correo</span> }
+                  </article>
+                    <span className='form-login-error'>
+                      {responseError === "auth/user-not-found" && "email no existente en la base de datos" }
+                    </span>
+                </div>
+                <button
+                  type="submit"
+                  className="w-28 py-2 mt-6  bg-blue-800 text-white rounded cursor-pointer"
+                >Recuperar</button>
+              </form>
             </>
           ) : (
             <>
