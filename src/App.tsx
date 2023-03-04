@@ -18,19 +18,25 @@ import { Paper, ThemeProvider } from '@mui/material';
 import { Styles }  from './config/theme.config'
 
 import { Route, Routes } from 'react-router-dom';
+import NotAuthentication from './Middlewares/NotAuthentication';
 import WithAuthentication from './Middlewares/WithAuthentication';
 import Home from './Layout/Home/index';
+import Testing from './modules/Testing';
 
 function App() {
   return (
     <ThemeProvider theme={Styles}>
       <Paper>
         <Routes>
-          <Route index element={ <Auth /> } />
-          <Route path='/login' element={ <Auth /> } />
-
           <Route
             element={<WithAuthentication/>}
+          >
+            <Route index element={ <Auth /> } />
+            <Route path='/login' element={ <Auth /> } />
+          </Route>
+
+          <Route
+            element={<NotAuthentication/>}
           >
             <Route path='/dashboard'  element={ <Admin/> }>
               <Route path='home' element={<Home/>} />
@@ -42,6 +48,8 @@ function App() {
               <Route path='ti' element={<Ti/>} />
             </Route>
           </Route>
+
+          <Route path='testing' element={<Testing/>}/>
 
 
           <Route path="forbidden403" element={<Error

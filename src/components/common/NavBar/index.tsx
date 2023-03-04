@@ -42,6 +42,7 @@ export default function MenuAppBar(props:any) {
   const navigate = useNavigate();
 
   const { user } = useContext(GeneralValuesContext);
+  // @ts-ignore
   const { users_name, users_lastname, idroles, roles } = user;
 
   // menu avatar
@@ -112,33 +113,22 @@ export default function MenuAppBar(props:any) {
             style={{width:"110px", height:"auto" }}/>
 
           <Typography
-          variant="h6"
-          component="div"
-          sx={{ flexGrow: 1 }}/>
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}/>
 
           {/* image */}
           <Box sx={{ flexGrow: 0, display: 'flex' }}>
 
-            {/* <Tooltip title="Ver nuevos radicados">
-              <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
-                aria-haspopup="true"
-                onClick={handleOpenNotification}
-              >
-                <Badge badgeContent={countNotification} color="error" >
-                  <NotificationsNoneRoundedIcon sx={{color:"#fff"}} />
-                </Badge>
-              </IconButton>
-            </Tooltip> */}
+
             <Typography
               sx={{ mx:3 ,my:1, display:{xs:"none", sm:"none", md:"block"}}}
               style={{textAlign:"center"}}
+              component="div"
             >
               <b>{users_name} {users_lastname}</b>
               <br/>
-              <p>{roles}</p>
+              <div>{roles}</div>
             </Typography>
             <Tooltip title="Abrir Menu">
               <IconButton

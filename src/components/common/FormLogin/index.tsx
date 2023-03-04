@@ -52,8 +52,6 @@ function index() {
 
   return (
     <>
-      {/* {!user && (<Navigate to="/dashboard/radicados" replace={true} />)} */}
-      {/* <code>{user}</code> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-8"

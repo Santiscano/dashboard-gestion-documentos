@@ -28,6 +28,7 @@ import PhoneAndroidRoundedIcon from '@mui/icons-material/PhoneAndroidRounded';
 import AttachEmailRoundedIcon from '@mui/icons-material/AttachEmailRounded';
 import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import { Autocomplete, Box, TextField } from '@mui/material';
 
 import 'animate.css';
@@ -74,7 +75,8 @@ function index() {
   const [ idUser, setIdUser ]                   = useState('')          //id extraido del objeto objectUser usuario tipo proveedor
   const [settledNumber, setSettledNumber]       = useState('');         // numero de radicado generado por DB
   const [price, setPrice]                       = useState('');         // numero escrito en el input
-  const [redirectTo, setRedirectTo]             = useState<number>();         // selecionado de usuarios rol !== provider && radication
+  const [redirectTo, setRedirectTo]             = useState<number>();   // selecionado de usuarios rol !== provider && radication
+  const [accountNumber, setAccountNumber]       = useState('');   // numero de cuenta relacionado a tipo de cuenta;
 
   // valores formulario file
   const [file, setFile]                         = useState('');
@@ -153,7 +155,6 @@ function index() {
       //@ts-ignore
     }) => user.users_identification_type && user.users_identification_type.toUpperCase() == SelectDocumentType )
     setOptionsProviders(filterDocumentType);
-
   };
 
   /**
@@ -289,6 +290,7 @@ function index() {
   const handleCloseModalChild = () => setModalSuccess(false);
   const handleComments    = (e: SelectChangeEvent) => {setComments(e.target.value)};
   const handleCediType    = (e: SelectChangeEvent) => {setCediType(e.target.value)};
+  // const handleAccountNumber=(e: any) => {setAccountNumber(e.target.value)};
 
   /**
    * metodo para mostrar a la vista el nombre del archivo seleccionado
@@ -630,16 +632,16 @@ function index() {
                     </article>
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                          >Numero de Radicado</label>
-                        <TextFieldOutlined
+                          >numero de cuenta</label>
+                        {/* <TextFieldOutlined
                             type={"text"}
-                            label={"Telefono"}
-                            value={telephone}
-                            setValue={setTelephone}
+                            label={"numero"}
+                            value={accountNumber}
+                            setValue={setAccountNumber}
                             required
-                            disabled
-                            iconEnd={<PhoneAndroidRoundedIcon/>}
-                          />
+                            iconEnd={PostAddIcon}
+                          /> */}
+
                     </article>
 
                   </div>

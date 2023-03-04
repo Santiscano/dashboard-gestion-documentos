@@ -8,7 +8,10 @@ import { GeneralValuesContext } from "./../../../Context/GeneralValuesContext";
 import LoadingMUI from "../LoadingMUI";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-
+interface Props {
+  open: boolean;
+  close: ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void) | undefined;
+}
 
 const style = {
   position: "absolute" as "absolute",
@@ -32,7 +35,10 @@ type email = {
   email: string,
 };
 
-export default function ModalResetPassword(props: any) {
+export default function ModalResetPassword({
+  open,
+  close,
+}:Props) {
   const [responseReset, setResponseReset] = useState('');
   const [responseError, setResponseError] = useState('');
 
@@ -71,8 +77,8 @@ export default function ModalResetPassword(props: any) {
   return (
     <>
       <Modal
-        open={props.open}
-        onClose={props.close}
+        open={open}
+        onClose={close}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="animate__animated animate__fadeIn"

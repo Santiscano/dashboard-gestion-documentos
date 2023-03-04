@@ -36,6 +36,6 @@ export const optionDocumentType = [
   'PASAPORTE',
 ];
 export const optionCediType = [
-  'Cedi Propio',
-  'Cedi Nacionales',
+  'Propio',
+  'Nacionales',
 ];

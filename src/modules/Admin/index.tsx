@@ -11,6 +11,7 @@ import Loading from '../../components/common/Loading';
 import { validateUser } from '../../services/Firebase.routes';
 import { GeneralValuesContext } from './../../Context/GeneralValuesContext';
 import { useContext } from 'react';
+import { get } from '../../components/tools/SesionSettings';
 
 // width drawer desplegable
 const drawerWidth = 240;
@@ -71,6 +72,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 function index() {
   const { user, setUser, setIsLoading } = useContext(GeneralValuesContext)
 
+
   const [open, setOpen] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
 
@@ -97,7 +99,10 @@ function index() {
     if (userValidate?.status === 201 && userValidate?.data.users_status === "ACTIVO"){
       setUser(userValidate?.data);
     }
-    else if (userValidate?.data.users_status !== "ACTIVO") {
+    else if (get("accessToken") && userValidate?.data.users_status !== "ACTIVO") {
+      navigate("/login")
+    }
+    else if(userValidate?.data.users_status !== "ACTIVO") {
       navigate("/forbidden403")
     }
   }
