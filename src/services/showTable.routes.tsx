@@ -1,6 +1,6 @@
 import axios from "axios";
 import Routes from './Routes';
-import { getHeader, set } from "../components/tools/SesionSettings";
+import { getHeader } from "../components/tools/SesionSettings";
 
 
 export const showTablePending = async () => {
@@ -13,8 +13,11 @@ export const showTablePending = async () => {
 
 export const showTableAllFiles = async () => {
   try{
-    const response = await axios.get(Routes.api.tables.allFiles, getHeader());
-    console.log('response: ', response);
+    const response = await axios.post(Routes.api.tables.allFiles,{
+      api_key: import.meta.env.VITE_API_KEY
+    },getHeader());
+    // console.log('response row: ', response);
+    return response;
   } catch(error) {
     console.log('error: ', error);
   }

@@ -1,13 +1,19 @@
 import DataTableAllFiles from '../../components/common/DataTableAllFiles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { showTableAllFiles } from '../../services/showTable.routes';
 
 function AllFilesTable() {
-  const rows = async () => {
-    const response = await
+  const [row, setRow] = useState([]);
+
+  const handleGetTableData = async () => {
+    const table = await showTableAllFiles();
+    const rows = await table?.data.dataInfo;
+    setRow(rows ? rows : []);
+    console.log('row table--: ', rows);
   };
 
   useEffect(() => {
-    rows();
+    handleGetTableData();
   },[])
   return (
     <div className='layout'>
@@ -16,7 +22,9 @@ function AllFilesTable() {
             <h3 className='container__createFiling createFiling'>Todos los archivos</h3>
             <div className='filing'>
               <section className='viewTableEdit'>
-                <DataTableAllFiles/>
+                <DataTableAllFiles
+                  row={row}
+                />
               </section>
             </div>
           </div>

@@ -70,7 +70,7 @@ export default {
       changePassword: `${host}/changePassword`
     },
     tables: {
-      pending: `${host}/`,
+      pending: `${host}/pendingTable`,
       allFiles: `${host}/showTable`,
     },
     pdfSettledNumber: `${hostPdf}/pdf`,
