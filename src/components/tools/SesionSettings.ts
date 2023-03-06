@@ -40,8 +40,8 @@ export function remove(item:string): void {
 
 
 export function getJWT(key = null):any {
-  // const jwt = jwt_decode(get("jwt"));
-  // return key === null ? jwt : getJWT.data[key];
+//   const jwt = jwt_decode(get("jwt"));
+//   return key === null ? jwt : getJWT.data[key];
 }
 
 export function viewDisplayRol(role: number): string {

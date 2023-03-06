@@ -20,7 +20,7 @@ import LoadingMUI from './../../components/common/LoadingMUI/index';
 
 
 function index() {
-  const { user, preLoad, isLoading, errorLogin, setIsLoading } = useContext(GeneralValuesContext);
+  const { user, isLoading, errorLogin, setIsLoading } = useContext(GeneralValuesContext);
 
   const [open, setOpen] = useState(false);
   const handleOpenResetPassword  = () => setOpen(true);

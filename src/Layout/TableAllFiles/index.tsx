@@ -1,12 +1,11 @@
-import React from 'react'
 
-function index() {
+function TableAllFiles() {
   return (
     <div className='layout'>
       <section className='layout-section'>
         <div className='layout-left'>
           <div className='container__createFiling'>
-            <h3 className='createFiling'>Actualizar radicados generados</h3>
+            <h3 className='createFiling'>Tabla Todos los Archivos </h3>
           </div>
         </div>
       </section>
@@ -14,4 +13,4 @@ function index() {
   )
 }
 
-export default index
+export default TableAllFiles;

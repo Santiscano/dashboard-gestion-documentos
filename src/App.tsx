@@ -5,7 +5,7 @@ import Auth from './modules/Auth';
 import Admin from './modules/Admin';
 // import { NotFound } from './modules/NotFound';
 import Error from './components/common/error';
-import Updates from './Layout/Updates';
+import Updates from './Layout/PendingFilesTable';
 import Provider from './Layout/Provider';
 import Ti from './Layout/Ti';
 import forbidden403Img from './assets/images/403.jpg';
@@ -22,6 +22,8 @@ import NotAuthentication from './Middlewares/NotAuthentication';
 import WithAuthentication from './Middlewares/WithAuthentication';
 import Home from './Layout/Home/index';
 import Testing from './modules/Testing';
+import PendingFilesTable from './Layout/PendingFilesTable/index';
+import TableAllFiles from './Layout/TableAllFiles';
 
 function App() {
   return (
@@ -40,11 +42,9 @@ function App() {
           >
             <Route path='/dashboard'  element={ <Admin/> }>
               <Route path='home' element={<Home/>} />
-              <Route path='radicados' element={<Provider/>} />
-              <Route path='auditoria' element={<Provider/>} />
-              <Route path='gerencia' element={<Provider/>} />
-              <Route path='contabilidad' element={<Provider/>} />
-              <Route path='tesoreria' element={<Updates/>} />
+              <Route path='settled' element={<Provider/>} />
+              <Route path='pendding' element={<PendingFilesTable/>} />
+              <Route path='all-files' element={<TableAllFiles/>} />
               <Route path='ti' element={<Ti/>} />
             </Route>
           </Route>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Drawer from '@mui/material/Drawer';
 // components mui
 import { styled, useTheme } from '@mui/material/styles';
@@ -16,6 +16,9 @@ import rutero from "../../../routes/Rute";
 import { Link, useNavigate } from "react-router-dom";
 import enviexpress from '../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
 import working from '../../../assets/icons/data-analysis-case-study.png'
+import { Collapse } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import VerifiedRoundedIcon from '@mui/icons-material/VerifiedRounded';
 
 
 const drawerWidth = 240;
@@ -36,6 +39,9 @@ const rolTI = true;
 function index(props: any) {
   const theme = useTheme();
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(!open)
 
   return (
     <Drawer
@@ -67,7 +73,7 @@ function index(props: any) {
       <List>
         {rutero.online.settling.map((list, index) => (
           <ListItem key={index} disablePadding>
-          <ListItemButton  onClick={ ()=> navigate(`${list.url}`)}>
+            <ListItemButton onClick={ ()=> navigate(`${list.url}`) } >
               <ListItemIcon>
                 {list.icon}
               </ListItemIcon>
@@ -75,7 +81,32 @@ function index(props: any) {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItemButton onClick={handleOpen}>
+          <ListItemIcon>
+          <VerifiedRoundedIcon sx={{color:"#293184"}} />
+          </ListItemIcon>
+          <ListItemText primary="Autorizaciones" />
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {rutero.online.auth.map((list, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemButton
+                    sx={{pl: 4 }}
+                    onClick={ ()=> navigate(`${list.url}`) }
+                  >
+                  <ListItemIcon>
+                    {list.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={list.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Collapse>
       </List>
+
       <Divider />
 
       {rolTI && <List>

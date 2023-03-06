@@ -126,13 +126,13 @@ function index() {
       :
       <>
         <NavBar
-        handleDrawerOpen={handleDrawerOpen}
-        open={open}
+          handleDrawerOpen={handleDrawerOpen}
+          open={open}
         />
 
         <SideBar
-        open={open}
-        handleDrawerClose={handleDrawerClose}
+          open={open}
+          handleDrawerClose={handleDrawerClose}
         />
 
         <Main open={open} sx={{ padding: 0 }}>

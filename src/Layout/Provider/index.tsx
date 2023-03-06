@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './provider.css';
 import { SelectChangeEvent } from '@mui/material/Select';
 import InputSelect from '../../components/common/InputSelect';
@@ -18,7 +18,7 @@ import {
 import DataTableEditable from '../../components/common/DataTableEditable';
 import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
 import AutoCompleteRedirectTo from '../../components/common/AutoCompleteRedirectTo';
-import ButtonOpenUploadFile from './../../components/common/ButtonOpenUploadFile';
+import ButtonOpenUploadFile from '../../components/common/ButtonOpenUploadFile';
 import UploadFileModal from '../../components/common/ModalUploadFile';
 
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
@@ -42,8 +42,9 @@ import { AllUsers, setProviders } from '../../interfaces/User';
 import { formattedAmount } from '../../Utilities/formatted.utility';
 import { createFilePath } from '../../services/FilesPath.routes';
 import ModalSuccess from '../../components/common/ModalSuccess';
-import { AllCedis, CedisId, CedisIdName } from './../../interfaces/Cedis';
+import { AllCedis, CedisId, CedisIdName } from '../../interfaces/Cedis';
 import InputSelectCedi from '../../components/common/InputSelectCedi';
+import { GeneralValuesContext } from '../../Context/GeneralValuesContext';
 
 function index() {
   // temporal para revisar respuesta
@@ -98,6 +99,7 @@ function index() {
   const [fileName, setFileName]           = useState('');
   const [role, setRole ]                  = useState('radicacion');
 
+  const { preLoad, setPreLoad } = useContext(GeneralValuesContext);
   // METHODS
 
   /**
@@ -201,13 +203,21 @@ function index() {
    * @param e evento
    */
   const handleSettledSubmit = async (e:any) => {
-    e.preventDefault();
-    // @ts-ignore
-    const newSettled = await getSettled(cedi.sedes_city);
-    console.log('newSettled: ', newSettled);
+    try{
+      setPreLoad(true);
+      console.log(preLoad);
+      e.preventDefault();
+      // @ts-ignore
+      const newSettled = await getSettled(cedi.sedes_city);
+      console.log('newSettled: ', newSettled);
 
-    setSettledNumber(newSettled);
-    newSettled ? setIsSettled(true) : setIsSettled(false);
+      setSettledNumber(newSettled);
+      newSettled ? setIsSettled(true) : setIsSettled(false);
+    } catch(error) {
+      console.log('error: ', error);
+    } finally {
+      setPreLoad(false);
+    }
   };
 
   /**
@@ -432,13 +442,13 @@ function index() {
                         items={optionDocumentType}
                       />
                     </article>
-                    { documentType &&
                     <article className='md:w-1/2'>
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                         >Numero Documento</label>
                       {/* @ts-ignore */}
                       <Autocomplete
                         sx={{marginLeft:1, my:2}}
+                        disabled={!documentType}
                         id='filter-providers'
                         {...handleOptionsProviders}
                         autoComplete
@@ -454,7 +464,6 @@ function index() {
                         }}
                       />
                     </article>
-                    }
                   </div>
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2'>
@@ -607,15 +616,13 @@ function index() {
                       <TextFieldOutlined
                         type={"number"}
                         label={"valor"}
-                        required
                         value={price}
                         setValue={setPrice}
+                        required
                         iconEnd={<AttachMoneyRoundedIcon/>}
                       />
                     </article>
                   </div>
-
-
 
                   <div className='md:flex md:flex-wrap'>
                     <article className='md:w-1/2' >
@@ -633,14 +640,14 @@ function index() {
                     <article className='md:w-1/2' >
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
                           >numero de cuenta</label>
-                        {/* <TextFieldOutlined
+                        <TextFieldOutlined
                             type={"text"}
                             label={"numero"}
                             value={accountNumber}
                             setValue={setAccountNumber}
                             required
-                            iconEnd={PostAddIcon}
-                          /> */}
+                            iconEnd={<PostAddIcon/>}
+                          />
 
                     </article>
 
