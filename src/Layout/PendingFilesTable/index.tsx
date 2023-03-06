@@ -1,14 +1,18 @@
+import DataTablePending from '../../components/common/DataTablePending';
 
 function PendingFilesTable() {
   return (
     <div className='layout'>
       <section className='layout-section'>
-        <div className='layout-left'>
-          <div className='container__createFiling'>
-            <h3 className='createFiling'>Tabla archivos pendientes por autorizar</h3>
+          <div className='layout-left'>
+            <h3 className='container__createFiling createFiling'>Pendientes por Autorizar</h3>
+            <div className='filing'>
+              <section className='viewTableEdit'>
+                <DataTablePending/>
+              </section>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
     </div>
   )
 }

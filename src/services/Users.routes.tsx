@@ -1,5 +1,7 @@
 import axios from "axios";
-import Routes from './Routes'
+import Routes from './Routes';
+import { getHeader, set } from "../components/tools/SesionSettings";
+
 
 
 export const validateUser = async () => {
@@ -8,8 +10,8 @@ export const validateUser = async () => {
       "api_key": "37323a416eb548626b3e668255c4d436",
       "users_email": "santiago.sierra@teclab.com.co",
       "users_password": "1234"
-    })
-    console.log('response: ', response);
+    },getHeader())
+    // console.log('response: ', response);
     return response;
   } catch(error) {
     console.log(error)
@@ -20,8 +22,8 @@ export const getUsers = async () => {
   try{
     const response = await axios.post(Routes.api.users.getUsers,{
       api_key: import.meta.env.VITE_API_KEY
-    })
-    console.log('response getusers: ', response);
+    },getHeader())
+    // console.log('response getusers: ', response);
     const users = response.data
     return users;
   } catch(error) {
@@ -44,7 +46,7 @@ export const createUser = async () => {
       "users_password": "123456",
       "users_providers_paydays": null,
       "users_providers_expiration_date": null
-    })
+    },getHeader())
     console.log("create user: ", response);
     return response;
   } catch(error) {
@@ -78,8 +80,7 @@ export const editUser = async () => {
 }
 export const deleteUser = async () => {
   try{
-    const response = await axios.delete(Routes.api.users.deleteUser,{})
-
+    const response = await axios.delete(Routes.api.users.deleteUser,getHeader())
     return response;
   } catch(error) {
     console.log(error)

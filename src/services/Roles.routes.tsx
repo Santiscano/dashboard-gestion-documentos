@@ -1,12 +1,14 @@
 import axios from "axios";
-import Routes from './Routes'
+import Routes from './Routes';
+import { getHeader, set } from "../components/tools/SesionSettings";
+
 
 
 export const getRoles = async () => {
   try{
     const response = await axios.post(Routes.api.roles.get,{
       api_key: import.meta.env.VITE_API_KEY
-    })
+    }, getHeader())
     console.log('response: ', response);
     return response;
   } catch(error) {
@@ -19,7 +21,7 @@ export const createRol = async () => {
     const response = await axios.post(Routes.api.roles.create,{
       "roles": "frontEndRol",
       "roles_description": "rol creado desde frontend"
-    })
+    }, getHeader())
     console.log('response: ', response);
     return response;
   } catch(error) {
@@ -33,7 +35,7 @@ export const editRol = async () => {
       "idroles": 10,
       "roles": "frontEndRol",
       "roles_description": "Equipo de el verguero"
-    })
+    }, getHeader())
     console.log('response: ', response);
     return response;
   } catch(error) {

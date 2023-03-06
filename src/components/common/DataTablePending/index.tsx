@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridValueGetterParams, GridFilterModel, GridToolbar, GridRenderCellParams, GridToolbarContainer, GridToolbarFilterButton, GridToolbarColumnsButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
@@ -108,7 +107,7 @@ function GridToolbarConfig() {
 
 
 
-export function DataTableHalfScreen() {
+export default function DataTablePending() {
 
   return (
     <>
@@ -129,10 +128,7 @@ export function DataTableHalfScreen() {
           initialState={{
             columns: {
               columnVisibilityModel: {
-                cedi: false,
                 account_type: false,
-                document_type: false,
-                document_number: false,
                 address: false,
                 phone: false,
                 email: false,

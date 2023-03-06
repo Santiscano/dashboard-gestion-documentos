@@ -3,7 +3,7 @@ import './provider.css';
 import { SelectChangeEvent } from '@mui/material/Select';
 import InputSelect from '../../components/common/InputSelect';
 import Upload from '../../components/common/Upload';
-import { DataTableHalfScreen } from '../../components/common/DataTableHalfScreen'
+import DataTableAllFiles from '../../components/common/DataTableAllFiles'
 import Preview from '../../components/common/Preview';
 import Button from '../../components/common/Button';
 import TextFieldOutlined from '../../components/common/TextFieldOutline';
@@ -15,7 +15,6 @@ import {
   optionsRedirectToOperativo,
   optionCediType,
   } from '../../components/tools/OptionsValuesSelects';
-import DataTableEditable from '../../components/common/DataTableEditable';
 import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
 import AutoCompleteRedirectTo from '../../components/common/AutoCompleteRedirectTo';
 import ButtonOpenUploadFile from '../../components/common/ButtonOpenUploadFile';
@@ -413,7 +412,6 @@ function index() {
 
   return (
     <div className='layout'>
-      {role == "radicacion" &&
       <div>
         <section className='layout-section'>
           <div className='layout-left'>
@@ -742,37 +740,7 @@ function index() {
               }
           </div>
         </section>
-
-        <section className='layout-section'>
-          <div className='layout-left'>
-            <h3 className='container__createFiling createFiling'>Tablas radicados</h3>
-            <div className='filing'>
-              <section className='viewTableEdit'>
-                <DataTableEditable/>
-              </section>
-            </div>
-          </div>
-        </section>
       </div>
-      }
-
-
-
-      {role == "radicacion" &&
-        <section className='layout-section'>
-          <div className='layout-left'>
-            <h3 className='container__createFiling createFiling'>Tablas radicados</h3>
-            <section className='viewTable'>
-              <DataTableHalfScreen/>
-            </section>
-          </div>
-          <div className='layout-right'>
-            <section className='previewPdf'>
-              <Preview/>
-            </section>
-          </div>
-        </section>
-      }
     </div>
   )
 }

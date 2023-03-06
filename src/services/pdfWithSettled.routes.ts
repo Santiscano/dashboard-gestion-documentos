@@ -1,6 +1,6 @@
 import axios from "axios";
 import Routes from './Routes'
-import { getHeader } from '../components/tools/SesionSettings'
+import { getHeader } from '../components/tools/SesionSettings';
 
 export const getPdfSettled = async (settledNumber:number) => {
   try{

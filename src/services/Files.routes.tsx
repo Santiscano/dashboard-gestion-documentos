@@ -1,13 +1,15 @@
 import Modal from "@mui/material/Modal";
 import axios from "axios";
-import Routes from './Routes'
+import Routes from './Routes';
+import { getHeader, set } from "../components/tools/SesionSettings";
+
 
 
 export const getFiles = async () => {
   try{
     const response =await axios.post(Routes.api.files.getFiles, {
       api_key: import.meta.env.VITE_API_KEY,
-    })
+    }, getHeader())
     console.log('response: ', response);
     return response;
   } catch (error) {
@@ -24,7 +26,7 @@ export const addFile = async (idUser:number, settledNumber:string, price:string,
       "idusers": redirectTo,
       "files_price": price,
       "idproviders": idUser,
-    })
+    }, getHeader())
     console.log('response: ', response);
     return response;
   } catch (error) {
@@ -46,7 +48,7 @@ export const editFile = async () => {
       "files_code_accounting": "090909",
       "files_code_treasury": "101010",
       "files_price": 500001
-    })
+    }, getHeader())
     console.log(response);
     return response;
   } catch (error) {
@@ -56,7 +58,7 @@ export const editFile = async () => {
 
 export const deleteFile = async () => {
   try{
-    const response = await axios.delete(Routes.api.files.deleteFile,{})
+    const response = await axios.delete(Routes.api.files.deleteFile, getHeader())
     console.log('response: ', response);
     return response;
   } catch (error) {

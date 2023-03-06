@@ -69,6 +69,10 @@ export default {
       validateUser: `${host}/validateUser`,
       changePassword: `${host}/changePassword`
     },
+    tables: {
+      pending: `${host}/`,
+      allFiles: `${host}/showTable`,
+    },
     pdfSettledNumber: `${hostPdf}/pdf`,
   }
 }

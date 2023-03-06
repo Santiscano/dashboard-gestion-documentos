@@ -23,7 +23,8 @@ import WithAuthentication from './Middlewares/WithAuthentication';
 import Home from './Layout/Home/index';
 import Testing from './modules/Testing';
 import PendingFilesTable from './Layout/PendingFilesTable/index';
-import TableAllFiles from './Layout/TableAllFiles';
+import TableAllFiles from './Layout/AllFilesTable';
+import AllFilesTable from './Layout/AllFilesTable';
 
 function App() {
   return (
@@ -44,7 +45,7 @@ function App() {
               <Route path='home' element={<Home/>} />
               <Route path='settled' element={<Provider/>} />
               <Route path='pendding' element={<PendingFilesTable/>} />
-              <Route path='all-files' element={<TableAllFiles/>} />
+              <Route path='all-files' element={<AllFilesTable/>} />
               <Route path='ti' element={<Ti/>} />
             </Route>
           </Route>
