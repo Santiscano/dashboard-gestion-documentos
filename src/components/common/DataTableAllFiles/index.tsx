@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridValueGetterParams, GridFilterModel, GridToolbar, GridRenderCellParams, GridToolbarContainer, GridToolbarFilterButton, GridToolbarColumnsButton, GridToolbarDensitySelector, GridToolbarExport } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
-import BasicModal from '../ModalForm';
+import { DataGrid, GridToolbarFilterButton, GridToolbarColumnsButton, GridToolbarExport } from '@mui/x-data-grid';
 import pdf from '../../../assets/Requerimientos.pdf';
-import { ButtonToggleOpenEdit } from '../ButtonToggleOpenEdit';
+import columns from '../../../interfaces/GridColumns';
+import LoadingMUI from '../LoadingMUI';
+import NotFound from '../../../assets/images/file-searching.gif'
+import { styled } from '@mui/material';
 
 
 let open:boolean = false
@@ -19,58 +20,6 @@ const openPdf = () => {
   console.log('funcionando')
   window.open(pdf);
 }
-const columns: GridColDef[] = [
-  {field: 'files_registered', headerName: 'Radicado', width: 170},
-  {field: 'files_account_type', headerName: 'Tipo de Factura', width: 120},
-  {field: 'files_account_type_number', headerName: 'Numero de Factura', width: 130},
-  {field: 'files_code_accounting', headerName: 'nombre', width: 70},
-  {field: 'files_cost_center', headerName: 'Centro de Costo', width: 150},
-  {field: 'files_code_treasury', headerName: 'nombre', width: 70},
-  {field: 'files_price', headerName: 'Precio', width: 70},
-  {field: 'files_type', headerName: 'nombre', width: 70},
-  {field: 'idfiles', headerName: 'nombre', width: 70},
-  {field: 'idfiles_states', headerName: 'Estado Archivo', width: 70},
-  {field: 'idproviders', headerName: 'nombre', width: 70},
-  {field: 'idroles', headerName: 'nombre', width: 70},
-  {field: 'idsedes', headerName: 'nombre', width: 70},
-  {field: 'idusers', headerName: 'nombre', width: 70},
-  {field: 'sedes_address', headerName: 'nombre', width: 70},
-  {field: 'sedes_city', headerName: 'nombre', width: 70},
-  {field: 'sedes_country', headerName: 'nombre', width: 70},
-  {field: 'sedes_name', headerName: 'nombre', width: 70},
-  {field: 'sedes_type', headerName: 'nombre', width: 70},
-  {field: 'users_address', headerName: 'nombre', width: 70},
-  {field: 'users_email', headerName: 'nombre', width: 70},
-  {field: 'users_identification', headerName: 'nombre', width: 70},
-  {field: 'users_identification_digital_check', headerName: 'nombre', width: 70},
-  {field: 'users_identification_type', headerName: 'nombre', width: 70},
-  {field: 'users_lastname', headerName: 'nombre', width: 70},
-  {field: 'users_name', headerName: 'Razon Social', width: 70},
-  {field: 'users_phone', headerName: 'nombre', width: 70},
-  {field: 'users_providers_expiration_date', headerName: 'nombre', width: 70},
-  {field: 'users_providers_paydays', headerName: 'nombre', width: 70},
-  {field: 'users_status', headerName: 'nombre', width: 70},
-
-  // {
-  //   field: 'id',
-  //   headerName: 'Radicado',
-  //   width: 170,
-  //   filterable: true,
-  // },
-  // {
-  //   field: 'cedi',
-  //   headerName: 'Cedi',
-  //   width: 110,
-  //   filterable: true,
-  // },
-  {
-    field: 'action',
-    headerName: 'Acciones',
-    width:90,
-    filterable: false,
-    renderCell: ButtonToggleOpenEdit,
-  }
-];
 
 // const rows = [
 //   { id: "CAL2023020112345", cedi:"Bar", account_type:"cuenta-cobro-proveedor", document_type:"NIT", document_number:"12345678", provider: "servientrega soluciones", address: "cr 50 cl 37-24", phone:"3117771234", email:"servientrega@envios.com.co", document_date:"2023-02-09", value:"$1200000"},
@@ -94,6 +43,39 @@ function GridToolbarConfig() {
   )
 }
 
+const StyledGridOverlay = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "white",
+  height: "100%",
+  "& .ant-empty-img-1": {
+    fill: theme.palette.mode === "light" ? "#aeb8c2" : "#262626",
+  },
+  "& .ant-empty-img-2": {
+    fill: theme.palette.mode === "light" ? "#f5f5f7" : "#595959",
+  },
+  "& .ant-empty-img-3": {
+    fill: theme.palette.mode === "light" ? "#dce0e6" : "#434343",
+  },
+  "& .ant-empty-img-4": {
+    fill: theme.palette.mode === "light" ? "#fff" : "#1c1c1c",
+  },
+  "& .ant-empty-img-5": {
+    fillOpacity: theme.palette.mode === "light" ? "0.8" : "0.08",
+    fill: theme.palette.mode === "light" ? "#f5f5f5" : "#fff",
+  },
+}));
+
+export function CustomNoRowsOverlay() {
+  return (
+    <StyledGridOverlay>
+      <img src={NotFound} width="250px" />
+    </StyledGridOverlay>
+  );
+}
+
 function getRowId(row:any) {
   return row.idfiles
 }
@@ -107,6 +89,7 @@ export default function DataTableAllFiles({row}:any) {
         <label className="block mb-2 ml-4 text-base font-semibold dark:text-white">Todos Los Radicados</label>
       </div>
       <Box sx={{ height: "90%", width: '100%' }}>
+        <LoadingMUI/>
         <DataGrid
           rows={row}
           getRowId={getRowId}
@@ -117,6 +100,7 @@ export default function DataTableAllFiles({row}:any) {
           experimentalFeatures={{ newEditingApi: true }}
           components={{
             Toolbar: GridToolbarConfig,
+            NoRowsOverlay: CustomNoRowsOverlay,
           }}
           initialState={{
             columns: {

@@ -49,27 +49,27 @@ export function viewDisplayRol(role: number): string {
   return roleDisplay[role] || "role desconocido"
 }
 
-export function navigationLiks() {
-  if (!session()) {
-    return RoutesListNavigation.offline
-  } else {
-    const jwt = getJWT();
+// export function navigationLiks() {
+//   if (!session()) {
+//     return RoutesListNavigation.offline
+//   } else {
+//     const jwt = getJWT();
 
-    return jwt.data.idroles === 1
-      ? RoutesListNavigation.online.provider
-      : jwt.data.idroles === 2
-      ? RoutesListNavigation.online.settling
-      : jwt.data.idroles === 3
-      ? RoutesListNavigation.online.manager
-      : jwt.data.idroles === 4
-      ? RoutesListNavigation.online.accounting
-      : jwt.data.idroles === 5
-      ? RoutesListNavigation.online.treasury
-      : jwt.data.idroles === 6
-      ? RoutesListNavigation.online.ti
-      : [];
-  }
-}
+//     return jwt.data.idroles === 1
+//       ? RoutesListNavigation.online.provider
+//       : jwt.data.idroles === 2
+//       ? RoutesListNavigation.online.settling
+//       : jwt.data.idroles === 3
+//       ? RoutesListNavigation.online.manager
+//       : jwt.data.idroles === 4
+//       ? RoutesListNavigation.online.accounting
+//       : jwt.data.idroles === 5
+//       ? RoutesListNavigation.online.treasury
+//       : jwt.data.idroles === 6
+//       ? RoutesListNavigation.online.ti
+//       : [];
+//   }
+// }
 
 /**
  * headers para objetos

@@ -111,7 +111,7 @@ function index() {
     loadingUser();
     setTimeout(() => {
       setLoading(false);
-    }, 1500)
+    }, 500)
   },[])
 
   return (

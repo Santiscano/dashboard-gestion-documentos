@@ -58,7 +58,13 @@ export const validateUser = async () => {
   try{
     const response = await axios.post(Routes.api.firebase.validateUser,{},getHeader())
     const user = response?.data;
+    console.log('user save in sesionStorage: ', user);
     set('user', user);
+    set('idusers', user.idusers);
+    set('idroles', user.idroles);
+    set('idsedes', user.idsedes);
+    set('fullName', `${user.users_name} ${user.users_lastname}`)
+
     return response;
   } catch(error) {
 

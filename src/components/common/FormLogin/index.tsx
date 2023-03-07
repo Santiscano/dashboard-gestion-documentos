@@ -35,7 +35,7 @@ function index() {
           setPreLoad(false);
           setIsLoading(true);
           setUser(userValidate?.data);
-          navigate("/dashboard/radicados")
+          navigate("/dashboard/home");
         }
         // else if (userValidate?.data.users_status !== "ACTIVO") {
         //   navigate("/forbidden403")
