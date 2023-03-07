@@ -11,7 +11,7 @@ export const showTablePending = async () => {
       api_key: import.meta.env.VITE_API_KEY,
       idusers: get('idusers'),
     }, getHeader());
-    // console.log('response showtablePending: ', response);
+    console.log('response showtablePending: ', response);
     return response;
   } catch(error) {
     console.log('error: ', error);

@@ -26,14 +26,18 @@ function index() {
   const handleOpenResetPassword  = () => setOpen(true);
   const handleCloseResetPassword = () => setOpen(false);
 
+  const handleInit = () => {
+
+  };
+
 
   useEffect(()=> {
     if(user){
       redirect("/dashboard/home")
     }
-    setTimeout(()=> {
-      setIsLoading(false);
-    }, 1500);
+    setIsLoading(false);
+    setTimeout(() => {
+    }, 300)
   },[])
 
   return (

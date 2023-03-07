@@ -11,7 +11,7 @@ import Loading from '../../components/common/Loading';
 import { validateUser } from '../../services/Firebase.routes';
 import { GeneralValuesContext } from './../../Context/GeneralValuesContext';
 import { useContext } from 'react';
-import { get } from '../../components/tools/SesionSettings';
+import { get, session } from '../../components/tools/SesionSettings';
 
 // width drawer desplegable
 const drawerWidth = 240;
@@ -94,12 +94,17 @@ function index() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  /**
+   * validamos usuario
+   * ?setUser crea el usuario con la respuesta
+   */
   const loadingUser = async () => {
     const userValidate = await validateUser();
     if (userValidate?.status === 201 && userValidate?.data.users_status === "ACTIVO"){
       setUser(userValidate?.data);
     }
-    else if (get("accessToken") && userValidate?.data.users_status !== "ACTIVO") {
+    else if (!session() && userValidate?.data.users_status !== "ACTIVO") {
       navigate("/login")
     }
     else if(userValidate?.data.users_status !== "ACTIVO") {
