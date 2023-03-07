@@ -12,8 +12,8 @@ const Selecting = styled(FormControl)({
     },
   },
 });
-export default function index(props: any) {
-  
+export default function InputSelect(props: any) {
+
   return (
     <div>
       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white" >{props.title}</label>
@@ -30,17 +30,19 @@ export default function index(props: any) {
           required={props.required}
           disabled={props.disabled}
           autoComplete={"off" || props.autoComplete}
+          name={props.name}
         >
           <MenuItem value="">
             <em>{props.itemDefault}</em>
           </MenuItem>
 
           {props.items.map((item:any, index:any) => (
-            <MenuItem 
+            <MenuItem
               key={index}
-              value={item.value} 
-              sx={{ m: 1, minWidth: 300 }}>
-                {item.name}
+              value={item}
+              sx={{ m: 1, minWidth: 300 }}
+            >
+              {item}
             </MenuItem>
           ))}
         </Select>

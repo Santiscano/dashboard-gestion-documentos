@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Drawer from '@mui/material/Drawer';
 // components mui
 import { styled, useTheme } from '@mui/material/styles';
@@ -11,28 +11,22 @@ import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import CloseIcon from '@mui/icons-material/Close';
-import BackupTableIcon from '@mui/icons-material/BackupTable';
-import EditIcon from '@mui/icons-material/Edit';
-import LogoDevIcon from '@mui/icons-material/LogoDev';
 
-// components propios
- 
-// navigate react router
-import { useNavigate } from 'react-router-dom';
-
-// images
+import rutero from "../../../routes/Rute";
+import { Link, useNavigate } from "react-router-dom";
 import enviexpress from '../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
 import working from '../../../assets/icons/data-analysis-case-study.png'
+import { Collapse } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import VerifiedRoundedIcon from '@mui/icons-material/VerifiedRounded';
 
-// width drawer desplegable
+
 const drawerWidth = 240;
-
-// SIDEBAR "drawer"
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
+
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
   backgroundColor: "#e4e4e7",
@@ -44,27 +38,10 @@ const rolTI = true;
 
 function index(props: any) {
   const theme = useTheme();
+  const navigate = useNavigate();
 
-  const menuAdmin = [
-    {
-      name: 'Pago Proveedores',
-      navigate: '',
-      icon: <BackupTableIcon/>
-    },
-    {
-      name:'Agregar/Editar Adjuntos',
-      navigate:'',
-      icon: <EditIcon/>
-    },
-  ];
-
-  const menuTI = [
-    {
-      name: 'Administracion TI',
-      navigate: '',
-      icon: <LogoDevIcon/>
-    },
-  ];
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(!open)
 
   return (
     <Drawer
@@ -80,20 +57,23 @@ function index(props: any) {
       }}
       variant="persistent"
       anchor="left"
-      open={props.open}>
+      open={props.open}
+    >
       <DrawerHeader>
-        <img src={enviexpress} width={160} className="inline " />
+        <Link to="/dashboard/home">
+          <img src={enviexpress} width={160} className="inline " />
+        </Link>
         <IconButton onClick={props.handleDrawerClose}>
           <CloseIcon/>
         </IconButton>
       </DrawerHeader>
-      
+
       <Divider />
-        
+
       <List>
-        {menuAdmin.map((list, index) => (
+        {rutero.online.settling.map((list, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={ ()=> navigate(`${list.url}`) } >
               <ListItemIcon>
                 {list.icon}
               </ListItemIcon>
@@ -101,13 +81,38 @@ function index(props: any) {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItemButton onClick={handleOpen}>
+          <ListItemIcon>
+          <VerifiedRoundedIcon sx={{color:"#293184"}} />
+          </ListItemIcon>
+          <ListItemText primary="Autorizaciones" />
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {rutero.online.auth.map((list, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemButton
+                    sx={{pl: 4 }}
+                    onClick={ ()=> navigate(`${list.url}`) }
+                  >
+                  <ListItemIcon>
+                    {list.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={list.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Collapse>
       </List>
+
       <Divider />
-      
+
       {rolTI && <List>
-        {menuTI.map((list, index) => (
+        {rutero.online.ti.map((list, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate(`${list.url}`)}>
               <ListItemIcon>
                 {list.icon}
               </ListItemIcon>

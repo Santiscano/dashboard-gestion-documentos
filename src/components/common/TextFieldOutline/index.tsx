@@ -1,5 +1,7 @@
 import { TextField } from "@mui/material";
-import { alpha, styled } from '@mui/material/styles'
+import { alpha, styled } from '@mui/material/styles';
+import InputAdornment from "@mui/material/InputAdornment";
+
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -18,13 +20,17 @@ function TextFieldOutlined({
   disabled,
   event,
   readOnly,
+  iconStart,
+  iconEnd,
   defaultValue,
+  name,
 }:any) {
   return (
     <CssTextField
       id="custom-css-outlined-input"
       fullWidth
       type={type}
+      name={name}
       required={required}
       disabled={disabled}
       label={label}
@@ -38,6 +44,12 @@ function TextFieldOutlined({
       autoComplete={"off"}
       InputProps={{
         readOnly: readOnly,
+        startAdornment: iconStart ? (
+          <InputAdornment position="start"> {iconStart} </InputAdornment>
+        ) : null,
+        endAdornment: iconEnd ? (
+          <InputAdornment position="end"> {iconEnd} </InputAdornment>
+        ) : null,
       }}
       sx={{ m: 1, width: 0.98 }}
     />

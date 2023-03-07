@@ -3,22 +3,15 @@ import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import NavBar from '../../components/common/NavBar'
 import SideBar from '../../components/common/SideBar';
-import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
-import Updates from '../../Layout/Updates';
-import Provider from '../../Layout/Provider';
+import { useNavigate, Outlet } from 'react-router-dom';
+import './admin.css'
+import Loading from '../../components/common/Loading';
+import { validateUser } from '../../services/Firebase.routes';
+import { GeneralValuesContext } from './../../Context/GeneralValuesContext';
+import { useContext } from 'react';
+import { get } from '../../components/tools/SesionSettings';
 
 // width drawer desplegable
 const drawerWidth = 240;
@@ -75,9 +68,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
+// METODOS
 function index() {
-  // variables y methodos para visualizacion y navegacion
+  const { user, setUser, setIsLoading } = useContext(GeneralValuesContext)
+
+
   const [open, setOpen] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -97,27 +94,53 @@ function index() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const loadingUser = async () => {
+    const userValidate = await validateUser();
+    if (userValidate?.status === 201 && userValidate?.data.users_status === "ACTIVO"){
+      setUser(userValidate?.data);
+    }
+    else if (get("accessToken") && userValidate?.data.users_status !== "ACTIVO") {
+      navigate("/login")
+    }
+    else if(userValidate?.data.users_status !== "ACTIVO") {
+      navigate("/forbidden403")
+    }
+  }
 
+  React.useEffect(()=>{
+    loadingUser();
+    setTimeout(() => {
+      setLoading(false);
+    }, 500)
+  },[])
 
   return (
     <>
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', height:"100vh", width:"100vw" }}>
       <CssBaseline />
-      
-      <NavBar
-      handleDrawerOpen={handleDrawerOpen}
-      open={open}
-      />
 
-      <SideBar
-      open={open}
-      handleDrawerClose={handleDrawerClose}
-      />
+      {loading ?
+      <div className="w-screen h-screen flex flex-col justify-center">
+        <Loading/>
+      </div>
+      :
+      <>
+        <NavBar
+          handleDrawerOpen={handleDrawerOpen}
+          open={open}
+        />
 
-      <Main open={open} sx={{ padding: 0 }}>
-        <DrawerHeader />
-        <Outlet/>
-      </Main>
+        <SideBar
+          open={open}
+          handleDrawerClose={handleDrawerClose}
+        />
+
+        <Main open={open} sx={{ padding: 0 }}>
+          <DrawerHeader />
+          <Outlet/>
+        </Main>
+      </>
+      }
 
     </Box>
     </>

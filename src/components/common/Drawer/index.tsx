@@ -19,7 +19,7 @@ const sidebarList = [{name: 'Administrativo', icon: <InboxIcon /> },{name: 'Oper
 
 
 function index() {
-  
+
   const [state, setState] = React.useState({
     left: false,
   });
@@ -72,7 +72,7 @@ function index() {
         </List>
       </Box>
     );
-  
+
     return (
       <div>
         {(['left'] as const).map((anchor) => (
