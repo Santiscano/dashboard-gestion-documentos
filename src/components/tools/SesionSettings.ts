@@ -27,8 +27,8 @@ export function set(key:string, item:string): void {
   sessionStorage.setItem(key, item);
 }
 
-export function get(item:string): string | null | undefined {
-  return sessionStorage.getItem(item) ?? '';
+export function get(key:string): string | null | undefined {
+  return sessionStorage.getItem(key) ?? '';
 }
 
 export function remove(item:string): void {

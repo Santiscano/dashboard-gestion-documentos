@@ -16,13 +16,13 @@ export const getRoles = async () => {
   }
 }
 
-export const createRol = async () => {
+export const createRol = async ( rol: string, description:string ) => {
   try{
     const response = await axios.post(Routes.api.roles.create,{
-      "roles": "frontEndRol",
-      "roles_description": "rol creado desde frontend"
+      "roles": rol,
+      "roles_description": description,
     }, getHeader())
-    console.log('response: ', response);
+    console.log('response createRol: ', response);
     return response;
   } catch(error) {
     console.log(error)
