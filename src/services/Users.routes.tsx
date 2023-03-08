@@ -31,21 +31,32 @@ export const getUsers = async () => {
   }
 }
 
-export const createUser = async () => {
+export const createUser = async (
+  idroles: number,
+  idsedes: number,
+  identification_type: string,
+  identification_number: string,
+  name: string,
+  lastname: string,
+  address: string,
+  phone: string,
+  email: string,
+  password: string,
+) => {
   try{
     const response = await axios.post(Routes.api.users.createUser,{
-      "idroles": 6,
-      "idsedes": 1,
-      "users_identification_type": "pasaporte",
-      "users_identification": "123456789",
-      "users_name": "frontend",
-      "users_lastname": "React Angular",
-      "users_address": "codigo hack",
-      "users_phone": "3045435131",
-      "users_email": "react@angular.com.co",
-      "users_password": "123456",
+      "idroles": idroles,
+      "idsedes": idsedes,
+      "users_identification_type": identification_type,
+      "users_identification": identification_number,
+      "users_name": name,
+      "users_lastname": lastname,
+      "users_address": address,
+      "users_phone": phone,
+      "users_email": email,
+      "users_password": password,
       "users_providers_paydays": null,
-      "users_providers_expiration_date": null
+      "users_providers_expiration_date": null,
     },getHeader())
     console.log("create user: ", response);
     return response;
@@ -53,6 +64,7 @@ export const createUser = async () => {
     console.log(error)
   }
 }
+
 export const editUser = async () => {
   try{
     const response = await axios.put(Routes.api.users.editUser,{
@@ -78,6 +90,7 @@ export const editUser = async () => {
     console.log(error)
   }
 }
+
 export const deleteUser = async () => {
   try{
     const response = await axios.delete(Routes.api.users.deleteUser,getHeader())
