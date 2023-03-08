@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 // img
 import logo from "../../../assets/images/logo-white.png";
-import userIcon from "../../../assets/images/user2.jpg";
+import userIcon from "../../../assets/icons/avatar.png";
 
 // css
 import "./navbar.css";
