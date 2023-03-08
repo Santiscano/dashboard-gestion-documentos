@@ -276,9 +276,9 @@ function index() {
    * @param props
    */
   const handleValuesUser = (props:any) => {
-    setObjectUser(props);
+    setObjectUser(props === null ? '' : props);
     console.log('handleValueUser: ', props);
-    setDocIdentity(!props.users_identification ? '' : props.users_identification);
+    setDocIdentity(props.users_identification);
     setIdUser(props.idusers)
     setAddress(props.users_address);
     setEmail(props.users_email);
@@ -416,7 +416,7 @@ function index() {
         <section className='layout-section'>
           <div className='layout-left'>
             <div className='container__createFiling'>
-              <h3 className='createFiling'>Crear Nuevo radicado</h3>
+              <h3 className='createFiling'>Crear Nuevo Radicado</h3>
               {isSettled && <button
                 className='button button--flex mt-6 buttonHover'
                 onClick={handleReset}
