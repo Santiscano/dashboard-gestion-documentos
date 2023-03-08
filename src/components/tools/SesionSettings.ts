@@ -35,9 +35,9 @@ export function remove(item:string): void {
   sessionStorage.removeItem(item);
 }
 
-
-
-
+export function removeAll(): void {
+  sessionStorage.clear();
+}
 
 export function getJWT(key = null):any {
 //   const jwt = jwt_decode(get("jwt"));
@@ -98,7 +98,7 @@ export function getHeaderMultipart() {
 }
 
 export function session() {
-  return !!get("accessToken");
+  return Boolean(get("accessToken"));
 }
 
 /**

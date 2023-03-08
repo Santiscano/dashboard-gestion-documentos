@@ -19,6 +19,7 @@ import working from '../../../assets/icons/data-analysis-case-study.png'
 import { Collapse } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import VerifiedRoundedIcon from '@mui/icons-material/VerifiedRounded';
+import { session } from '../../tools/SesionSettings';
 
 
 const drawerWidth = 240;
@@ -41,7 +42,12 @@ function index(props: any) {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(!open)
+  const handleOpen = () => setOpen(!open);
+
+  const handleRouteValidate = (nav:any) => {
+    console.log('session', session());
+    !!session() ? navigate(`${nav.url}`) : navigate("/login")
+  };
 
   return (
     <Drawer
@@ -73,7 +79,7 @@ function index(props: any) {
       <List>
         {rutero.online.settling.map((list, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton onClick={ ()=> navigate(`${list.url}`) } >
+            <ListItemButton onClick={ ()=> handleRouteValidate(list) } >
               <ListItemIcon>
                 {list.icon}
               </ListItemIcon>

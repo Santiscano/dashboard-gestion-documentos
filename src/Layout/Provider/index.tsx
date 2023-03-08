@@ -84,7 +84,7 @@ function index() {
   const [comments, setComments]                 = useState('')
 
   // captura de valores de formulario que no son necesariamente para el form
-  const [objectUser, setObjectUser ]            = useState();           // contiene un objeto con toda la info del usuario "proveedor"
+  const [objectUser, setObjectUser ]            = useState<any>('');    // contiene un objeto con toda la info del usuario "proveedor"
   const [docIdentity, setDocIdentity]           = useState('');         //
   const [address, setAddress]                   = useState('');         // su valor es extraido del objectUser
   const [email, setEmail]                       = useState('');         // su valor es extraido del objectUser
@@ -240,8 +240,8 @@ function index() {
     renderInput: (params: any) => (
       <TextField
         {...params}
-        // label={}
-      >
+        label="Numero"
+        >
       </TextField>
     )
   }
@@ -278,7 +278,7 @@ function index() {
   const handleValuesUser = (props:any) => {
     setObjectUser(props);
     console.log('handleValueUser: ', props);
-    setDocIdentity(props.users_identification);
+    setDocIdentity(!props.users_identification ? '' : props.users_identification);
     setIdUser(props.idusers)
     setAddress(props.users_address);
     setEmail(props.users_email);
@@ -398,7 +398,7 @@ function index() {
   const resetFullForm = () => {
     handleReset();
 
-    setObjectUser(undefined);
+    setObjectUser(['']);
     setStatusFileResponse(false);
     setFile('');
     setComments('');
@@ -450,11 +450,36 @@ function index() {
                         id='filter-providers'
                         {...handleOptionsProviders}
                         autoComplete
+                        // isOptionEqualToValue={(option, value)=> {
+                        //   return option.value === value || value === '';
+                        // }}
+                        // clearOnEscape={false}
                         includeInputInList
                         value={objectUser}
                         onChange={(event, newValue) => {
-                          // @ts-ignore
-                          handleValuesUser(newValue)
+                          if(newValue === null){
+                            console.log('me ejecute por aqui')
+                            setObjectUser(
+                              {
+                                "idusers": "",
+                                "idroles": "",
+                                "idsedes": "",
+                                "users_identification_type": "",
+                                "users_identification": "123553462",
+                                "users_identification_digital_check": "",
+                                "users_name": "",
+                                "users_lastname": "",
+                                "users_address": "",
+                                "users_phone": "",
+                                "users_email": "",
+                                "users_providers_paydays": "",
+                                "users_providers_expiration_date": "",
+                                "users_status": ""
+                              }
+                            )
+                          } else {
+                            handleValuesUser(newValue)
+                          }
                         }}
                         onInputChange={(event, newValue) => {
                           // @ts-ignore

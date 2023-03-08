@@ -1,5 +1,6 @@
 import './home.css';
-import profile2 from '../../assets/images/user2.jpg'
+import profile2 from '../../assets/images/user2.jpg';
+
 
 function Home() {
   return (

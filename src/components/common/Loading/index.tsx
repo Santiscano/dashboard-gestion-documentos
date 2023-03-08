@@ -6,7 +6,7 @@ function Loading() {
     <>
       <img src={logoHorizontal} alt="logo enviexpress horizontal" width="450px" className='mx-auto' />
       <div>
-        <div className="blobs w-screen h-screen">
+        <div className="blobs w-screen ">
           <div className="blob-center"></div>
           <div className="blob"></div>
           <div className="blob"></div>

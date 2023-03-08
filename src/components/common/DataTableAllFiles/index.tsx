@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbarFilterButton, GridToolbarColumnsButton, GridToolbarExport } from '@mui/x-data-grid';
 import pdf from '../../../assets/Requerimientos.pdf';

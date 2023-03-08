@@ -22,13 +22,13 @@ import { useNavigate } from "react-router-dom";
 
 // img
 import logo from "../../../assets/images/logo-white.png";
-import userIcon from "../../../assets/images/user2.jpg";
+import userIcon from "../../../assets/icons/avatar.png";
 
 // css
 import "./navbar.css";
 import Avatar from "@mui/material/Avatar";
 import { styled } from "@mui/material/styles";
-import { get, remove, viewDisplayRol } from "../../tools/SesionSettings";
+import { get, remove, removeAll, viewDisplayRol } from "../../tools/SesionSettings";
 import { useContext } from "react";
 import { GeneralValuesContext } from "../../../Context/GeneralValuesContext";
 
@@ -45,10 +45,17 @@ export default function MenuAppBar(props: any) {
     {
       name: "configurar perfil",
       navigate: "/config",
+      handleClick: () => {
+        navigate("/config");
+      },
     },
     {
       name: "Cerrar Sesion",
       navigate: "/login",
+      handleClick: () => {
+        removeAll();
+        navigate("/login");
+      },
     },
   ];
   // menu notifications
@@ -169,12 +176,10 @@ export default function MenuAppBar(props: any) {
                 <Typography
                   textAlign="center"
                   onClick={() => {
-                    remove("accessToken"),
-                    remove("user");
-                    navigate(setting.navigate);
+                    setting.handleClick()
                   }}
                 >
-                  {setting.name}{" "}
+                  {setting.name}
                 </Typography>
               </MenuItem>
             ))}
