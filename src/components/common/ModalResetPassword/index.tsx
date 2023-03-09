@@ -128,7 +128,7 @@ export default function ModalResetPassword({
                       <path
                         d="M7 25L27.3077 44L58.5 7"
                         stroke="white"
-                        stroke-width="13"
+                        strokeWidth="13"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />

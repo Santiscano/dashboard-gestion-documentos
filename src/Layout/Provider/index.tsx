@@ -62,7 +62,7 @@ function index() {
   // validar condicionales para renderizar
   const [documentType, setDocumentType ]        = useState('');         // tipos documentos lo recibe de un type creado
   const [isSettled, setIsSettled]               = useState(false);       // es true cuando el numero de radicado llega de la DB
-  const [invoiceType, setInvoiceType]           = useState('');         // define las opciondes de a quien va dirigido
+  const [invoiceType, setInvoiceType]           = useState('Administrativo');         // define las opciondes de a quien va dirigido
   const [accountType, setAccountType ]          = useState('');         // con esto se hace un filtro para los tipos de usuario
   const [statusResponse, setStatusResponse]     = useState(false);      // status 200 para mostrar modal
   const [modalSuccess, setModalSuccess]           = useState(false);      // status 200 filePath para mostrar hijo modal
@@ -144,6 +144,7 @@ function index() {
     setDocumentType(SelectDocumentType);
 
     const allUsersToFilter = allUsers
+    console.log('allUsersToFilter: ', allUsersToFilter);
 
     // @ts-ignore
     const filterProviderUsers = allUsersToFilter.filter((user: {
@@ -164,9 +165,9 @@ function index() {
    * y entrega al estado de optionsRedirectTo
    * @param e
    */
-  const handleInvoiceType = (e: SelectChangeEvent) => {
-    const optionInvoiceType = e.target.value;
-    setInvoiceType(optionInvoiceType);
+  const handleInvoiceType = () => {
+    // const optionInvoiceType = e.target.value;
+    // setInvoiceType(optionInvoiceType);
 
     const allUsersToFilter = allUsers;
     console.log('allUsersToFilter: ', allUsersToFilter);
@@ -183,12 +184,13 @@ function index() {
       idroles:number
     }) => user.idroles === 5)
 
-    if(optionInvoiceType === 'Administrativo'){
-      setOptionsRedirectTo(filterAuditors)
-    };
-    if(optionInvoiceType === 'Operativo'){
-      setOptionsRedirectTo(filterAccounting)
-    }
+    setOptionsRedirectTo(filterAuditors)
+    console.log('filterAuditors: ', filterAuditors);
+    // if(optionInvoiceType === 'Administrativo'){
+    // };
+    // if(optionInvoiceType === 'Operativo'){
+    //   setOptionsRedirectTo(filterAccounting)
+    // }
 
     //
 
@@ -408,6 +410,7 @@ function index() {
 
   useEffect(() => {
     handleGetUsersCedis();
+    handleInvoiceType();
   },[])
 
   return (
@@ -671,13 +674,11 @@ function index() {
                             required
                             iconEnd={<PostAddIcon/>}
                           />
-
                     </article>
-
                   </div>
 
                   <div className='md:flex md:flex-wrap'>
-                    <article className='md:w-1/2'>
+                    {/* <article className='md:w-1/2'>
                       <InputSelect
                         index='1'
                         title='Seleccionar Area'
@@ -687,8 +688,7 @@ function index() {
                         onChange={handleInvoiceType}
                         itemDefault="selecciona una opcion"
                         items={optionsInvoiceType}/>
-                    </article>
-                    {invoiceType &&
+                    </article> */}
                     <article className='md:w-1/2' >
                       <InputSelectRedirectTo
                         type={"text"}
@@ -701,7 +701,6 @@ function index() {
                         items={optionsRedirectTo}
                       />
                     </article>
-                    }
                   </div>
                   {/* {(objectUser && cedi && settledNumber && price && redirectTo  && idUser) && */}
                   <button
