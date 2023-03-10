@@ -1,19 +1,9 @@
 import { FC, ReactNode, useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import 'animate.css';
-import TextFieldOutlined from '../TextFieldOutline';
-// mui
-import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
-import { optionAccountType, optionDocumentType, optionsCities } from '../../tools/OptionsValuesSelects';
-import InputSelect from '../InputSelect';
-import { SelectChangeEvent } from '@mui/material';
 
 import { formattedAmount, capitalizeFirstLatterUppercase } from '../../../Utilities/formatted.utility';
-import { addFile } from '../../../services/Files.routes';
-import ModalSuccess from '../ModalSuccess';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -37,6 +27,7 @@ interface Props {
   docIdentity: string;
   price: string;
   accountType: string;
+  accountNumber: string | number;
   invoiceType: string;
   redirectTo: number | undefined;
   optionsRedirectTo: any;
@@ -54,6 +45,7 @@ const  UploadFileModal: FC<Props> = ({
   docIdentity,
   price,
   accountType,
+  accountNumber,
   invoiceType,
   redirectTo,
   optionsRedirectTo,
@@ -113,9 +105,9 @@ const  UploadFileModal: FC<Props> = ({
                   </span>
                 </p>
                 <p className='font-bold inline-block mr-4'>
-                  Area:
+                  Numero de Cuenta:
                   <span className='text-slate-600 font-normal'>
-                    {` ${capitalizeFirstLatterUppercase(invoiceType)}`}
+                    {` ${accountNumber}`}
                   </span>
                 </p>
               </div>
@@ -127,10 +119,10 @@ const  UploadFileModal: FC<Props> = ({
                     {` ${capitalizeFirstLatterUppercase(nameAuditorSelected)}`}
                   </span>
                 </p>
-                <p className='font-bold inline-block'>
-                  Cedi:
+                <p className='font-bold inline-block mr-4'>
+                  correo:
                   <span className='text-slate-600 font-normal'>
-                    {` ${capitalizeFirstLatterUppercase(cedi)}`}
+                    {` ${email.toLowerCase()}`}
                   </span>
                 </p>
               </div>
@@ -141,11 +133,20 @@ const  UploadFileModal: FC<Props> = ({
                   <span className='text-slate-600 font-normal'>
                     {` ${settledNumber}`}
                   </span>
-                  </p>
-                <p className='font-bold inline-block mr-4'>
-                  correo:
+                </p>
+                <p className='font-bold inline-block'>
+                  Cedi:
                   <span className='text-slate-600 font-normal'>
-                    {` ${email.toLowerCase()}`}
+                    {` ${capitalizeFirstLatterUppercase(cedi)}`}
+                  </span>
+                </p>
+              </div>
+
+              <div className='flex'>
+                <p className='font-bold inline-block mr-4'>
+                  Area:
+                  <span className='text-slate-600 font-normal'>
+                    {` ${capitalizeFirstLatterUppercase(invoiceType)}`}
                   </span>
                 </p>
               </div>

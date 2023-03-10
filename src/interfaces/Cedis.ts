@@ -4,11 +4,13 @@ export interface AllCedis {
   sedes_city : string;
   sedes_country: string;
   sedes_name: string;
+  sedes_type: string;
 }
 
 export interface CedisIdName {
   idsedes: number;
   sedes_city: string;
+  sedes_type: string;
 }
 
 export interface CedisId {

@@ -25,9 +25,8 @@ export const optionsRedirectToOperativo = [
   'Grupo Operativo'
 ]
 export const optionAccountType = [
-  'Cuenta Cobro Proveedor',
-  'Factura Proveedor',
-  'Manifiesto Carga',
+  'CUENTA COBRO',
+  'FACTURA PROVEEDOR',
 ];
 export const optionDocumentType = [
   'CEDULA CIUDADANIA',
@@ -36,6 +35,6 @@ export const optionDocumentType = [
   'PASAPORTE',
 ];
 export const optionCediType = [
-  'Propio',
-  'Nacionales',
+  'PROPIA',
+  'NACIONAL',
 ];

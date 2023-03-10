@@ -17,15 +17,18 @@ export const getFiles = async () => {
   }
 }
 
-export const addFile = async (idUser:number, settledNumber:string, price:string, redirectTo:number, idsedes: number) => {
+export const addFile = async (idUser:number, settledNumber:string, price:string, redirectTo:number, idsedes: number, files_account_type: any, files_account_type_number:any) => {
   try{
     console.log("info que envio: settledNumber: ",settledNumber, " price: ",price," redirectTo: ",redirectTo," idsedes: ",idsedes)
     const response =await axios.post(Routes.api.files.addFile, {
       "files_registered": settledNumber,
       "idsedes": idsedes,
-      "idusers": redirectTo,
-      "files_price": price,
       "idproviders": idUser,
+      "idusers": redirectTo,
+      "files_type": "ADMINISTRATIVO",
+      "files_price": price,
+      "files_account_type": files_account_type,
+      "files_account_type_number": files_account_type_number,
     }, getHeader())
     console.log('response: ', response);
     return response;
