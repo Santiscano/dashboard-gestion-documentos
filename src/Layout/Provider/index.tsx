@@ -80,7 +80,7 @@ function index() {
   const [accountNumber, setAccountNumber]       = useState('');   // numero de cuenta relacionado a tipo de cuenta;
 
   // valores formulario file
-  const [file, setFile]                         = useState('');
+  const [filePDFGoogle, setFilePDFGoogle]       = useState('');
   // relacionamiento radicado y archivo
   const [comments, setComments]                 = useState('')
 
@@ -236,8 +236,9 @@ function index() {
     e.preventDefault();
     // @ts-ignore
     const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo, cedi.idsedes, accountType, accountNumber );
+    console.log('addFileResponse: ', addFileResponse);
 
-    //abro modal
+    //muestro input file y textarea
     const status = addFileResponse?.status;
     status === 200 && setStatusFileResponse(true)
 
@@ -246,25 +247,45 @@ function index() {
     setResult(addFileResponse);
   }
   /**
-   *
    * @param e detiene el reset del la pantalla
+   * creo formData y guardo archivo en variable
+   * tomo el path de la respuesta de la otra consulta en idfile
+   * envio pdf a DB y guardo path de respuesta
+   * relaciono path de pdf y el file correspondiente
    */
   const handleFileSubmit = async (e:any) => {
     e.preventDefault();
-
     const pdfFile = new FormData();
-    pdfFile.append('pdf_file', file);
-    const responseUploadFile = await uploadfile(pdfFile);
-    const pathFileUpload = await responseUploadFile?.data.path;
+    // pdfFile.append('pdf_file', filePDFGoogle);
+    console.log('filePDFGoogle: ', filePDFGoogle);
+    // console.log('pdfFile: ', pdfFile);
 
     // @ts-ignore
     const idFiles = result?.data.file[0].idfiles;
+    console.log('idFiles: ', idFiles);
 
-    const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments );
+    const responseUploadFile = await uploadfile(filePDFGoogle, idFiles); // guarda pdf
+    console.log('responseUploadFile: ', responseUploadFile);
+    // const pathFileUpload = await responseUploadFile?.data.path;
+
+    // const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments ); // relaciona pdf y file
+
     // @ts-ignore
     const status = responseConcatFilePath?.status
     status === 200 && setModalSuccess(true);
   }
+    /**
+   * metodo para mostrar a la vista el nombre del archivo seleccionado
+   * @param e
+   */
+    const handleChangeFile = (e: SelectChangeEvent) => {
+      // @ts-ignore
+      console.log('archivo capturado', e.target.files[0]);
+      // @ts-ignore
+      setFilePDFGoogle(e.target.files[0]);
+      const fileNameEvent = e.target.value.replace(/^.*\\/, ''); // renombrar archivo
+      setFileName(fileNameEvent);
+    }
 
   // ----------------------METHODS GENERALS--------------------------------//
   /**
@@ -371,18 +392,7 @@ function index() {
   const handleComments    = (e: SelectChangeEvent) => {setComments(e.target.value)};
   // const handleAccountNumber=(e: any) => {setAccountNumber(e.target.value)};
 
-  /**
-   * metodo para mostrar a la vista el nombre del archivo seleccionado
-   * @param e
-   */
-  const handleChangeFile = (e: SelectChangeEvent) => {
-    // @ts-ignore
-    console.log(e.target.files[0])
-    // @ts-ignore
-    setFile(e.target.files[0]);
-    const fileNameEvent = e.target.value.replace(/^.*\\/, ''); // renombrar archivo
-    setFileName(fileNameEvent);
-  }
+
 
 
 
@@ -401,7 +411,7 @@ function index() {
     // setAccountType('');
     setPrice('');
     setStatusFileResponse(false);
-    setFile('');
+    setFilePDFGoogle('');
     setComments('');
     setModalSuccess(false);
     setStatusResponse(false);
@@ -412,7 +422,7 @@ function index() {
 
     setObjectUser(['']);
     setStatusFileResponse(false);
-    setFile('');
+    setFilePDFGoogle('');
     setComments('');
     setModalSuccess(false);
     setStatusResponse(false);
@@ -735,7 +745,7 @@ function index() {
                     <div className='flex rounded justify-between'>
                       <form onSubmit={handleFileSubmit} className="border-neutral-300 border-2 division--containers" >
                           <Upload
-                            file={file}
+                            file={filePDFGoogle}
                             fileName={fileName}
                             handleChangeFile={handleChangeFile}
                           />

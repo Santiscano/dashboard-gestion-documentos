@@ -19,7 +19,7 @@ export const getFiles = async () => {
 
 export const addFile = async (idUser:number, settledNumber:string, price:string, redirectTo:number, idsedes: number, files_account_type: any, files_account_type_number:any) => {
   try{
-    console.log("info que envio: settledNumber: ",settledNumber, " price: ",price," redirectTo: ",redirectTo," idsedes: ",idsedes)
+    // console.log("info que envio: settledNumber: ",settledNumber, " price: ",price," redirectTo: ",redirectTo," idsedes: ",idsedes)
     const response =await axios.post(Routes.api.files.addFile, {
       "files_registered": settledNumber,
       "idsedes": idsedes,
@@ -30,7 +30,7 @@ export const addFile = async (idUser:number, settledNumber:string, price:string,
       "files_account_type": files_account_type,
       "files_account_type_number": files_account_type_number,
     }, getHeader())
-    console.log('response: ', response);
+    // console.log('response: ', response);
     return response;
   } catch (error) {
     console.log('error: ', error);
