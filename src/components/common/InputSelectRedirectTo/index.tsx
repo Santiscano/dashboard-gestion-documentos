@@ -42,13 +42,7 @@ export default function index(props: any) {
               value={item.idusers}
               sx={{ m: 1, minWidth: 300 }}
             >
-              {item.users_name} {item.users_lastname} -
-              {
-              item.idroles === 3 ? " Auditor" :
-              item.idroles === 4 ? " Gerente" :
-              item.idroles === 5 ? " Contabilidad" :
-              " Tesoreria"
-              }
+              {item.users_name} {item.users_lastname} - {item.roles }
             </MenuItem>
           ))}
         </Select>

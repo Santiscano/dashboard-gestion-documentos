@@ -1,34 +1,37 @@
-import RoutesListNavigation from '../../routes/Rute';
 import { Roles, DisplayRoles } from '../../interfaces/Roles';
 
-const roles:Roles = {
-  provider    : 1,
-  settling    : 2,
-  auditor     : 3,
-  manager     : 4,
-  accounting  : 5,
-  treasury    : 6,
-  TI          : 7,
-  Delete      : 8,
+export const roles:Roles = {
+  Proveedor   : 1,
+  Radicacion  : 2,
+  AuditorGH   : 3,
+  AuditorCRTL : 4,
+  AuditorRG   : 5,
+  Gerencia    : 6,
+  Contaduria  : 7,
+  Tesoreria   : 8,
+  AuditorTI   : 9,
+  Eliminar    : 10,
 }
 
 const roleDisplay:DisplayRoles = {
   1:"Proveedor",
   2:"Radicacion",
-  3:"Auditoria",
-  4:"Gerencia",
-  5:"Contaduria",
-  6:"Tesoreria",
-  7:"Tecnologia & Informacion",
-  8:"Eliminar",
+  3:"Auditor Gestion Humana",
+  4:"Auditor Control",
+  5:"Auditor Riesgos",
+  6:"Gerencia",
+  7:"Contaduria",
+  8:"Tesoreria",
+  9:"Tecnologia & Informacion",
+  10:"Eliminar",
 }
 
 export function set(key:string, item:string): void {
   sessionStorage.setItem(key, item);
 }
 
-export function get(item:string): string | null | undefined {
-  return sessionStorage.getItem(item) ?? '';
+export function get(key:string): string | null | undefined {
+  return sessionStorage.getItem(key) ?? '';
 }
 
 export function remove(item:string): void {

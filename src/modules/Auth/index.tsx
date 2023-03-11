@@ -90,9 +90,11 @@ function index() {
 
         <div className='bg-rigth relative hidden md:flex flex-auto flex-col items-center justify-center w-1/2 min-h-screen p-16 lg:px-16 overflow-hidden dark:border-l'>
             <img src={security} alt="segurity login" className='max-w-xs' />
-            <div>
-              <h2 className='text-white text-4xl mt-8'>Logística de Gestión</h2>
-              <h4 className='text-white text-l mt-2'>aliado estratégico para tu negocio</h4>
+            <div className='flex flex-col'>
+              <h2 className='text-white text-4xl mt-8 mx-auto'>Digitalización</h2>
+              <h4 className='text-white text-l text-center mt-2 mx-auto'>
+                aliado estratégico para la gestion de archivos y procesos en tu negocio
+                </h4>
             </div>
         </div>
       </div>

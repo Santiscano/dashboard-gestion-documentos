@@ -42,13 +42,13 @@ export default function MenuAppBar(props: any) {
 
   // menu avatar
   const menuAvatar = [
-    {
-      name: "configurar perfil",
-      navigate: "/config",
-      handleClick: () => {
-        navigate("/config");
-      },
-    },
+    // {
+    //   name: "configurar perfil",
+    //   navigate: "/config",
+    //   handleClick: () => {
+    //     navigate("/config");
+    //   },
+    // },
     {
       name: "Cerrar Sesion",
       navigate: "/login",

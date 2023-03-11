@@ -22,15 +22,22 @@ export const getCedis = async () => {
   }
 }
 
-export const createCedi = async () => {
+export const createCedi = async (
+  city:string,
+  country: string,
+  address: string,
+  cediName: string,
+  type: string,
+) => {
   try{
     const response = await axios.post(Routes.api.cedis.create,{
-      "sedes_city": "caldas",
-      "sedes_country": "Estados Unidos",
-      "sedes_address": "Norte america bien arriba",
-      "sedes_name": "Enviexpress - MedayoRK"
+      "sedes_city":city,
+      "sedes_country": country,
+      "sedes_address": address,
+      "sedes_name": cediName,
+      "sedes_type": type,
     }, getHeader())
-    console.log('response create: ',response);
+    console.log('response create cedi: ',response);
     return response;
   } catch (err) {
     console.log(err)

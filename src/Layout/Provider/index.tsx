@@ -8,11 +8,8 @@ import Preview from '../../components/common/Preview';
 import Button from '../../components/common/Button';
 import TextFieldOutlined from '../../components/common/TextFieldOutline';
 import {
-  optionsInvoiceType,
-  // optionsRedirectTo,
   optionAccountType,
   optionDocumentType,
-  optionsRedirectToOperativo,
   optionCediType,
   } from '../../components/tools/OptionsValuesSelects';
 import InputSelectRedirectTo from '../../components/common/InputSelectRedirectTo';
@@ -44,13 +41,17 @@ import ModalSuccess from '../../components/common/ModalSuccess';
 import { AllCedis, CedisId, CedisIdName } from '../../interfaces/Cedis';
 import InputSelectCedi from '../../components/common/InputSelectCedi';
 import { GeneralValuesContext } from '../../Context/GeneralValuesContext';
+import { roles } from '../../components/tools/SesionSettings';
 
 function index() {
+
+  // ------------------------------VARIABLES------------------------------//
   // temporal para revisar respuesta
   const [result, setResult]                     = useState(['']);         // respuesta envio formulario datos
   const [statusFileResponse, setStatusFileResponse]= useState(false);
   // valores actualizables con DB
   const [allUsers, setAllUsers]                 = useState([''])          // recibi todos los usuarios de DB
+  const [allCedis, setAllCedis]                 = useState<any[]>([''])
   const [optionsCedisIdName, setOptionsCedisIdName ] = useState<CedisIdName[]>([]); // recibe nombre y id de todas las cedis
   // const [optionsCedisId, setOptionsCedisId]     = useState<number[]>([])   //solo id de sede seleccionada
   // const [optionsCedisName, setOptionsCedisName] = useState<string[]>([]);
@@ -62,7 +63,7 @@ function index() {
   // validar condicionales para renderizar
   const [documentType, setDocumentType ]        = useState('');         // tipos documentos lo recibe de un type creado
   const [isSettled, setIsSettled]               = useState(false);       // es true cuando el numero de radicado llega de la DB
-  const [invoiceType, setInvoiceType]           = useState('');         // define las opciondes de a quien va dirigido
+  const [invoiceType, setInvoiceType]           = useState('Administrativo');         // define las opciondes de a quien va dirigido
   const [accountType, setAccountType ]          = useState('');         // con esto se hace un filtro para los tipos de usuario
   const [statusResponse, setStatusResponse]     = useState(false);      // status 200 para mostrar modal
   const [modalSuccess, setModalSuccess]           = useState(false);      // status 200 filePath para mostrar hijo modal
@@ -79,7 +80,7 @@ function index() {
   const [accountNumber, setAccountNumber]       = useState('');   // numero de cuenta relacionado a tipo de cuenta;
 
   // valores formulario file
-  const [file, setFile]                         = useState('');
+  const [filePDFGoogle, setFilePDFGoogle]       = useState('');
   // relacionamiento radicado y archivo
   const [comments, setComments]                 = useState('')
 
@@ -99,7 +100,8 @@ function index() {
   const [role, setRole ]                  = useState('radicacion');
 
   const { preLoad, setPreLoad } = useContext(GeneralValuesContext);
-  // METHODS
+
+  // -----------------------METHODS INPUTS--------------------------------//
 
   /**
    * Funcion que se ejecuta al renderizar el componente, trae las cedis - users -
@@ -108,31 +110,42 @@ function index() {
    * envio cedi para generar radicado
    */
   const handleGetUsersCedis = async () => {
+    // cedis
     const allCedis: AllCedis[] = await getCedis();
-    const cedisIdName: CedisIdName[] = allCedis?.map( item => {
-      return {
-        idsedes: item.idsedes,
-        sedes_city: item.sedes_city
-      }
-    });
-    setOptionsCedisIdName(cedisIdName);
+    setAllCedis(allCedis);
 
-    // const citysId = allCedis.map((item: { idsedes: number }) => item.idsedes );
-    // setOptionsCedisId(citysId);
-    // console.log('cedisId: ', citysId);
-
-    // const citysName = allCedis.map((item: {sedes_city: string}) => item.sedes_city);
-    // setOptionsCedisName(citysName);
-    // console.log('citysName: ', citysName);
-
-
-
+    // users
     const getAllUsers = await getUsers();
     setAllUsers(getAllUsers);
 
+    // options redirectTo Administration
+    const filterAuditors = getAllUsers?.filter((user: {
+      idroles:number
+    }) => user.idroles !== roles.Proveedor && user.idroles !== roles.Radicacion && user.idroles !== roles.Eliminar)
+    setOptionsRedirectTo(filterAuditors)
+
+
     const getAllFiles = await getFiles();
     setAllFiles(getAllFiles?.data);
-    // console.log('getAllFiles: ', getAllFiles?.data);
+
+    setObjectUser(
+      {
+        "idusers": "",
+        "idroles": "",
+        "idsedes": "",
+        "users_identification_type": "",
+        "users_identification": "",
+        "users_identification_digital_check": "",
+        "users_name": "",
+        "users_lastname": "",
+        "users_address": "",
+        "users_phone": "",
+        "users_email": "",
+        "users_providers_paydays": "",
+        "users_providers_expiration_date": "",
+        "users_status": ""
+      }
+    )
   };
 
   /**
@@ -143,15 +156,20 @@ function index() {
     const SelectDocumentType = e.target.value;
     setDocumentType(SelectDocumentType);
 
+    setObjectUser({});
+
+
     const allUsersToFilter = allUsers
+    console.log('allUsersToFilter: ', allUsersToFilter);
 
     // @ts-ignore
-    const filterProviderUsers = allUsersToFilter.filter((user: {
+    const filterNotProviderUsers = allUsersToFilter.filter((user: {
       idroles:number
-    }) => user.idroles !== 1)
+    }) => user.idroles !== roles.Proveedor)
+    console.log('filterNotProviderUsers: ', filterNotProviderUsers);
 
     // @ts-ignore
-    const filterDocumentType = filterProviderUsers.filter((user:{
+    const filterDocumentType = filterNotProviderUsers.filter((user:{
       users_identification_type:string
       //@ts-ignore
     }) => user.users_identification_type && user.users_identification_type.toUpperCase() == SelectDocumentType )
@@ -159,42 +177,29 @@ function index() {
   };
 
   /**
-   * se ejecutara al cambio de seleccionar area
-   * toma el estado con todos los usuarios, filtra por roles
-   * y entrega al estado de optionsRedirectTo
-   * @param e
+   * capturamos valor - traemos todas las cedis - filtramos segun el valor capturado - seteamos las opciones de cedis segun el filtro
+   * @param e captura valor
    */
-  const handleInvoiceType = (e: SelectChangeEvent) => {
-    const optionInvoiceType = e.target.value;
-    setInvoiceType(optionInvoiceType);
+  const handleCediType    = (e: SelectChangeEvent) => {
+    const selectCediType = e.target.value;
+    setCediType(selectCediType);
 
-    const allUsersToFilter = allUsers;
-    console.log('allUsersToFilter: ', allUsersToFilter);
+    const allCedisToFilter = allCedis;
 
-    // @ts-ignore
-    const filterAuditors = allUsersToFilter.filter((user: {
-      idroles:number
-    }) => user.idroles !== 1 && user.idroles !== 2 && user.idroles !== 7)
-    console.log('filterAuditors: ', filterAuditors);
+    const filterCediType = allCedisToFilter.filter((cedi:any, index) => (
+      cedi.sedes_type.toUpperCase() == selectCediType
+      ))
 
-    // @ts-ignore
-    // contabilidad
-    const filterAccounting = allUsersToFilter.filter((user: {
-      idroles:number
-    }) => user.idroles === 5)
+    setOptionsCedisIdName(filterCediType);
+  };
 
-    if(optionInvoiceType === 'Administrativo'){
-      setOptionsRedirectTo(filterAuditors)
-    };
-    if(optionInvoiceType === 'Operativo'){
-      setOptionsRedirectTo(filterAccounting)
-    }
+  const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
 
-    //
+  const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
 
-  };  //tipo de factura "seleccionar area"
+  const handleRedirectTo  = (e: SelectChangeEvent) => {setRedirectTo(Number(e.target.value))};
 
-
+  // ----------------------METHODS FORMS SUBMIT----------------------------//
   /**
    * ?FORMULARIO
    * toma la ciudad que se tenga en estado y hace get para generar radicado
@@ -218,6 +223,98 @@ function index() {
       setPreLoad(false);
     }
   };
+
+  /**
+   * ?Formulario parte 2
+   * formulario data set DB
+   * 1- se envia los datos del radicado
+   * 2- abro modal si es status 200 convirtiendo true variable statusFileResponse
+   * 3- guardo respuesta en variable result
+   * @param e
+   */
+  const handleFormSubmit = async (e:any) => {
+    e.preventDefault();
+    // @ts-ignore
+    const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo, cedi.idsedes, accountType, accountNumber );
+    console.log('addFileResponse: ', addFileResponse);
+
+    //muestro input file y textarea
+    const status = addFileResponse?.status;
+    status === 200 && setStatusFileResponse(true)
+
+    // guardo respuesta completa en variable result
+    // @ts-ignore
+    setResult(addFileResponse);
+  }
+  /**
+   * @param e detiene el reset del la pantalla
+   * creo formData y guardo archivo en variable
+   * tomo el path de la respuesta de la otra consulta en idfile
+   * envio pdf a DB y guardo path de respuesta
+   * relaciono path de pdf y el file correspondiente
+   */
+  const handleFileSubmit = async (e:any) => {
+    e.preventDefault();
+    const pdfFile = new FormData();
+    // pdfFile.append('pdf_file', filePDFGoogle);
+    console.log('filePDFGoogle: ', filePDFGoogle);
+    // console.log('pdfFile: ', pdfFile);
+
+    // @ts-ignore
+    const idFiles = result?.data.file[0].idfiles;
+    console.log('idFiles: ', idFiles);
+
+    const responseUploadFile = await uploadfile(filePDFGoogle, idFiles); // guarda pdf
+    console.log('responseUploadFile: ', responseUploadFile);
+    // const pathFileUpload = await responseUploadFile?.data.path;
+
+    // const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments ); // relaciona pdf y file
+
+    // @ts-ignore
+    const status = responseConcatFilePath?.status
+    status === 200 && setModalSuccess(true);
+  }
+    /**
+   * metodo para mostrar a la vista el nombre del archivo seleccionado
+   * @param e
+   */
+    const handleChangeFile = (e: SelectChangeEvent) => {
+      // @ts-ignore
+      console.log('archivo capturado', e.target.files[0]);
+      // @ts-ignore
+      setFilePDFGoogle(e.target.files[0]);
+      const fileNameEvent = e.target.value.replace(/^.*\\/, ''); // renombrar archivo
+      setFileName(fileNameEvent);
+    }
+
+  // ----------------------METHODS GENERALS--------------------------------//
+  /**
+   * reinicia todos los valores a '';
+   */
+  const  handleReset = () => {
+    setIsSettled(false)
+    setIdUser('');
+    setSettledNumber('');
+    setDocumentType('');
+    setCedi('');
+    setAccountType('');
+    setCompanyName('');
+    setAddress('');
+    setTelephone('');
+    setEmail('');
+    setPrice('');
+    setInvoiceType('');
+    setRedirectTo(undefined);
+    setCediType('');
+    setOptionsProviders(['','']);
+  }
+  const handleCloseModal  = () => setStatusResponse(false);
+  const handleCloseModalChild = () => setModalSuccess(false);
+
+
+
+
+
 
   /**
    * parametros que recibe el autocomplete para renderizar las opciones
@@ -276,9 +373,9 @@ function index() {
    * @param props
    */
   const handleValuesUser = (props:any) => {
-    setObjectUser(props);
+    setObjectUser(props === null ? '' : props);
     console.log('handleValueUser: ', props);
-    setDocIdentity(!props.users_identification ? '' : props.users_identification);
+    setDocIdentity(props.users_identification);
     setIdUser(props.idusers)
     setAddress(props.users_address);
     setEmail(props.users_email);
@@ -291,93 +388,18 @@ function index() {
    * actualiza el estado en estos tipos de select cedi - accountType - documentType - seleccionar area - redirigido a
    * @param e
    */
-  const handleCedi        = (e: SelectChangeEvent) => {setCedi(e.target.value), console.log("cedi: ", cedi)};
-  const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
-  // @ts-ignore
-  const handleRedirectTo  = (e: SelectChangeEvent) => {setRedirectTo(e.target.value)};
-  const handleCloseModal  = () => setStatusResponse(false);
-  const handleCloseModalChild = () => setModalSuccess(false);
+
   const handleComments    = (e: SelectChangeEvent) => {setComments(e.target.value)};
-  const handleCediType    = (e: SelectChangeEvent) => {setCediType(e.target.value)};
   // const handleAccountNumber=(e: any) => {setAccountNumber(e.target.value)};
 
-  /**
-   * metodo para mostrar a la vista el nombre del archivo seleccionado
-   * @param e
-   */
-  const handleChangeFile = (e: SelectChangeEvent) => {
-    // @ts-ignore
-    console.log(e.target.files[0])
-    // @ts-ignore
-    setFile(e.target.files[0]);
-    const fileNameEvent = e.target.value.replace(/^.*\\/, ''); // renombrar archivo
-    setFileName(fileNameEvent);
-  }
 
-  /**
-   * reinicia todos los valores a '';
-   */
-  const  handleReset = () => {
-    setIsSettled(false)
-    setIdUser('');
-    setSettledNumber('');
-    setDocumentType('');
-    setCedi('');
-    setAccountType('');
-    setCompanyName('');
-    setAddress('');
-    setTelephone('');
-    setEmail('');
-    setPrice('');
-    setInvoiceType('');
-    setRedirectTo(undefined);
-  }
 
-  /**
-   * ?Formulario parte 2
-   * formulario data set DB
-   * se hacen 3 envios de formularios
-   * 1- archivo
-   * 2- datos usuario"proveedor"
-   * 3- metodo relacion de archivo y datos
-   * 4-
-   * @param e
-   */
-  const handleFormSubmit = async (e:any) => {
-    e.preventDefault();
-    // @ts-ignore
-    const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo, cedi.idsedes );
 
-    //abro modal
-    const status = addFileResponse?.status;
 
-    status === 200 && setStatusFileResponse(true)
 
-    // guardo respuesta completa en variable result
-    // @ts-ignore
-    setResult(addFileResponse);
-  }
 
-  /**
-   * envia el archivo adjunto
-   * @param e detiene el reset del la pantalla
-   */
-  const handleFileSubmit = async (e:any) => {
-    e.preventDefault();
 
-    const pdfFile = new FormData();
-    pdfFile.append('pdf_file', file);
-    const responseUploadFile = await uploadfile(pdfFile);
-    const pathFileUpload = await responseUploadFile?.data.path;
 
-    // @ts-ignore
-    const idFiles = result?.data.file[0].idfiles;
-
-    const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments );
-    // @ts-ignore
-    const status = responseConcatFilePath?.status
-    status === 200 && setModalSuccess(true);
-  }
 
   /**
    * genero el nuevo numero de radicado
@@ -389,7 +411,7 @@ function index() {
     // setAccountType('');
     setPrice('');
     setStatusFileResponse(false);
-    setFile('');
+    setFilePDFGoogle('');
     setComments('');
     setModalSuccess(false);
     setStatusResponse(false);
@@ -400,11 +422,13 @@ function index() {
 
     setObjectUser(['']);
     setStatusFileResponse(false);
-    setFile('');
+    setFilePDFGoogle('');
     setComments('');
     setModalSuccess(false);
     setStatusResponse(false);
   }
+
+
 
   useEffect(() => {
     handleGetUsersCedis();
@@ -416,7 +440,7 @@ function index() {
         <section className='layout-section'>
           <div className='layout-left'>
             <div className='container__createFiling'>
-              <h3 className='createFiling'>Crear Nuevo radicado</h3>
+              <h3 className='createFiling'>Crear Nuevo Radicado</h3>
               {isSettled && <button
                 className='button button--flex mt-6 buttonHover'
                 onClick={handleReset}
@@ -457,7 +481,7 @@ function index() {
                         includeInputInList
                         value={objectUser}
                         onChange={(event, newValue) => {
-                          if(newValue === null){
+                          if(newValue == null || newValue == undefined ){
                             console.log('me ejecute por aqui')
                             setObjectUser(
                               {
@@ -465,7 +489,7 @@ function index() {
                                 "idroles": "",
                                 "idsedes": "",
                                 "users_identification_type": "",
-                                "users_identification": "123553462",
+                                "users_identification": "",
                                 "users_identification_digital_check": "",
                                 "users_name": "",
                                 "users_lastname": "",
@@ -509,6 +533,7 @@ function index() {
                         placeholder="Ciudad a radicar"
                         name="cedi"
                         required
+                        disabled={!cediType}
                         value={cedi}
                         onChange={handleCedi}
                         itemDefault="selecciona una opcion"
@@ -671,27 +696,13 @@ function index() {
                             required
                             iconEnd={<PostAddIcon/>}
                           />
-
                     </article>
-
                   </div>
 
                   <div className='md:flex md:flex-wrap'>
-                    <article className='md:w-1/2'>
-                      <InputSelect
-                        index='1'
-                        title='Seleccionar Area'
-                        placeholder="Requerimiento"
-                        required
-                        value={invoiceType}
-                        onChange={handleInvoiceType}
-                        itemDefault="selecciona una opcion"
-                        items={optionsInvoiceType}/>
-                    </article>
-                    {invoiceType &&
                     <article className='md:w-1/2' >
                       <InputSelectRedirectTo
-                        type={"text"}
+                        type={"number"}
                         title='Dirigido '
                         placeholder="Para"
                         required
@@ -701,14 +712,11 @@ function index() {
                         items={optionsRedirectTo}
                       />
                     </article>
-                    }
                   </div>
-                  {/* {(objectUser && cedi && settledNumber && price && redirectTo  && idUser) && */}
                   <button
                     className='button button--flex mt-6'
                     onClick={() => setStatusResponse(true)}
                     >Validar Informacion</button>
-                  {/* } */}
                 </section>
 
                 <UploadFileModal
@@ -719,6 +727,7 @@ function index() {
                   docIdentity={docIdentity}
                   price={price}
                   accountType={accountType}
+                  accountNumber={accountNumber}
                   invoiceType={invoiceType}
                   redirectTo={redirectTo}
                   optionsRedirectTo={optionsRedirectTo}
@@ -726,6 +735,7 @@ function index() {
                   cedi={cedi.sedes_city}
                   settledNumber={settledNumber}
                   email={email}
+
                 >
                   <form onSubmit={handleFormSubmit}>
                     <Button name="Crear requerimientos"></Button>
@@ -735,7 +745,7 @@ function index() {
                     <div className='flex rounded justify-between'>
                       <form onSubmit={handleFileSubmit} className="border-neutral-300 border-2 division--containers" >
                           <Upload
-                            file={file}
+                            file={filePDFGoogle}
                             fileName={fileName}
                             handleChangeFile={handleChangeFile}
                           />

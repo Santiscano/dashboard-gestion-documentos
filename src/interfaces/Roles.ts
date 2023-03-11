@@ -1,12 +1,14 @@
 export interface Roles {
-  provider  : number;
-  settling  : number;
-  auditor   : number;
-  manager   : number;
-  accounting: number;
-  treasury  : number;
-  TI        : number;
-  Delete    : number;
+  Proveedor   : number;
+  Radicacion  : number;
+  AuditorGH   : number;
+  AuditorCRTL : number;
+  AuditorRG   : number;
+  Gerencia    : number;
+  Contaduria  : number;
+  Tesoreria   : number;
+  AuditorTI   : number;
+  Eliminar    : number;
 }
 
 export interface DisplayRoles {
@@ -18,4 +20,6 @@ export interface DisplayRoles {
   6: string;
   7: string;
   8: string;
+  9: string;
+  10: string;
 }

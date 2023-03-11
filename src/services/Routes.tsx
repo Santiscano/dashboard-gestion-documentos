@@ -56,7 +56,7 @@ export default {
       },
     },
     Pdf: {
-      uploadfile: `${host}/pdfFiles`,
+      uploadfile: `${host}/uploadFileDocument`,
       getFile: `${host}/pdfFile/:radicado`,
     },
     generateSettled: `${host}/genFileRegistered`,
