@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import 'animate.css';
 
 import { formattedAmount, capitalizeFirstLatterUppercase } from '../../../Utilities/formatted.utility';
+import LoadingMUI from './../LoadingMUI/index';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -83,6 +84,7 @@ const  UploadFileModal: FC<Props> = ({
         className='animate__animated animate__fadeIn'
       >
         <Box sx={style} >
+          <LoadingMUI/>
           <h1 className='border-neutral-300 border-2 rounded p-2.5 text-3xl font-bold mb-3 '>
             Informacion Cliente
           </h1>
