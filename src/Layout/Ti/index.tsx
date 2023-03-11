@@ -9,9 +9,12 @@ import { TabPanelProps } from "../../interfaces/TabPanel";
 import TextFieldOutlined from "../../components/common/TextFieldOutline";
 import Button from "../../components/common/Button";
 import {
-  handleSubmitCreateCedi,
   handleSubmitCreateRol,
+  handleSubmitCreateCedi,
   handleSubmitCreateUser,
+  handleSubmitCreateCostArea,
+  handleSubmitCreateCostSubArea,
+  handleSubmitCreateCostCenter,
 } from "./Submits";
 import InputSelect from "./../../components/common/InputSelect/index";
 import { optionCediType } from "../../components/tools/OptionsValuesSelects";
@@ -65,7 +68,19 @@ function TI() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // create Area Cost
+  const [costCenterArea, setCostCenterArea] = useState("");
+  const [costCenterAreaName, setCostCenterAreaName] = useState("");
+  // create subArea
+  const [idcostCenterArea, setIdcostCenterArea ] = useState("");
+  const [costCenterSubarea, setCostCenterSubarea] = useState("");
+  const [costCenterSubareaName, setCostCenterSubareaName] = useState("");
+  // create Center Cost
+  const [idCostCenterSubarea, setIdCostCenterSubarea] = useState("");
+  const [costCenter, setCostCenter] = useState("");
+  const [costCenterName, setCostCenterName] = useState("");
 
+  // --------------------------handles-------------------------------//
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setShowValue(newValue);
   };
@@ -94,9 +109,9 @@ function TI() {
                   <Tab label="Crear Rol" {...a11yProps(0)} />
                   <Tab label="Crear Cedi" {...a11yProps(1)} />
                   <Tab label="Crear Usuario" {...a11yProps(2)} />
-                  <Tab label="Crear Area" {...a11yProps(3)} />
-                  <Tab label="Crear sub Area" {...a11yProps(4)} />
-                  <Tab label="Crear Centro de costos" {...a11yProps(5)} />
+                  <Tab label="Crear Areas y Centro de Costos" {...a11yProps(3)} />
+                  {/* <Tab label="Crear sub Area" {...a11yProps(4)} /> */}
+                  {/* <Tab label="Crear Centro de costos" {...a11yProps(5)} /> */}
                 </Tabs>
               </Box>
               <TabPanel value={showValue} index={0}>
@@ -276,7 +291,7 @@ function TI() {
                       </label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"Role"}
+                        label={"C.C, NIT ..."}
                         value={identificationType}
                         setValue={setIdentificationType}
                         required
@@ -317,7 +332,7 @@ function TI() {
                       </label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"Cedi"}
+                        label={"Apellidos"}
                         value={lastName}
                         setValue={setLastName}
                         required
@@ -385,13 +400,128 @@ function TI() {
                 </form>
               </TabPanel>
               <TabPanel value={showValue} index={3}>
-                formulario Area
-              </TabPanel>
-              <TabPanel value={showValue} index={4}>
-                formulario SubArea
-              </TabPanel>
-              <TabPanel value={showValue} index={5}>
-                formulario Centro de costos
+                <form onSubmit={(e) => handleSubmitCreateCostArea(e)}>
+                  <div className="md:flex md:flex-wrap">
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        Centro De Costos
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"Numero"}
+                        value={costCenterArea}
+                        setValue={setCostCenterArea}
+                        required
+                        // iconEnd={}
+                      />
+                    </article>
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        Nombre Centro De Costos
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"Nombre"}
+                        value={costCenterAreaName}
+                        setValue={setCostCenterAreaName}
+                        required
+                        // iconEnd={}
+                      />
+                    </article>
+                  </div>
+                  <Button name="Crear Centro De Costos" />
+                </form>
+
+                <form onSubmit={() => handleSubmitCreateCostSubArea()}>
+                  <div className="md:flex md:flex-wrap">
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        Id Centro De Costos
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"Area"}
+                        value={idcostCenterArea}
+                        setValue={setIdcostCenterArea}
+                        required
+                        // iconEnd={}
+                      />
+                    </article>
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        C.C SubArea
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"SubArea"}
+                        value={costCenterSubarea}
+                        setValue={setCostCenterSubarea}
+                        required
+                      />
+                    </article>
+                  </div>
+                  <div className="md:flex md:flex-wrap">
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        Nombre subArea
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"Nombre"}
+                        value={costCenterSubareaName}
+                        setValue={setCostCenterSubareaName}
+                        required
+                        // iconEnd={}
+                      />
+                    </article>
+                  </div>
+                </form>
+                <Button name="Crear SubArea" />
+
+                <form onSubmit={() => handleSubmitCreateCostCenter()}>
+                  <div className="md:flex md:flex-wrap">
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        Id SubArea
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"ID"}
+                        value={idCostCenterSubarea}
+                        setValue={setIdCostCenterSubarea}
+                        required
+                      />
+                    </article>
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        Centro de Costos
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"centro de costos"}
+                        value={costCenter}
+                        setValue={setCostCenter}
+                        required
+                      />
+                    </article>
+                  </div>
+                  <div className="md:flex md:flex-wrap">
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        Nombre Centro de Costos
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"Nombre"}
+                        value={costCenterName}
+                        setValue={setCostCenterName}
+                        required
+                        // iconEnd={}
+                      />
+                    </article>
+                  </div>
+                </form>
+                <Button name="Crear Usuario" />
               </TabPanel>
             </Box>
           </article>
