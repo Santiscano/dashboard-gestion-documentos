@@ -115,7 +115,7 @@ function index(props: any) {
 
       <Divider />
 
-      {rolTI && <List>
+      <List>
         {rutero.online.ti.map((list, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton onClick={() => navigate(`${list.url}`)}>
@@ -126,8 +126,22 @@ function index(props: any) {
             </ListItemButton>
           </ListItem>
         ))}
-      </List>}
-      {rolTI && <Divider/>}
+      </List>
+
+      <Divider/>
+
+      <List>
+        {rutero.online.digitalizacion.map((list, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton onClick={() => navigate(`${list.url}`)}>
+              <ListItemIcon>
+                {list.icon}
+              </ListItemIcon>
+              <ListItemText primary={list.name}/>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
 
       <img src={working} alt="image working" style={{backgroundColor:"#e4e4e7", width:230 }}/>
     </Drawer>

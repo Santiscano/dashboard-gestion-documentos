@@ -33,6 +33,13 @@ export default {
         icon: <LogoDevIcon sx={{color:"#293184"}} />,
       }
     ],
+    digitalizacion: [
+      {
+        name: "Digitalizacion",
+        url: "jsx",
+        icon: <LogoDevIcon sx={{color:"#293184"}} />,
+      },
+    ],
 
 
   },

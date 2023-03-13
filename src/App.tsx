@@ -25,6 +25,7 @@ import Testing from './modules/Testing';
 import PendingFilesTable from './Layout/PendingFilesTable/index';
 import TableAllFiles from './Layout/AllFilesTable';
 import AllFilesTable from './Layout/AllFilesTable';
+import Santijs from './Layout/Santijs';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
               <Route path='pendding' element={<PendingFilesTable/>} />
               <Route path='all-files' element={<AllFilesTable/>} />
               <Route path='ti' element={<Ti/>} />
+              <Route path='digitalizacion' element={<Santijs/>} />
             </Route>
           </Route>
 

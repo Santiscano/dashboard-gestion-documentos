@@ -154,6 +154,7 @@ function index() {
    * @param e
    */
   const handleDocumentType = async (e: SelectChangeEvent) => {
+    console.log('e: ', e);
     const SelectDocumentType = e.target.value;
     setDocumentType(SelectDocumentType);
 
