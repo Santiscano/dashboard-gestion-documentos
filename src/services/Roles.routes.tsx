@@ -9,8 +9,8 @@ export const getRoles = async () => {
     const response = await axios.post(Routes.api.roles.get,{
       api_key: import.meta.env.VITE_API_KEY
     }, getHeader())
-    console.log('response: ', response);
-    return response;
+    const roles = response.data.roles
+    return roles;
   } catch(error) {
     console.log(error)
   }

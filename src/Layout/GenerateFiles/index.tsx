@@ -43,8 +43,9 @@ import InputSelectCedi from '../../components/common/InputSelectCedi';
 import { GeneralValuesContext } from '../../Context/GeneralValuesContext';
 import { roles } from '../../components/tools/SesionSettings';
 import LoadingMUI from '../../components/common/LoadingMUI';
+import { get } from '../../components/tools/SesionSettings';
 
-function index() {
+function GenerateFiles() {
 
   // ------------------------------VARIABLES------------------------------//
   // temporal para revisar respuesta
@@ -239,7 +240,7 @@ function index() {
       e.preventDefault();
       setPreLoad(true);
       // @ts-ignore
-      const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo, cedi.idsedes, accountType, accountNumber );
+      const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo, cedi.idsedes, accountType, accountNumber, get('idusers'));
       console.log('addFileResponse: ', addFileResponse);
 
       //muestro input file y textarea
@@ -273,7 +274,7 @@ function index() {
       console.log('responseUploadFile: ', responseUploadFile);
       const pathFileUpload = await responseUploadFile?.data.pathFile;
 
-      const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments ); // relaciona pdf y file
+      const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments, get('idusers')); // relaciona pdf y file
 
       // @ts-ignore
       const status = responseConcatFilePath?.status
@@ -547,9 +548,6 @@ function index() {
                         value={cedi}
                         onChange={handleCedi}
                         itemDefault="selecciona una opcion"
-                        isSettled={isSettled}
-                        // @ts-ignore
-                        // items={optionsCedisName}
                         items={optionsCedisIdName}
                       />
                     </article>
@@ -795,4 +793,4 @@ function index() {
   )
 }
 
-export default index
+export default GenerateFiles;

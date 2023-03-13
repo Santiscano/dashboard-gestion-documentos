@@ -41,8 +41,12 @@ function index(props: any) {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(!open);
+  const [openFiles, setOpenFiles] = useState(false);
+  const handleOpenFiles = () => setOpenFiles(!openFiles);
+
+
+  const [openAuths, setOpenAuths] = useState(false);
+  const handleOpenAuth = () => setOpenAuths(!openAuths);
 
   const handleRouteValidate = (nav:any) => {
     console.log('session', session());
@@ -77,24 +81,41 @@ function index(props: any) {
       <Divider />
 
       <List>
-        {rutero.online.settling.map((list, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton onClick={ ()=> handleRouteValidate(list) } >
-              <ListItemIcon>
-                {list.icon}
-              </ListItemIcon>
-              <ListItemText primary={list.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-        <ListItemButton onClick={handleOpen}>
+        <ListItemButton onClick={handleOpenFiles}>
+          <ListItemIcon>
+            <VerifiedRoundedIcon sx={{color:"#293184"}} />
+          </ListItemIcon>
+          <ListItemText primary="Radicados" />
+          {openFiles ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={openFiles} timeout="auto" unmountOnExit>
+          <List>
+            {rutero.online.settling.map((list, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemButton onClick={ ()=> handleRouteValidate(list) } >
+                  <ListItemIcon>
+                    {list.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={list.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Collapse>
+
+
+
+
+
+
+        <ListItemButton onClick={handleOpenAuth}>
           <ListItemIcon>
           <VerifiedRoundedIcon sx={{color:"#293184"}} />
           </ListItemIcon>
           <ListItemText primary="Autorizaciones" />
-          {open ? <ExpandLess /> : <ExpandMore />}
+          {openAuths ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={openAuths} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {rutero.online.auth.map((list, index) => (
               <ListItem key={index} disablePadding>

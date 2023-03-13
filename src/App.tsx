@@ -6,7 +6,8 @@ import Admin from './modules/Admin';
 // import { NotFound } from './modules/NotFound';
 import Error from './components/common/error';
 import Updates from './Layout/PendingFilesTable';
-import Provider from './Layout/Provider';
+import GenerateFiles from './Layout/GenerateFiles';
+import SearchFile from './Layout/SearchFile';
 import Ti from './Layout/Ti';
 import forbidden403Img from './assets/images/403.jpg';
 import notFound404Img from './assets/images/404.png';
@@ -25,7 +26,6 @@ import Testing from './modules/Testing';
 import PendingFilesTable from './Layout/PendingFilesTable/index';
 import TableAllFiles from './Layout/AllFilesTable';
 import AllFilesTable from './Layout/AllFilesTable';
-import Santijs from './Layout/Santijs';
 
 function App() {
   return (
@@ -44,11 +44,11 @@ function App() {
           >
             <Route path='/dashboard'  element={ <Admin/> }>
               <Route path='home' element={<Home/>} />
-              <Route path='settled' element={<Provider/>} />
+              <Route path='settled' element={<GenerateFiles/>} />
+              <Route path='searching' element={<SearchFile/>} />
               <Route path='pendding' element={<PendingFilesTable/>} />
               <Route path='all-files' element={<AllFilesTable/>} />
               <Route path='ti' element={<Ti/>} />
-              <Route path='digitalizacion' element={<Santijs/>} />
             </Route>
           </Route>
 

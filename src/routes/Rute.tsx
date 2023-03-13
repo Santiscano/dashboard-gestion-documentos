@@ -3,15 +3,21 @@ import PendingActionsRoundedIcon from '@mui/icons-material/PendingActionsRounded
 import ScreenSearchDesktopRoundedIcon from '@mui/icons-material/ScreenSearchDesktopRounded';
 import LogoDevIcon from '@mui/icons-material/LogoDev';
 import TopicRoundedIcon from '@mui/icons-material/TopicRounded';
+import AttachEmailIcon from '@mui/icons-material/AttachEmail';
 
 
 export default {
   online: {
     settling: [
       {
-        name: "Generar Radicado",
+        name: "Generar",
         url: "/dashboard/settled",
         icon: <HistoryEduRoundedIcon sx={{color:"#293184"}} />,
+      },
+      {
+        name: "Adjuntar",
+        url: "/dashboard/attach",
+        icon: <AttachEmailIcon sx={{color:"#293184"}} />,
       },
     ],
     auth: [

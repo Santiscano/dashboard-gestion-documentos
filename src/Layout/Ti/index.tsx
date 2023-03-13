@@ -21,6 +21,11 @@ import { optionCediType } from "../../components/tools/OptionsValuesSelects";
 import InputSelectCountry from "../../components/common/InputSelectCity";
 import { getCitys } from './../../services/getCitysColombia';
 import InputSelectCity from "../../components/common/InputSelectCity";
+import InputSelectCedi from "../../components/common/InputSelectCedi";
+import { AllCedis } from "../../interfaces/Cedis";
+import { getCedis } from "../../services/Cedis.routes";
+import { getRoles } from "../../services/Roles.routes";
+import InputSelectRol from "../../components/common/InputSelectRol";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -64,8 +69,10 @@ function TI() {
   const [cediName, setCediName] = useState("");
   const [type, setType] = useState("");
   // create user
-  const [assignRole, setAssignRole] = useState<number>();
-  const [idSedes, setIdSedes] = useState<number>();
+  const [assignRole, setAssignRole] = useState<any>();
+  const [optionsRol, setOptionsRol] = useState<any>([]);
+  const [cedi, setCedi] = useState<any>();
+  const [optionsCedisIdName, setOptionsCedisIdName] = useState<any>([]);
   const [identificationType, setIdentificationType] = useState("");
   const [identificationNumber, setIdentificationNumber] = useState("");
   const [firstName, setFirstname] = useState("");
@@ -97,7 +104,8 @@ function TI() {
   };
 
   /**
-   * traigo los departamentos y almaceno en listas igual para ciudades
+   * traigo los departamentos, ciudades, cedis,
+   * y almaceno en variables
    */
   const handleGetCitys = async () => {
     const departmentsResponse = await getCitys();
@@ -105,6 +113,14 @@ function TI() {
 
     setListCitys(departmentsResponse?.DepartamentCity);
     setAllCitys(departmentsResponse?.DepartamentCity);
+
+    const allCedis: AllCedis[] = await getCedis();
+    console.log('allCedis: ', allCedis);
+    setOptionsCedisIdName(allCedis);
+
+    const allRoles = await getRoles();
+    console.log('allRoles: ', allRoles);
+    setOptionsRol(allRoles);
   };
   const handleDepartment = (e: SelectChangeEvent) => {
     setCity('');
@@ -118,12 +134,15 @@ function TI() {
   const handleCity =  (e: SelectChangeEvent) => {
     setCity(e.target.value);
   };
-
-
-
   const handleCediType = (e: SelectChangeEvent) => {
     setType(e.target.value);
   };
+
+  const handleRol = (e: SelectChangeEvent) => {setAssignRole(e.target.value); console.log(e.target.value)};
+  const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value); console.log(e.target.value)};
+
+
+
 
 
   // --------------------------handles-------------------------------//
@@ -298,45 +317,46 @@ function TI() {
                 </form>
               </TabPanel>
               <TabPanel value={showValue} index={2}>
-                <form onSubmit={() => handleSubmitCreateUser(
-                  event,
-                  // @ts-ignore
-                  assignRole, setAssignRole,
-                  idSedes, setIdSedes,
-                  identificationType, setIdentificationType,
-                  identificationNumber, setIdentificationNumber,
-                  firstName, setFirstname,
-                  lastName, setLastName,
-                  addressUser, setAddressUser,
-                  phone, setPhone,
-                  email, setEmail,
-                  password, setPassword
+                <form
+                  onSubmit={() => handleSubmitCreateUser(
+                    event,
+                    // @ts-ignore
+                    assignRole, setAssignRole,
+                    cedi, setCedi,
+                    identificationType, setIdentificationType,
+                    identificationNumber, setIdentificationNumber,
+                    firstName, setFirstname,
+                    lastName, setLastName,
+                    addressUser, setAddressUser,
+                    phone, setPhone,
+                    email, setEmail,
+                    password, setPassword
                 )}>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Asignar Rol
-                      </label>
-                      <TextFieldOutlined
+                      <InputSelectRol
                         type={"text"}
-                        label={"Role"}
-                        value={assignRole}
-                        setValue={setAssignRole}
+                        title='Asignar Rol'
+                        placeholder="Rol"
+                        name="role"
                         required
-                        // iconEnd={}
+                        value={assignRole}
+                        onChange={handleRol}
+                        itemDefault="selecciona una opcion"
+                        items={optionsRol}
                       />
                     </article>
                     <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Asignar Cedi
-                      </label>
-                      <TextFieldOutlined
+                      <InputSelectCedi
                         type={"text"}
-                        label={"Cedi"}
-                        value={idSedes}
-                        setValue={setIdSedes}
+                        title='Asignar Cedi'
+                        placeholder="Cedi"
+                        name="cedi"
                         required
-                        // iconEnd={}
+                        value={cedi}
+                        onChange={handleCedi}
+                        itemDefault="selecciona una opcion"
+                        items={optionsCedisIdName}
                       />
                     </article>
                   </div>
