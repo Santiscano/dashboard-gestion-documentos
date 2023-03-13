@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./TI.css";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -18,6 +18,9 @@ import {
 } from "./Submits";
 import InputSelect from "./../../components/common/InputSelect/index";
 import { optionCediType } from "../../components/tools/OptionsValuesSelects";
+import InputSelectCountry from "../../components/common/InputSelectCity";
+import { getCitys } from './../../services/getCitysColombia';
+import InputSelectCity from "../../components/common/InputSelectCity";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -52,8 +55,11 @@ function TI() {
   const [rolName, setRolName] = useState("");
   const [rolDescription, setRolDescription] = useState("");
   // create cedi
+  const [department, setDepartment] = useState("");
+  const [listDepartment, setListDepartment] = useState<string[]>([]);
   const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
+  const [listCitys, setListCitys] = useState<any>('');
+  const [allCitys, setAllCitys] = useState<any>('');
   const [address, setAddress] = useState("");
   const [cediName, setCediName] = useState("");
   const [type, setType] = useState("");
@@ -81,12 +87,49 @@ function TI() {
   const [costCenterName, setCostCenterName] = useState("");
 
   // --------------------------handles-------------------------------//
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  /**
+   * metodo para pasar entre crear rol, cedi.... etc
+   * @param e
+   * @param newValue
+   */
+  const handleChange = (e: React.SyntheticEvent, newValue: number) => {
     setShowValue(newValue);
   };
+
+  /**
+   * traigo los departamentos y almaceno en listas igual para ciudades
+   */
+  const handleGetCitys = async () => {
+    const departmentsResponse = await getCitys();
+    setListDepartment(departmentsResponse?.Department);
+
+    setListCitys(departmentsResponse?.DepartamentCity);
+    setAllCitys(departmentsResponse?.DepartamentCity);
+  };
+  const handleDepartment = (e: SelectChangeEvent) => {
+    setCity('');
+    setDepartment(e.target.value);
+
+    // @ts-ignore
+    const filterCity = allCitys.filter(location => location.departamento === e.target.value )
+    // @ts-ignore
+    setListCitys(filterCity);
+  };
+  const handleCity =  (e: SelectChangeEvent) => {
+    setCity(e.target.value);
+  };
+
+
+
   const handleCediType = (e: SelectChangeEvent) => {
     setType(e.target.value);
   };
+
+
+  // --------------------------handles-------------------------------//
+  useEffect(() => {
+    handleGetCitys();
+  },[])
 
   return (
     <div className="layout">
@@ -96,6 +139,7 @@ function TI() {
             <h3 className="createFiling">
               Administracion & Gestion de Plataforma TI
             </h3>
+            <code> {department[0]}  </code>
           </div>
           <article className="filing-ti">
             <Box sx={{ width: "100%" }}>
@@ -109,7 +153,7 @@ function TI() {
                   <Tab label="Crear Rol" {...a11yProps(0)} />
                   <Tab label="Crear Cedi" {...a11yProps(1)} />
                   <Tab label="Crear Usuario" {...a11yProps(2)} />
-                  <Tab label="Crear Areas y Centro de Costos" {...a11yProps(3)} />
+                  <Tab label="Crear Centro de Costos" {...a11yProps(3)} />
                   {/* <Tab label="Crear sub Area" {...a11yProps(4)} /> */}
                   {/* <Tab label="Crear Centro de costos" {...a11yProps(5)} /> */}
                 </Tabs>
@@ -160,8 +204,8 @@ function TI() {
                   onSubmit={() =>
                     handleSubmitCreateCedi(
                       event,
+                      department, setDepartment,
                       city, setCity,
-                      country, setCountry,
                       address, setAddress,
                       cediName, setCediName,
                       type, setType
@@ -170,30 +214,42 @@ function TI() {
                 >
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                      <InputSelect
+                        type={"text"}
+                        name="departament"
+                        title='Departamento'
+                        placeholder='Seleccione el Departamento'
+                        required
+                        value={department}
+                        onChange={handleDepartment}
+                        itemDefault='Selecciona el Departamento'
+                        items={listDepartment}
+                      />
+                    </article>
+                    <article className="md:w-1/2">
+                      <InputSelectCity
+                        type={"text"}
+                        name="city"
+                        title='Ciudad'
+                        placeholder='Seleccione la Ciudad'
+                        required
+                        disabled={!department}
+                        value={city}
+                        onChange={handleCity}
+                        itemDefault='Selecciona el Departamento'
+                        items={listCitys}
+                      />
+                      {/* <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
                         Ciudad
                       </label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"Nombre ciudad"}
+                        label={"Nombre Pais"}
                         value={city}
                         setValue={setCity}
                         required
                         // iconEnd={}
-                      />
-                    </article>
-                    <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Pais
-                      </label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"Nombre Pias"}
-                        value={country}
-                        setValue={setCountry}
-                        required
-                        // iconEnd={}
-                      />
+                      /> */}
                     </article>
                   </div>
                   <div className="md:flex md:flex-wrap">
