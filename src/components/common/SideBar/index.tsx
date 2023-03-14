@@ -1,37 +1,37 @@
-import { useState } from 'react';
-import Drawer from '@mui/material/Drawer';
+import { useState } from "react";
+import Drawer from "@mui/material/Drawer";
 // components mui
-import { styled, useTheme } from '@mui/material/styles';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import { styled, useTheme } from "@mui/material/styles";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 // icons mui
-import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import CloseIcon from '@mui/icons-material/Close';
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import CloseIcon from "@mui/icons-material/Close";
+import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
+import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 
 import rutero from "../../../routes/Rute";
 import { Link, useNavigate } from "react-router-dom";
-import enviexpress from '../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png'
-import working from '../../../assets/icons/data-analysis-case-study.png'
-import { Collapse } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import VerifiedRoundedIcon from '@mui/icons-material/VerifiedRounded';
-import { session } from '../../tools/SesionSettings';
-
+import enviexpress from "../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png";
+import working from "../../../assets/icons/data-analysis-case-study.png";
+import { Collapse } from "@mui/material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
+import { session } from "../../tools/SesionSettings";
 
 const drawerWidth = 240;
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
   padding: theme.spacing(0, 1),
 
   ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
+  justifyContent: "flex-end",
   backgroundColor: "#e4e4e7",
-
 }));
 
 // ROLES
@@ -41,12 +41,18 @@ function index(props: any) {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(!open);
+  const [openFiles, setOpenFiles] = useState(false);
+  const handleOpenFiles = () => setOpenFiles(!openFiles);
 
-  const handleRouteValidate = (nav:any) => {
-    console.log('session', session());
-    !!session() ? navigate(`${nav.url}`) : navigate("/login")
+  const [openAuths, setOpenAuths] = useState(false);
+  const handleOpenAuth = () => setOpenAuths(!openAuths);
+
+  const [openDG, setOpenDG] = useState(false);
+  const handleOpenDG = () => setOpenDG(!openDG);
+
+  const handleRouteValidate = (nav: any) => {
+    console.log("session", session());
+    !!session() ? navigate(`${nav.url}`) : navigate("/login");
   };
 
   return (
@@ -55,10 +61,10 @@ function index(props: any) {
         backgroundColor: "#e4e4e7",
         width: drawerWidth,
         flexShrink: 0,
-        '& .MuiDrawer-paper': {
+        "& .MuiDrawer-paper": {
           width: drawerWidth,
-          boxSizing: 'border-box',
-          backgroundColor: "#e4e4e7"
+          boxSizing: "border-box",
+          backgroundColor: "#e4e4e7",
         },
       }}
       variant="persistent"
@@ -70,41 +76,49 @@ function index(props: any) {
           <img src={enviexpress} width={160} className="inline " />
         </Link>
         <IconButton onClick={props.handleDrawerClose}>
-          <CloseIcon/>
+          <CloseIcon />
         </IconButton>
       </DrawerHeader>
 
       <Divider />
 
       <List>
-        {rutero.online.settling.map((list, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton onClick={ ()=> handleRouteValidate(list) } >
-              <ListItemIcon>
-                {list.icon}
-              </ListItemIcon>
-              <ListItemText primary={list.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-        <ListItemButton onClick={handleOpen}>
+        <ListItemButton onClick={handleOpenFiles}>
           <ListItemIcon>
-          <VerifiedRoundedIcon sx={{color:"#293184"}} />
+            <AssignmentRoundedIcon sx={{ color: "#293184" }} />
+          </ListItemIcon>
+          <ListItemText primary="Radicados" />
+          {openFiles ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={openFiles} timeout="auto" unmountOnExit>
+          <List>
+            {rutero.online.settling.map((list, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemButton onClick={() => handleRouteValidate(list)}>
+                  <ListItemIcon>{list.icon}</ListItemIcon>
+                  <ListItemText primary={list.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Collapse>
+
+        <ListItemButton onClick={handleOpenAuth}>
+          <ListItemIcon>
+            <VerifiedRoundedIcon sx={{ color: "#293184" }} />
           </ListItemIcon>
           <ListItemText primary="Autorizaciones" />
-          {open ? <ExpandLess /> : <ExpandMore />}
+          {openAuths ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={openAuths} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {rutero.online.auth.map((list, index) => (
               <ListItem key={index} disablePadding>
                 <ListItemButton
-                    sx={{pl: 4 }}
-                    onClick={ ()=> navigate(`${list.url}`) }
-                  >
-                  <ListItemIcon>
-                    {list.icon}
-                  </ListItemIcon>
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate(`${list.url}`)}
+                >
+                  <ListItemIcon>{list.icon}</ListItemIcon>
                   <ListItemText primary={list.name} />
                 </ListItemButton>
               </ListItem>
@@ -115,23 +129,51 @@ function index(props: any) {
 
       <Divider />
 
-      {rolTI && <List>
+      <List>
         {rutero.online.ti.map((list, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton onClick={() => navigate(`${list.url}`)}>
-              <ListItemIcon>
-                {list.icon}
-              </ListItemIcon>
+              <ListItemIcon>{list.icon}</ListItemIcon>
               <ListItemText primary={list.name} />
             </ListItemButton>
           </ListItem>
         ))}
-      </List>}
-      {rolTI && <Divider/>}
+      </List>
 
-      <img src={working} alt="image working" style={{backgroundColor:"#e4e4e7", width:230 }}/>
+      <Divider />
+
+      <List>
+        <ListItemButton onClick={handleOpenDG}>
+          <ListItemIcon>
+            <CreateNewFolderRoundedIcon sx={{ color: "#293184" }} />
+          </ListItemIcon>
+          <ListItemText primary="Digitalización" />
+          {openDG ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={openDG} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {rutero.online.digitalizacion.map((list, index) => (
+              <ListItem key={index} disablePadding>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => navigate(`${list.url}`)}
+                >
+                  <ListItemIcon>{list.icon}</ListItemIcon>
+                  <ListItemText primary={list.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Collapse>
+      </List>
+
+      <img
+        src={working}
+        alt="image working"
+        style={{ backgroundColor: "#e4e4e7", width: 230 }}
+      />
     </Drawer>
-  )
+  );
 }
 
-export default index
+export default index;

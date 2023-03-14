@@ -1,17 +1,14 @@
 import axios from "axios";
 import Routes from './Routes';
-import { getHeader, set } from "../components/tools/SesionSettings";
+import { getHeader, getHeaderMultipart } from "../components/tools/SesionSettings";
 
 
 export const uploadfile = async (file_pdf:any, idFiles:any) => {
   try{
-    console.log('file: ', file_pdf);
-    console.log('me comence a ejecutar')
-    console.log('idFiles: ', idFiles);
     // const response = await axios.post(`${Routes.api.Pdf.uploadfile}/${idFiles}`, file, getHeader())
-    const response = await axios.post(`localhost:4500/uploadFileDocument/${idFiles}`, {
+    const response = await axios.post(`${Routes.api.Pdf.uploadfile}/${idFiles}`, {
       'pdf_file':file_pdf,
-    }, getHeader())
+    }, getHeaderMultipart())
     console.log('response uploadfile: ', response);
     return response;
   } catch (error) {

@@ -1,6 +1,7 @@
 import { createRol } from "../../services/Roles.routes";
 import { createCedi } from "../../services/Cedis.routes";
 import { createUser } from '../../services/Users.routes'
+import { createCostArea } from "../../services/CenterCost.routes";
 
 
 export const handleSubmitCreateRol = async (
@@ -89,13 +90,17 @@ export const handleSubmitCreateUser = async (
   } finally{}
 }
 
-export const handleSubmitCreateArea = async () => {
-  try{} catch(error) {
+export const handleSubmitCreateCostArea = async (e:any,) => {
+  try{
+    e.preventDefault();
+    const response = await createCostArea();
+    return response;
+  } catch(error) {
     console.log('error: ', error);
   } finally{}
 }
 
-export const handleSubmitCreateSubArea = async () => {
+export const handleSubmitCreateCostSubArea = async () => {
   try{} catch(error) {
     console.log('error: ', error);
   } finally{}

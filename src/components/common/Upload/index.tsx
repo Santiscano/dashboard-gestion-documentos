@@ -6,7 +6,11 @@ import { SelectChangeEvent } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
 
-function index(props:any) {
+function index({
+  file,
+  fileName,
+  handleChangeFile
+}:any) {
 
 
   return (
@@ -15,7 +19,7 @@ function index(props:any) {
       {/* input */}
       <div className='flex h-4/6 items-center justify-center w-full cursor-pointer bg-zinc-200 rounded'>
         <label htmlFor="dropzone-file" className='flex flex-col items-center justify-center cursor-pointer'>
-          { props.file == '' ?
+          { file == '' ?
           <div className='flex flex-col items-center justify-center pt-5 pb-6 '>
             <CloudUploadOutlinedIcon color="primary"  />
             <p className='mb-2 text-sm text-gray-500 dark:text-gray-400'><span className='font-semibold'>Click aqui</span> para subir archivo</p>
@@ -25,7 +29,7 @@ function index(props:any) {
             <VerifiedOutlinedIcon color="primary" sx={{ width: 30 }} />
             <p className='text-center mb-2 text-sm text-gray-500 dark:text-gray-400'>
               <span className='font-semibold'>Archivo cargado <br/>
-                {props.fileName}
+                {fileName}
               </span>
             </p>
           </div>
@@ -33,8 +37,8 @@ function index(props:any) {
           <input id="dropzone-file"
             type="file"
             className='hidden '
-            // value={props.file}
-            onChange={props.handleChangeFile}
+            // value={file}
+            onChange={handleChangeFile}
           />
         </label>
       </div>

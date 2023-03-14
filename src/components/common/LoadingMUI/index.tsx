@@ -9,7 +9,7 @@ function LoadingMUI() {
   return (
     <>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', height:"100vh", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         // @ts-ignore
         open={preLoad}
       >

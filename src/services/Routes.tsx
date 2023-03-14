@@ -46,13 +46,17 @@ export default {
       area: {
         getCostArea: `${host}/getCostArea`,
         createCostArea: `${host}/postCostArea`,
-        editCostArea: `${host}/putCostArea`,
         deleteCostArea: `${host}/deleteCostArea`,
       },
       subArea: {
         getCostSubArea: `${host}/getCostSubArea`,
         createCostSubArea: `${host}/postCostSubArea`,
         deleteCostSubArea: `${host}/deleteCostSubArea`,
+      },
+      CenterCost: {
+        getCostCenter: `${host}/getCostCenter`,
+        createCostCenter: `${host}/postCostCenter`,
+        deleteCostCenter: `${host}/deleteCostCenter`
       },
     },
     Pdf: {

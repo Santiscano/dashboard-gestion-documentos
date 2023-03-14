@@ -42,8 +42,10 @@ import { AllCedis, CedisId, CedisIdName } from '../../interfaces/Cedis';
 import InputSelectCedi from '../../components/common/InputSelectCedi';
 import { GeneralValuesContext } from '../../Context/GeneralValuesContext';
 import { roles } from '../../components/tools/SesionSettings';
+import LoadingMUI from '../../components/common/LoadingMUI';
+import { get } from '../../components/tools/SesionSettings';
 
-function index() {
+function GenerateFiles() {
 
   // ------------------------------VARIABLES------------------------------//
   // temporal para revisar respuesta
@@ -153,6 +155,7 @@ function index() {
    * @param e
    */
   const handleDocumentType = async (e: SelectChangeEvent) => {
+    console.log('e: ', e);
     const SelectDocumentType = e.target.value;
     setDocumentType(SelectDocumentType);
 
@@ -233,46 +236,54 @@ function index() {
    * @param e
    */
   const handleFormSubmit = async (e:any) => {
-    e.preventDefault();
-    // @ts-ignore
-    const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo, cedi.idsedes, accountType, accountNumber );
-    console.log('addFileResponse: ', addFileResponse);
+    try{
+      e.preventDefault();
+      setPreLoad(true);
+      // @ts-ignore
+      const addFileResponse = await addFile(idUser, settledNumber, price, redirectTo, cedi.idsedes, accountType, accountNumber, get('idusers'));
+      console.log('addFileResponse: ', addFileResponse);
 
-    //muestro input file y textarea
-    const status = addFileResponse?.status;
-    status === 200 && setStatusFileResponse(true)
+      //muestro input file y textarea
+      const status = addFileResponse?.status;
+      status === 200 && setStatusFileResponse(true)
 
-    // guardo respuesta completa en variable result
-    // @ts-ignore
-    setResult(addFileResponse);
+      // guardo respuesta completa en variable result
+      // @ts-ignore
+      setResult(addFileResponse);
+    } catch(error){
+      console.log('error: ', error);
+    } finally{
+      setPreLoad(false);
+    }
   }
   /**
    * @param e detiene el reset del la pantalla
-   * creo formData y guardo archivo en variable
-   * tomo el path de la respuesta de la otra consulta en idfile
-   * envio pdf a DB y guardo path de respuesta
+   * almaceno en variable el id de la respuesta de la peticion anterior
+   * por parametros envio archivo y variable anterior y en respuesta almaceno path(pathfileupload)
+   * nueva peticion http relaciono iddatos, rutaArchivoCargado, Comentarios
    * relaciono path de pdf y el file correspondiente
    */
   const handleFileSubmit = async (e:any) => {
-    e.preventDefault();
-    const pdfFile = new FormData();
-    // pdfFile.append('pdf_file', filePDFGoogle);
-    console.log('filePDFGoogle: ', filePDFGoogle);
-    // console.log('pdfFile: ', pdfFile);
+    try{
+      e.preventDefault();
+      setPreLoad(true);
+      // @ts-ignore
+      const idFiles = result?.data.file[0].idfiles;
 
-    // @ts-ignore
-    const idFiles = result?.data.file[0].idfiles;
-    console.log('idFiles: ', idFiles);
+      const responseUploadFile = await uploadfile(filePDFGoogle, idFiles); // guarda pdf
+      console.log('responseUploadFile: ', responseUploadFile);
+      const pathFileUpload = await responseUploadFile?.data.pathFile;
 
-    const responseUploadFile = await uploadfile(filePDFGoogle, idFiles); // guarda pdf
-    console.log('responseUploadFile: ', responseUploadFile);
-    // const pathFileUpload = await responseUploadFile?.data.path;
+      const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments, get('idusers')); // relaciona pdf y file
 
-    // const responseConcatFilePath = await createFilePath(idFiles, pathFileUpload, comments ); // relaciona pdf y file
-
-    // @ts-ignore
-    const status = responseConcatFilePath?.status
-    status === 200 && setModalSuccess(true);
+      // @ts-ignore
+      const status = responseConcatFilePath?.status
+      status === 200 && (setModalSuccess(true));
+    } catch(error){
+      console.log('error: ', error);
+    } finally{
+      setPreLoad(false);
+    }
   }
     /**
    * metodo para mostrar a la vista el nombre del archivo seleccionado
@@ -537,9 +548,6 @@ function index() {
                         value={cedi}
                         onChange={handleCedi}
                         itemDefault="selecciona una opcion"
-                        isSettled={isSettled}
-                        // @ts-ignore
-                        // items={optionsCedisName}
                         items={optionsCedisIdName}
                       />
                     </article>
@@ -737,6 +745,8 @@ function index() {
                   email={email}
 
                 >
+                  {/* <LoadingMUI/> */}
+
                   <form onSubmit={handleFormSubmit}>
                     <Button name="Crear requerimientos"></Button>
                   </form>
@@ -749,7 +759,10 @@ function index() {
                             fileName={fileName}
                             handleChangeFile={handleChangeFile}
                           />
-                        <button className="button button--flex mt-4 relative top-4" >Adjuntar Archivos</button>
+                        <button
+                          className="button button--flex mt-4 relative top-4"
+                          // type='submit'
+                        >Adjuntar Archivos</button>
                       </form>
                       <textarea
                         name="Comentario" id="comentary"
@@ -780,4 +793,4 @@ function index() {
   )
 }
 
-export default index
+export default GenerateFiles;
