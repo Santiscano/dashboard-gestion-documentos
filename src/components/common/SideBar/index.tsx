@@ -14,7 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import CreateNewFolderRoundedIcon from "@mui/icons-material/CreateNewFolderRounded";
 
-import rutero from "../../../routes/Rute";
+import rutero from "../../../routes/RutesSidebar";
 import { Link, useNavigate } from "react-router-dom";
 import enviexpress from "../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png";
 import working from "../../../assets/icons/data-analysis-case-study.png";

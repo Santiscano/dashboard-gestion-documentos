@@ -24,6 +24,9 @@ import Testing from "./modules/Testing";
 import PendingFilesTable from "./Layout/PendingFilesTable/index";
 import AllFilesTable from "./Layout/AllFilesTable";
 import NewEmployee from "./Layout/NewEmployee";
+import AttachEmployeeDocuments from "./Layout/AttachEmployeeDocuments";
+import AllEmployees from "./Layout/AllEmployees";
+import SearchEmployee from "./Layout/SearchEmployee";
 
 function App() {
   return (
@@ -39,15 +42,21 @@ function App() {
             <Route path="/dashboard" element={<Admin />}>
               <Route path="home" element={<Home />} />
               {/* generar - adjuntar */}
-              <Route path="settled" element={<GenerateFiles />} />
-              <Route path="attach" element={<AttachFile />} />
+              <Route path="radicar" element={<GenerateFiles />} />
+              <Route path="adjuntar" element={<AttachFile />} />
               {/* tablas... pendientes - todos */}
-              <Route path="pendding" element={<PendingFilesTable />} />
-              <Route path="all-files" element={<AllFilesTable />} />
+              <Route path="pendientes" element={<PendingFilesTable />} />
+              <Route path="todos-los-archivos" element={<AllFilesTable />} />
               {/* TI */}
               <Route path="ti" element={<Ti />} />
               {/* DG */}
-              <Route path="" element={<NewEmployee />} />
+              <Route path="nuevo-empleado" element={<NewEmployee />} />
+              <Route path="todos-los-empleados" element={<AllEmployees />} />
+              <Route
+                path="adjuntar-documentos-empleado"
+                element={<AttachEmployeeDocuments />}
+              />
+              <Route path="buscar-empleado" element={<SearchEmployee />} />
             </Route>
           </Route>
 
