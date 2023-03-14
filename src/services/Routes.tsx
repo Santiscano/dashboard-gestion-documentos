@@ -1,6 +1,5 @@
-
-const host = import.meta.env.VITE_BASE_URL
-const hostPdf = import.meta.env.VITE_URL_GET_PDF_SETTLED
+const host = import.meta.env.VITE_BASE_URL;
+const hostPdf = import.meta.env.VITE_URL_GET_PDF_SETTLED;
 
 export default {
   host: host,
@@ -40,7 +39,7 @@ export default {
     filesPath: {
       getFilesPath: `${host}/getFilesPath`,
       createFilePath: `${host}/postFilePath`,
-      deleteFilePath: `${host}/deleteFilePath`
+      deleteFilePath: `${host}/deleteFilePath`,
     },
     centerCost: {
       area: {
@@ -56,7 +55,7 @@ export default {
       CenterCost: {
         getCostCenter: `${host}/getCostCenter`,
         createCostCenter: `${host}/postCostCenter`,
-        deleteCostCenter: `${host}/deleteCostCenter`
+        deleteCostCenter: `${host}/deleteCostCenter`,
       },
     },
     Pdf: {
@@ -71,12 +70,16 @@ export default {
       createUser: `${host}/createUser`,
       login: `${host}/logIn`,
       validateUser: `${host}/validateUser`,
-      changePassword: `${host}/changePassword`
+      changePassword: `${host}/changePassword`,
     },
     tables: {
       pending: `${host}/pendingTable`,
       allFiles: `${host}/showTable`,
     },
     pdfSettledNumber: `${hostPdf}/pdf`,
-  }
-}
+    searchingFile: {
+      withSettled: `${host}/registeredFilter`,
+      withDocument: `${host}/accountTypeFilter`,
+    },
+  },
+};
