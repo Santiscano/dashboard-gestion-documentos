@@ -277,6 +277,7 @@ function GenerateFiles() {
    * @param e detiene el reset del la pantalla
    * almaceno en variable el id de la respuesta de la peticion anterior
    * por parametros envio archivo y variable anterior y en respuesta almaceno path(pathfileupload)
+   *
    * nueva peticion http relaciono iddatos, rutaArchivoCargado, Comentarios
    * relaciono path de pdf y el file correspondiente
    */

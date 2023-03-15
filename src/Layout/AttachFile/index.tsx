@@ -17,6 +17,10 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { capitalizeFirstLatterUppercase } from "../../Utilities/formatted.utility";
+import { uploadfile } from "../../services/Pdf.routes";
+import { createFilePath } from "../../services/FilesPath.routes";
+import { get } from "../../components/tools/SesionSettings";
+import ModalSuccess from "../../components/common/ModalSuccess";
 // const optionAccountType = ["CUENTA COBRO", "FACTURA PROVEEDOR"];
 
 function AttachFile() {
@@ -29,6 +33,7 @@ function AttachFile() {
   });
   const [success, setSuccess] = useState(false);
   const [file, setFile] = useState({
+    idfiles: "",
     accountType: "",
     accountNumber: "",
     settled: "",
@@ -40,10 +45,11 @@ function AttachFile() {
     identificationType: "",
     identificationNumber: "",
   });
-  const [newPDF, setNewPDF] = useState({
-    file: "",
-    name: "",
-  });
+  const [filePDF, setFilePDF] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [comments, setComments] = useState("");
+  const [modalSuccess, setModalSuccess] = useState(false); // status 200 filePath para mostrar hijo modal
+
   const { setPreLoad } = useContext(GeneralValuesContext);
 
   // --------------SETSTATES ---------------//
@@ -69,6 +75,7 @@ function AttachFile() {
   const onFile = (newValue: any) => {
     console.log("newValue: ", newValue);
     setFile({
+      idfiles: newValue.idfiles,
       accountType: newValue.files_account_type,
       accountNumber: newValue.files_account_type_number,
       settled: newValue.files_registered,
@@ -81,22 +88,10 @@ function AttachFile() {
       identificationNumber: newValue.users_identification,
     });
   };
-  const onNewFilePDF = (newValue: any) => {
-    setNewPDF({
-      ...newPDF,
-      file: newValue,
-    });
-  };
-  const onNewFileName = (newValue: any) => {
-    setNewPDF({
-      ...newPDF,
-      name: newValue,
-    });
-  };
 
   // ------------- HANDLES --------------//
   /**
-   * metodo para pasar entre crear rol, cedi.... etc
+   * metodo para pasar entre filtrar por radicado o tipo y numero de documento
    * @param e
    * @param newValue
    */
@@ -107,6 +102,10 @@ function AttachFile() {
   //   onType(e.target.value);
   // };
 
+  /**
+   * consulta por radicado para traer info y almacena info
+   * @param e
+   */
   const handleSubmitSettled = async (e: any) => {
     try {
       console.log("se activo handleSubmitSettled");
@@ -124,6 +123,10 @@ function AttachFile() {
     }
   };
 
+  /**
+   * consulta por tipo y numero documento y trae info
+   * @param e
+   */
   const handleSubmitDocumentType = async (e: any) => {
     try {
       setPreLoad(true);
@@ -142,14 +145,7 @@ function AttachFile() {
       // onClean();
     }
   };
-  const handleFileSubmitAddPDF = async (e: any) => {
-    try {
-      e.preventDefault();
-      console.log("file:", newPDF.file);
-    } catch (error) {
-    } finally {
-    }
-  };
+
   /**
    * metodo para mostrar a la vista el nombre del archivo seleccionado
    * @param e
@@ -158,10 +154,55 @@ function AttachFile() {
     // @ts-ignore
     console.log("archivo capturado", e.target.files[0]);
     // @ts-ignore
-    onNewFilePDF(e.target.files[0]);
+    setFilePDF(e.target.files[0]);
     const fileNameEvent = e.target.value.replace(/^.*\\/, ""); // renombrar archivo
-    onNewFileName(fileNameEvent);
+    setFileName(fileNameEvent);
   };
+
+  /**
+   * @param e toma el valor nuevo en onchange
+   */
+  const handleComments = (e: SelectChangeEvent) => {
+    setComments(e.target.value);
+  };
+
+  /**
+   * envia nuevo pdf y lo relaciona con radicado consultado
+   * @param e detiene el reset del la pantalla
+   * por parametros envio archivo y variable anterior y en respuesta almaceno path(pathfileupload)
+   *
+   * nueva peticion http relaciono iddatos, rutaArchivoCargado, Comentarios
+   * relaciono path de pdf y el file correspondiente
+   */
+  const handleFileSubmitAddPDF = async (e: any) => {
+    try {
+      setPreLoad(true);
+      e.preventDefault();
+      // console.log("file.idfiles: ", file.idfiles);
+      // console.log("ARCHIVO: ", filePDF);
+      const responseUploadFile = await uploadfile(filePDF, file.idfiles);
+      console.log("responseUploadFile: ", responseUploadFile);
+      const pathFileUpload = await responseUploadFile?.data.pathFile;
+
+      const responseConcatFilePath = await createFilePath(
+        parseInt(file.idfiles),
+        pathFileUpload,
+        comments,
+        get("idusers")
+      ); // relaciona pdf y file
+
+      const status = responseConcatFilePath?.status;
+      status === 200 && setModalSuccess(true);
+    } catch (error) {
+    } finally {
+      setPreLoad(false);
+      setComments("");
+      setFileName("");
+    }
+  };
+
+  //cerrar modal success
+  const handleCloseModalChild = () => setModalSuccess(false);
 
   return (
     <div className="layout">
@@ -331,13 +372,27 @@ function AttachFile() {
                 <article className="filing-attachFile">
                   <form onSubmit={handleFileSubmitAddPDF}>
                     <Upload
-                      file={newPDF.file}
-                      fileName={newPDF.name}
+                      file={filePDF}
+                      fileName={fileName}
                       handleChangeFile={handleChangeFile}
                     />
+                    <textarea
+                      name="Comentarios"
+                      id="comentary"
+                      placeholder="si necesita comentarios ingreselos aquí"
+                      className="border-neutral-300 border-2 w-full resize-none mt-6"
+                      value={comments}
+                      // @ts-ignore
+                      onChange={handleComments}
+                    ></textarea>
                     <Button name="adjuntar nuevo archivo" />
                   </form>
                 </article>
+                <ModalSuccess
+                  open={modalSuccess}
+                  close={handleCloseModalChild}
+                  settledNumber={file.settled}
+                />
               </>
             )}
           </div>
