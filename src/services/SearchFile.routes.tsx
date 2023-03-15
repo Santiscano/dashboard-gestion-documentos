@@ -13,7 +13,6 @@ export const SearchWithSettled = async (settled: any) => {
       },
       getHeader()
     );
-    console.log("response: ", response);
     return response;
   } catch (error) {
     console.log("error", error);
@@ -33,7 +32,6 @@ export const SearchWithDocument = async (
       },
       getHeader()
     );
-    console.log("response: ", response);
     return response;
   } catch (error) {
     console.log("error", error);

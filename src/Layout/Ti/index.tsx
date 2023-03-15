@@ -3,9 +3,7 @@ import "./TI.css";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import Typography from "@mui/material/Typography";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { TabPanelProps } from "../../interfaces/TabPanel";
 import TextFieldOutlined from "../../components/common/TextFieldOutline";
 import Button from "../../components/common/Button";
 import {
@@ -18,7 +16,6 @@ import {
 } from "./Submits";
 import InputSelect from "./../../components/common/InputSelect/index";
 import { optionCediType } from "../../components/tools/OptionsValuesSelects";
-import InputSelectCountry from "../../components/common/InputSelectCity";
 import { getCitys } from "./../../services/getCitysColombia";
 import InputSelectCity from "../../components/common/InputSelectCity";
 import InputSelectCedi from "../../components/common/InputSelectCedi";
@@ -26,33 +23,7 @@ import { AllCedis } from "../../interfaces/Cedis";
 import { getCedis } from "../../services/Cedis.routes";
 import { getRoles } from "../../services/Roles.routes";
 import InputSelectRol from "../../components/common/InputSelectRol";
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
 
 function TI() {
   const [showValue, setShowValue] = useState(0);
@@ -165,7 +136,6 @@ function TI() {
             <h3 className="createFiling">
               falta hacer funcional crear centro de costos
             </h3>
-            <code> {department[0]} </code>
           </div>
           <article className="filing-ti">
             <Box sx={{ width: "100%" }}>

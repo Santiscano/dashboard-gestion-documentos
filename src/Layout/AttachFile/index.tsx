@@ -10,16 +10,38 @@ import LoadingMUI from "../../components/common/LoadingMUI";
 import InputSelect from "./../../components/common/InputSelect";
 import { optionAccountType } from "../../components/tools/OptionsValuesSelects";
 import { SelectChangeEvent } from "@mui/material/Select";
-
+import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
+import "./AttachFile.css";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import { capitalizeFirstLatterUppercase } from "../../Utilities/formatted.utility";
 // const optionAccountType = ["CUENTA COBRO", "FACTURA PROVEEDOR"];
 
 function AttachFile() {
+  // ------------ STATES ---------------//
+  const [showValue, setShowValue] = useState(0);
   const [settled, setSettled] = useState("");
   const [document, setDocument] = useState({
     type: "",
     number: "",
   });
+  const [success, setSuccess] = useState(false);
+  const [file, setFile] = useState({
+    accountType: "",
+    accountNumber: "",
+    settled: "",
+    fileType: "",
+    email: "",
+    phone: "",
+    address: "",
+    cediName: "",
+    identificationType: "",
+    identificationNumber: "",
+  });
   const { setPreLoad } = useContext(GeneralValuesContext);
+
+  // --------------SETSTATES ---------------//
   const onType = (newValue: any) => {
     setDocument({
       ...document,
@@ -39,7 +61,31 @@ function AttachFile() {
       number: "",
     });
   };
+  const onFile = (newValue: any) => {
+    console.log("newValue: ", newValue);
+    setFile({
+      accountType: newValue.files_account_type,
+      accountNumber: newValue.files_account_type_number,
+      settled: newValue.files_registered,
+      fileType: newValue.files_type,
+      email: newValue.users_email,
+      phone: newValue.users_phone,
+      address: newValue.users_address,
+      cediName: newValue.sedes_name,
+      identificationType: newValue.users_identification_type,
+      identificationNumber: newValue.users_identification,
+    });
+  };
 
+  // ------------- HANDLES --------------//
+  /**
+   * metodo para pasar entre crear rol, cedi.... etc
+   * @param e
+   * @param newValue
+   */
+  const handleChange = (e: React.SyntheticEvent, newValue: number) => {
+    setShowValue(newValue);
+  };
   // const handleAccountType = (e: SelectChangeEvent) => {
   //   onType(e.target.value);
   // };
@@ -50,10 +96,14 @@ function AttachFile() {
       setPreLoad(true);
       e.preventDefault();
       const searchFile = await SearchWithSettled(settled);
+      searchFile?.data.radicado[0] ? setSuccess(true) : setSuccess(false);
+      onFile(searchFile?.data.radicado[0]);
+      console.log("searchFile: ", searchFile?.data.radicado);
     } catch (error) {
       console.log("error: ", error);
     } finally {
       setPreLoad(false);
+      // onClean();
     }
   };
 
@@ -65,11 +115,14 @@ function AttachFile() {
         document.type,
         document.number
       );
+      console.log("searchFile: ", searchFile);
+      searchFile?.data.response[0] ? setSuccess(true) : setSuccess(false);
+      onFile(searchFile?.data.response[0]);
     } catch (error) {
       console.log("error: ", error);
     } finally {
       setPreLoad(false);
-      onClean();
+      // onClean();
     }
   };
 
@@ -80,75 +133,167 @@ function AttachFile() {
         <section className="layout-section">
           <div className="layout-left">
             <div className="container__createFiling">
-              <h3 className="createFiling">Crear Nuevo Radicado</h3>
+              <h3 className="createFiling">Buscar un Archivo</h3>
             </div>
-            <article className="filing">
-              <h2 className="mt-4 font-extrabold text-2xl ">
-                Filtrar por radicado
-              </h2>
-              <form onSubmit={handleSubmitSettled}>
-                <div className="md:flex md:flex-wrap">
-                  <article className="md:w-1/2">
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                      Numero de Radicado
-                    </label>
-                    <TextFieldOutlined
-                      type={"text"}
-                      label={"Radicado"}
-                      value={settled}
-                      setValue={setSettled}
-                      required
-                      // iconEnd={<PermIdentityRoundedIcon />}
+            <article className="filing-attachFile">
+              <Box sx={{ with: "100%" }}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <Tabs
+                    value={showValue}
+                    onChange={handleChange}
+                    aria-label="Area TI"
+                    variant="scrollable"
+                  >
+                    <Tab label="Filtrar Por radicado" {...a11yProps(0)} />
+                    <Tab
+                      label="Filtrar por Tipo y Numero de Documento"
+                      {...a11yProps(1)}
                     />
-                  </article>
-                </div>
-                <Button name="Buscar Archivo" />
-              </form>
-              <h2 className="mt-12 font-extrabold text-2xl ">
-                Filtrar por Tipo y Numero de Cuenta
-              </h2>
-              <form onSubmit={handleSubmitDocumentType}>
-                <div className="md:flex md:flex-wrap">
-                  <article className="md:w-1/2">
-                    <InputSelect
-                      type={"text"}
-                      title="Tipo de cuenta"
-                      placeholder="cuenta de"
-                      required
-                      value={document.type}
-                      // onChange={handleAccountType}
-                      onChange={(e: SelectChangeEvent) =>
-                        onType(e.target.value)
-                      }
-                      itemDefault="selecciona el tipo de cuenta"
-                      items={optionAccountType}
-                    />
-                  </article>
-                  <article className="md:w-1/2">
-                    <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                      Numero de Documento
-                    </label>
-                    <TextFieldOutlined
-                      type={"text"}
-                      label={"Numero"}
-                      value={document.number}
-                      setValue={onNumber}
-                      required
-                      // iconEnd={<PermIdentityRoundedIcon />}
-                    />
-                  </article>
-                </div>
-                <Button name="Buscar Archivo" />
-              </form>
+                  </Tabs>
+                </Box>
+                <TabPanel value={showValue} index={0}>
+                  <form onSubmit={handleSubmitSettled}>
+                    <div className="md:flex md:flex-wrap">
+                      <article className="md:w-1/2">
+                        <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                          Numero de Radicado
+                        </label>
+                        <TextFieldOutlined
+                          type={"text"}
+                          label={"Radicado"}
+                          value={settled}
+                          setValue={setSettled}
+                          required
+                          // iconEnd={<PermIdentityRoundedIcon />}
+                        />
+                      </article>
+                    </div>
+                    <Button name="Buscar Archivo" />
+                  </form>
+                </TabPanel>
+                <TabPanel value={showValue} index={1}>
+                  <form onSubmit={handleSubmitDocumentType}>
+                    <div className="md:flex md:flex-wrap">
+                      <article className="md:w-1/2">
+                        <InputSelect
+                          type={"text"}
+                          title="Tipo de cuenta"
+                          placeholder="cuenta de"
+                          required
+                          value={document.type}
+                          // onChange={handleAccountType}
+                          onChange={(e: SelectChangeEvent) =>
+                            onType(e.target.value)
+                          }
+                          itemDefault="selecciona el tipo de cuenta"
+                          items={optionAccountType}
+                        />
+                      </article>
+                      <article className="md:w-1/2">
+                        <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                          Numero de Documento
+                        </label>
+                        <TextFieldOutlined
+                          type={"text"}
+                          label={"Numero"}
+                          value={document.number}
+                          setValue={onNumber}
+                          required
+                          // iconEnd={<PermIdentityRoundedIcon />}
+                        />
+                      </article>
+                    </div>
+                    <Button name="Buscar Archivo" />
+                  </form>
+                </TabPanel>
+              </Box>
+              {!success && <div>hola</div>}
             </article>
+            {success && (
+              <article className="filing">
+                <div className="flex mt-4">
+                  <p className="font-bold inline-block mr-4 w-1/2">
+                    Tipo De Cuenta:
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(file.accountType)}`}
+                    </span>
+                  </p>
+                  <p className="font-bold inline-block mr-4">
+                    Numero de Cuenta:
+                    <span className="text-slate-600 font-normal">
+                      {` ${file.accountNumber}`}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-4">
+                  <p className="font-bold inline-block mr-4 w-1/2">
+                    Numero Radicado
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(file.settled)}`}
+                    </span>
+                  </p>
+                  <p className="font-bold inline-block mr-4">
+                    Tipo de Archivo
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(file.fileType)}`}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-4">
+                  <p className="font-bold inline-block mr-4 w-1/2">
+                    Email
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(file.email)}`}
+                    </span>
+                  </p>
+                  <p className="font-bold inline-block mr-4">
+                    Telefono
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(file.phone)}`}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-4">
+                  <p className="font-bold inline-block mr-4 w-1/2">
+                    Direccion
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(file.address)}`}
+                    </span>
+                  </p>
+                  <p className="font-bold inline-block mr-4">
+                    Nombre Cedi
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(file.cediName)}`}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-4">
+                  <p className="font-bold inline-block mr-4 w-1/2">
+                    Tipo de Identificacion
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(
+                        file.identificationType
+                      )}`}
+                    </span>
+                  </p>
+                  <p className="font-bold inline-block mr-4">
+                    Numero de Identificacion
+                    <span className="text-slate-600 font-normal">
+                      {` ${capitalizeFirstLatterUppercase(
+                        file.identificationNumber
+                      )}`}
+                    </span>
+                  </p>
+                </div>
+              </article>
+            )}
           </div>
         </section>
       </div>
 
-      <h3>hacer funcionales los filtros</h3>
       <h3>
-        mas abajo cuando se encuentre un componente que muestre que se tiene y
-        la opcion de adjuntar cosas nuevas con comentario
+        mas abajo que se muestrue un componente con la info encontrada y la
+        opcion de adjuntar cosas nuevas con comentario
       </h3>
     </div>
   );

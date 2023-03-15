@@ -7,10 +7,15 @@ function PendingFilesTable() {
   const [row, setRow] = useState([]);
 
   const handleGetTableData = async () => {
-    const table = await showTablePending();
-    const rows = await table?.data.dataInfo;
-    setRow(rows ? rows : []);
-    console.log("row table--: ", rows);
+    try {
+      const table = await showTablePending();
+      const rows = await table?.data.dataInfo;
+      setRow(rows ? rows : []);
+      console.log("row table--: ", rows);
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
+    }
   };
 
   useEffect(() => {
