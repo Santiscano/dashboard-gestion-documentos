@@ -156,20 +156,20 @@ function GenerateFiles() {
    * @param e
    */
   const handleDocumentType = async (e: SelectChangeEvent) => {
-    console.log("e: ", e);
+    // console.log("e: ", e);
     const SelectDocumentType = e.target.value;
     setDocumentType(SelectDocumentType);
 
     setObjectUser({});
 
     const allUsersToFilter = allUsers;
-    console.log("allUsersToFilter: ", allUsersToFilter);
+    // console.log("allUsersToFilter: ", allUsersToFilter);
 
     const filterNotProviderUsers = allUsersToFilter.filter(
       // @ts-ignore
       (user: { idroles: number }) => user.idroles !== roles.Proveedor
     );
-    console.log("filterNotProviderUsers: ", filterNotProviderUsers);
+    // console.log("filterNotProviderUsers: ", filterNotProviderUsers);
 
     const filterDocumentType = filterNotProviderUsers.filter(
       // @ts-ignore
@@ -219,11 +219,11 @@ function GenerateFiles() {
   const handleSettledSubmit = async (e: any) => {
     try {
       setPreLoad(true);
-      console.log(preLoad);
+      // console.log(preLoad);
       e.preventDefault();
       // @ts-ignore
       const newSettled = await getSettled(cedi.sedes_city);
-      console.log("newSettled: ", newSettled);
+      // console.log("newSettled: ", newSettled);
 
       setSettledNumber(newSettled);
       newSettled ? setIsSettled(true) : setIsSettled(false);
@@ -258,7 +258,7 @@ function GenerateFiles() {
         accountNumber,
         get("idusers")
       );
-      console.log("addFileResponse: ", addFileResponse);
+      // console.log("addFileResponse: ", addFileResponse);
 
       //muestro input file y textarea
       const status = addFileResponse?.status;
@@ -273,6 +273,7 @@ function GenerateFiles() {
       setPreLoad(false);
     }
   };
+
   /**
    * @param e detiene el reset del la pantalla
    * almaceno en variable el id de la respuesta de la peticion anterior
@@ -289,7 +290,7 @@ function GenerateFiles() {
       const idFiles = result?.data.file[0].idfiles;
 
       const responseUploadFile = await uploadfile(filePDFGoogle, idFiles); // guarda pdf
-      console.log("responseUploadFile: ", responseUploadFile);
+      // console.log("responseUploadFile: ", responseUploadFile);
       const pathFileUpload = await responseUploadFile?.data.pathFile;
 
       const responseConcatFilePath = await createFilePath(
@@ -308,13 +309,14 @@ function GenerateFiles() {
       setPreLoad(false);
     }
   };
+
   /**
    * metodo para mostrar a la vista el nombre del archivo seleccionado
    * @param e
    */
   const handleChangeFile = (e: SelectChangeEvent) => {
     // @ts-ignore
-    console.log("archivo capturado", e.target.files[0]);
+    // console.log("archivo capturado", e.target.files[0]);
     // @ts-ignore
     setFilePDFGoogle(e.target.files[0]);
     const fileNameEvent = e.target.value.replace(/^.*\\/, ""); // renombrar archivo
@@ -402,7 +404,7 @@ function GenerateFiles() {
    */
   const handleValuesUser = (props: any) => {
     setObjectUser(props === null ? "" : props);
-    console.log("handleValueUser: ", props);
+    // console.log("handleValueUser: ", props);
     setDocIdentity(props.users_identification);
     setIdUser(props.idusers);
     setAddress(props.users_address);
@@ -416,7 +418,6 @@ function GenerateFiles() {
    * actualiza el estado en estos tipos de select cedi - accountType - documentType - seleccionar area - redirigido a
    * @param e
    */
-
   const handleComments = (e: SelectChangeEvent) => {
     setComments(e.target.value);
   };
@@ -440,7 +441,6 @@ function GenerateFiles() {
 
   const resetFullForm = () => {
     handleReset();
-
     setObjectUser([""]);
     setStatusFileResponse(false);
     setFilePDFGoogle("");

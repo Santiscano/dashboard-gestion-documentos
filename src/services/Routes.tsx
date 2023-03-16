@@ -76,10 +76,11 @@ export default {
       pending: `${host}/pendingTable`,
       allFiles: `${host}/showTable`,
     },
-    pdfSettledNumber: `${hostPdf}/pdf`,
     searchingFile: {
       withSettled: `${host}/registeredFilter`,
       withDocument: `${host}/accountTypeFilter`,
+      getAllSettled: `${host}/getAllRegisteredFile`,
     },
+    pdfSettledNumber: `${hostPdf}/pdf`,
   },
 };

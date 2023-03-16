@@ -18,6 +18,7 @@ export const SearchWithSettled = async (settled: any) => {
     console.log("error", error);
   }
 };
+
 export const SearchWithDocument = async (
   accountType: any,
   accountNumber: any
@@ -32,8 +33,25 @@ export const SearchWithDocument = async (
       },
       getHeader()
     );
+    // console.log("res:", response);
     return response;
   } catch (error) {
     console.log("error", error);
+  }
+};
+
+export const GetAllSettled = async () => {
+  try {
+    const response = await axios.post(
+      Routes.api.searchingFile.getAllSettled,
+      {
+        api_key: import.meta.env.VITE_API_KEY,
+      },
+      getHeader()
+    );
+    console.log("response: ", response);
+    return response;
+  } catch (error) {
+    console.log("error: ", error);
   }
 };

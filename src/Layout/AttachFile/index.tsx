@@ -1,11 +1,12 @@
 import Button from "../../components/common/Button";
 import Upload from "../../components/common/Upload";
 import TextFieldOutlined from "../../components/common/TextFieldOutline";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
 import {
   SearchWithDocument,
   SearchWithSettled,
+  GetAllSettled,
 } from "./../../services/SearchFile.routes";
 import LoadingMUI from "../../components/common/LoadingMUI";
 import InputSelect from "./../../components/common/InputSelect";
@@ -32,6 +33,7 @@ function AttachFile() {
     number: "",
   });
   const [success, setSuccess] = useState(false);
+  const [notFile, setNotFile] = useState(false);
   const [file, setFile] = useState({
     idfiles: "",
     accountType: "",
@@ -102,6 +104,16 @@ function AttachFile() {
   //   onType(e.target.value);
   // };
 
+  const getAllRegisteredFiles = async () => {
+    try {
+      const Settleds = await GetAllSettled();
+      console.log("Settleds: ", Settleds?.data.data);
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
+    }
+  };
+
   /**
    * consulta por radicado para traer info y almacena info
    * @param e
@@ -112,14 +124,20 @@ function AttachFile() {
       setPreLoad(true);
       e.preventDefault();
       const searchFile = await SearchWithSettled(settled);
-      searchFile?.data.radicado[0] ? setSuccess(true) : setSuccess(false);
-      onFile(searchFile?.data.radicado[0]);
-      console.log("searchFile: ", searchFile?.data.radicado);
+      if (searchFile?.status == 200) {
+        setSuccess(true);
+        setNotFile(false);
+        onFile(searchFile?.data.radicado[0]);
+        onClean();
+      } else {
+        setSuccess(false);
+        setNotFile(true);
+        onFile({});
+      }
     } catch (error) {
       console.log("error: ", error);
     } finally {
       setPreLoad(false);
-      // onClean();
     }
   };
 
@@ -135,14 +153,20 @@ function AttachFile() {
         document.type,
         document.number
       );
-      console.log("searchFile: ", searchFile);
-      searchFile?.data.response[0] ? setSuccess(true) : setSuccess(false);
-      onFile(searchFile?.data.response[0]);
+      if (searchFile?.status == 200) {
+        setSuccess(true);
+        setNotFile(false);
+        onFile(searchFile?.data.response[0]);
+        onClean();
+      } else {
+        setSuccess(false);
+        setNotFile(true);
+        onFile({});
+      }
     } catch (error) {
       console.log("error: ", error);
     } finally {
       setPreLoad(false);
-      // onClean();
     }
   };
 
@@ -178,8 +202,6 @@ function AttachFile() {
     try {
       setPreLoad(true);
       e.preventDefault();
-      // console.log("file.idfiles: ", file.idfiles);
-      // console.log("ARCHIVO: ", filePDF);
       const responseUploadFile = await uploadfile(filePDF, file.idfiles);
       console.log("responseUploadFile: ", responseUploadFile);
       const pathFileUpload = await responseUploadFile?.data.pathFile;
@@ -203,6 +225,10 @@ function AttachFile() {
 
   //cerrar modal success
   const handleCloseModalChild = () => setModalSuccess(false);
+
+  useEffect(() => {
+    getAllRegisteredFiles();
+  }, []);
 
   return (
     <div className="layout">
@@ -248,6 +274,11 @@ function AttachFile() {
                         </article>
                       </div>
                       <Button name="Buscar Archivo" />
+                      {notFile && (
+                        <div className="text-red-600">
+                          no hemos encontrado informacion
+                        </div>
+                      )}
                     </form>
                   </Box>
                 </TabPanel>
@@ -285,6 +316,11 @@ function AttachFile() {
                         </article>
                       </div>
                       <Button name="Buscar Archivo" />
+                      {notFile && (
+                        <div className="text-red-600">
+                          no hemos encontrado informacion
+                        </div>
+                      )}
                     </form>
                   </Box>
                 </TabPanel>
@@ -398,8 +434,6 @@ function AttachFile() {
           </div>
         </section>
       </div>
-
-      <h3>info usuario e input con comentario y boton enviar</h3>
     </div>
   );
 }
