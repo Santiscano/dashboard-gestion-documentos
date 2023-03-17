@@ -24,8 +24,16 @@ function TextFieldOutlined({
   defaultValue,
   name,
 }: any) {
+  let inputProps = {};
+  if (type == "number") {
+    inputProps = {
+      min: 0,
+      max: 99,
+    };
+  }
   return (
     <CssTextField
+      sx={{ m: 1, width: 0.98 }}
       id="custom-css-outlined-input"
       fullWidth
       type={type}
@@ -49,8 +57,8 @@ function TextFieldOutlined({
         endAdornment: iconEnd ? (
           <InputAdornment position="end"> {iconEnd} </InputAdornment>
         ) : null,
+        inputProps: inputProps,
       }}
-      sx={{ m: 1, width: 0.98 }}
     />
   );
 }
