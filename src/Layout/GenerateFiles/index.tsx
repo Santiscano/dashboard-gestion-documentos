@@ -3,18 +3,13 @@ import "./provider.css";
 import { SelectChangeEvent } from "@mui/material/Select";
 import InputSelect from "../../components/common/InputSelect";
 import Upload from "../../components/common/Upload";
-import DataTableAllFiles from "../../components/common/DataTableAllFiles";
-import Preview from "../../components/common/Preview";
 import Button from "../../components/common/Button";
 import TextFieldOutlined from "../../components/common/TextFieldOutline";
 import {
   optionAccountType,
-  optionDocumentType,
   optionCediType,
 } from "../../components/tools/OptionsValuesSelects";
 import InputSelectRedirectTo from "../../components/common/InputSelectRedirectTo";
-import AutoCompleteRedirectTo from "../../components/common/AutoCompleteRedirectTo";
-import ButtonOpenUploadFile from "../../components/common/ButtonOpenUploadFile";
 import UploadFileModal from "../../components/common/ModalUploadFile";
 
 import NumbersRoundedIcon from "@mui/icons-material/NumbersRounded";
@@ -25,7 +20,7 @@ import AttachEmailRoundedIcon from "@mui/icons-material/AttachEmailRounded";
 import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import { Autocomplete, Box, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 
 import "animate.css";
 import { getCedis } from "../../services/Cedis.routes";
@@ -33,16 +28,14 @@ import { getUsers } from "../../services/Users.routes";
 import { getSettled } from "../../services/generateSettled.service";
 import { uploadfile } from "../../services/Pdf.routes";
 import { getFiles, addFile } from "../../services/Files.routes";
-import { AllUsers, setProviders } from "../../interfaces/User";
 
 import { formattedAmount } from "../../Utilities/formatted.utility";
 import { createFilePath } from "../../services/FilesPath.routes";
 import ModalSuccess from "../../components/common/ModalSuccess";
-import { AllCedis, CedisId, CedisIdName } from "../../interfaces/Cedis";
+import { AllCedis, CedisIdName } from "../../interfaces/Cedis";
 import InputSelectCedi from "../../components/common/InputSelectCedi";
 import { GeneralValuesContext } from "../../Context/GeneralValuesContext";
 import { roles } from "../../components/tools/SesionSettings";
-import LoadingMUI from "../../components/common/LoadingMUI";
 import { get } from "../../components/tools/SesionSettings";
 import SearchUser from "../../components/common/SearchUser";
 
@@ -116,6 +109,7 @@ function GenerateFiles() {
   const handleGetUsersCedis = async () => {
     // cedis
     const allCedis: AllCedis[] = await getCedis();
+    console.log("allCedis: ", allCedis);
     setAllCedis(allCedis);
 
     // users
@@ -125,9 +119,12 @@ function GenerateFiles() {
     // options redirectTo Administration
     const filterAuditors = getAllUsers?.filter(
       (user: { idroles: number }) =>
-        user.idroles !== roles.Proveedor &&
-        user.idroles !== roles.Radicacion &&
-        user.idroles !== roles.Eliminar
+        user.idroles == roles.AuditorGH &&
+        user.idroles == roles.AuditorCRTL &&
+        user.idroles == roles.AuditorRG &&
+        user.idroles == roles.Gerencia &&
+        user.idroles == roles.Contaduria &&
+        user.idroles == roles.Tesoreria
     );
     setOptionsRedirectTo(filterAuditors);
 
@@ -138,38 +135,9 @@ function GenerateFiles() {
   };
 
   /**
-   * segun el tipo de documento muestra los usuarios de tipo providers
-   * @param e
-   */
-  const handleDocumentType = async (e: SelectChangeEvent) => {
-    // console.log("e: ", e);
-    const SelectDocumentType = e.target.value;
-    setDocumentType(SelectDocumentType);
-
-    setObjectUser({});
-
-    const allUsersToFilter = allUsers;
-    // console.log("allUsersToFilter: ", allUsersToFilter);
-
-    const filterNotProviderUsers = allUsersToFilter.filter(
-      // @ts-ignore
-      (user: { idroles: number }) => user.idroles !== roles.Proveedor
-    );
-    // console.log("filterNotProviderUsers: ", filterNotProviderUsers);
-
-    const filterDocumentType = filterNotProviderUsers.filter(
-      // @ts-ignore
-      (user: { users_identification_type: string }) =>
-        user.users_identification_type &&
-        user.users_identification_type.toUpperCase() == SelectDocumentType
-    );
-    setOptionsProviders(filterDocumentType);
-    console.log("filterDocumentType: ", filterDocumentType);
-  };
-
-  /**
-   * capturamos valor - traemos todas las cedis - filtramos segun el valor capturado - seteamos las opciones de cedis segun el filtro
-   * @param e captura valor
+   * @param e captura valor tipo de cedi - traemos todas las cedis
+   * filtramos cedi segun tipo
+   * seteamos las opciones de cedis segun el filtro
    */
   const handleCediType = (e: SelectChangeEvent) => {
     const selectCediType = e.target.value;
@@ -184,16 +152,47 @@ function GenerateFiles() {
     setOptionsCedisIdName(filterCediType);
   };
 
-  const handleCedi = (e: SelectChangeEvent) => {
-    setCedi(e.target.value);
-  };
-
-  const handleAccountType = (e: SelectChangeEvent) => {
+  /**
+   * @param e captura valor
+   */
+  const handleCedi = (e: SelectChangeEvent) => setCedi(e.target.value);
+  const handleAccountType = (e: SelectChangeEvent) =>
     setAccountType(e.target.value);
+  const handleRedirectTo = (e: SelectChangeEvent) =>
+    setRedirectTo(Number(e.target.value));
+
+  /**
+   * se ejecuta cuando el auto complete se actualiza
+   * @param props
+   */
+  const handleValuesUser = (props: any) => {
+    console.log("object: ", objectUser);
+    console.log("handleValueUser: ", props);
+    // const ProviderSelected = allUsers.find(provider => provider. === && provider. === )
+
+    // if (![undefined, false, null, ""].includes(props)) {
+    setObjectUser(props);
+    //   setDocIdentity(props.users_identification);
+    //   setIdUser(props.idusers);
+    //   setAddress(props.users_address);
+    //   setEmail(props.users_email);
+    //   setCompanyName(props.users_name);
+    //   setLastname(props.users_lastname);
+    //   setTelephone(props.users_phone);
+    // } else {
+    //   setObjectUser([]);
+    // }
   };
 
-  const handleRedirectTo = (e: SelectChangeEvent) => {
-    setRedirectTo(Number(e.target.value));
+  /**
+   * metodo para mostrar a la vista el nombre del archivo seleccionado
+   * @param e
+   */
+  const handleChangeFile = (e: SelectChangeEvent) => {
+    // @ts-ignore
+    setFilePDFGoogle(e.target.files[0]);
+    const fileNameEvent = e.target.value.replace(/^.*\\/, ""); // renombrar archivo
+    setFileName(fileNameEvent);
   };
 
   // ----------------------METHODS FORMS SUBMIT----------------------------//
@@ -297,19 +296,6 @@ function GenerateFiles() {
     }
   };
 
-  /**
-   * metodo para mostrar a la vista el nombre del archivo seleccionado
-   * @param e
-   */
-  const handleChangeFile = (e: SelectChangeEvent) => {
-    // @ts-ignore
-    // console.log("archivo capturado", e.target.files[0]);
-    // @ts-ignore
-    setFilePDFGoogle(e.target.files[0]);
-    const fileNameEvent = e.target.value.replace(/^.*\\/, ""); // renombrar archivo
-    setFileName(fileNameEvent);
-  };
-
   // ----------------------METHODS GENERALS--------------------------------//
   /**
    * reinicia todos los valores a '';
@@ -342,10 +328,10 @@ function GenerateFiles() {
    * @renderOption : cambia el renderizado del objeto option a como lo seleccione personalizado
    */
   const handleOptionsProviders = {
-    // options: optionsProviders.length > 0 ? optionsProviders : [],
+    options: optionsProviders.length > 0 ? optionsProviders : [],
     // @ts-ignore
-    // getOptionLabel: (options: { users_identification: string }) =>
-    //   `${options.users_identification}`,
+    getOptionLabel: (options: { users_identification: string }) =>
+      `${options.users_identification}`,
     // @ts-ignore
     renderOption: (props, option, index) => {
       return (
@@ -383,26 +369,6 @@ function GenerateFiles() {
       );
     },
     renderInput: (params: any) => <TextField {...params}></TextField>,
-  };
-
-  /**
-   * se ejecuta cuando el auto complete se actualiza
-   * @param props
-   */
-  const handleValuesUser = (props: any) => {
-    console.log("handleValueUser: ", props);
-    if (![undefined, false, null, ""].includes(props)) {
-      setObjectUser(props);
-      setDocIdentity(props.users_identification);
-      setIdUser(props.idusers);
-      setAddress(props.users_address);
-      setEmail(props.users_email);
-      setCompanyName(props.users_name);
-      setLastname(props.users_lastname);
-      setTelephone(props.users_phone);
-    } else {
-      setObjectUser([]);
-    }
   };
 
   /**
@@ -467,69 +433,9 @@ function GenerateFiles() {
                     department={documentType}
                     setDepartment={setDocumentType}
                     city={objectUser}
-                    setCity={setObjectUser}
+                    setCity={handleValuesUser}
+                    // handleValuesUser={handleValuesUser}
                   />
-                  <div className="md:flex md:flex-wrap">
-                    <article className="md:w-1/2">
-                      <InputSelect
-                        type={"text"}
-                        name="documentType"
-                        title="Tipo Documento"
-                        placeholder="Tipo Documento*"
-                        required
-                        value={documentType}
-                        onChange={handleDocumentType}
-                        itemDefault="selecciona el tipo de documento"
-                        items={optionDocumentType}
-                      />
-                    </article>
-                    <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Numero Documento
-                      </label>
-                      {/* @ts-ignore */}
-                      <Autocomplete
-                        sx={{ marginLeft: 1, my: 2 }}
-                        disabled={!documentType}
-                        id="filter-providers"
-                        {...handleOptionsProviders}
-                        autoComplete
-                        // isOptionEqualToValue={(option, value)=> {
-                        //   return option.value === value || value === '';
-                        // }}
-                        // clearOnEscape={false}
-                        options={optionsProviders.map(
-                          (user: any) => user.users_identification
-                        )}
-                        getOptionLabel={(options: {
-                          users_identification: string;
-                        }) => `${options.users_identification}`}
-                        // renderOption= {(props, option, index) => {
-                        //   return (
-                        //     <Box component="li" {...props} key={option.idusers}>
-                        //       {option.users_name} - {option.users_identification} -{" "}
-                        //       {option.users_identification_digital_check}
-                        //     </Box>
-                        //   );
-                        // }}
-                        includeInputInList
-                        value={objectUser}
-                        onChange={(event, newValue) => {
-                          handleValuesUser(newValue);
-                        }}
-                        onInputChange={(event, newValue) => {
-                          // @ts-ignore
-                          setObjectUser(newValue);
-                        }}
-                      />
-                      {/* <SearchUser
-                        optionsSelected={optionsProviders}
-                        value={objectUser}
-                        setvalue={handleValuesUser}
-                        disabled={!documentType}
-                      /> */}
-                    </article>
-                  </div>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <InputSelect
@@ -565,41 +471,12 @@ function GenerateFiles() {
             ) : (
               <article className="filing">
                 <section>
-                  <div className="md:flex md:flex-wrap">
-                    <article className="md:w-1/2">
-                      <InputSelect
-                        type={"text"}
-                        title="Tipo Documento"
-                        placeholder="Tipo Documento*"
-                        required
-                        value={documentType}
-                        onChange={handleDocumentType}
-                        itemDefault="selecciona el tipo de documento"
-                        items={optionDocumentType}
-                      />
-                    </article>
-                    {documentType && (
-                      <article className="md:w-1/2">
-                        <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                          Numero Documento
-                        </label>
-                        {/* @ts-ignore */}
-                        <Autocomplete
-                          sx={{ marginLeft: 1, my: 2 }}
-                          id="filter-providers"
-                          {...handleOptionsProviders}
-                          autoComplete
-                          includeInputInList
-                          value={objectUser}
-                          onChange={(event, newValue) => {
-                            // @ts-ignore
-                            handleValuesUser(newValue);
-                          }}
-                        />
-                      </article>
-                    )}
-                  </div>
-
+                  <SearchUser
+                    department={documentType}
+                    setDepartment={setDocumentType}
+                    city={objectUser}
+                    setCity={setObjectUser}
+                  />
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">

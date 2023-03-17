@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Autocomplete, Box, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import { styled } from "@mui/material/styles";
@@ -20,6 +21,7 @@ function LocationsSelect({
   setCity,
   department,
   setDepartment,
+  handleValuesUser,
   requiredCity,
   requiredDepartment,
   readOnlyCity,
@@ -38,7 +40,7 @@ function LocationsSelect({
         api_key: import.meta.env.VITE_API_KEY,
       })
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setDepartments(res.data.data);
       });
   };
@@ -65,51 +67,60 @@ function LocationsSelect({
     disabled,
     readOnly,
     required,
+    renderOption,
+    getOptionLabel,
   }: any) => {
     return (
-      <Autocomplete
-        sx={{ marginLeft: 1, my: 2 }}
-        disablePortal
-        filterSelectedOptions
-        disableClearable
-        disabled={disabled}
-        readOnly={readOnly}
-        id="filter-providers"
-        options={options}
-        getOptionLabel={(option) => option}
-        getOptionDisabled={(option) => option === value}
-        isOptionEqualToValue={(option, value) => option === value}
-        itemID={itemID}
-        value={value}
-        onChange={(event, newValue) => {
-          if (![null, ""].includes(newValue)) {
-            setValue(newValue);
+      <>
+        <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+          {label}
+        </label>
+        <AutocompleteStyled
+          sx={{ marginLeft: 1, my: 2, width: 0.98 }}
+          disablePortal
+          filterSelectedOptions
+          disableClearable
+          disabled={disabled}
+          readOnly={readOnly}
+          id="filter-providers"
+          options={options}
+          getOptionLabel={getOptionLabel}
+          renderOption={renderOption}
+          // getOptionLabel={(option) => option}
+          getOptionDisabled={(option) => option === value}
+          isOptionEqualToValue={(option, value) => option === value}
+          itemID={itemID}
+          value={value}
+          onChange={(event, newValue) => {
+            if (![null, ""].includes(newValue)) {
+              setValue(newValue);
 
-            if (type === "departments") {
-              setDisabledCityAction(false);
-              setCity("");
-              handleReadCities(newValue.split("-").shift().trim());
+              if (type === "departments") {
+                setDisabledCityAction(false);
+                setCity("");
+                handleReadCities(newValue.split("-").shift().trim());
+              }
+            } else {
+              if (type === "cities") {
+                setDisabledCityAction(false);
+              }
             }
-          } else {
-            if (type === "cities") {
-              setDisabledCityAction(false);
-            }
-          }
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={!label ? "Lista Proveedores" : label}
-            variant={"outlined"}
-            color={"primary"}
-            required={required}
-            InputProps={{
-              ...params.InputProps,
-              autoComplete: "off",
-            }}
-          />
-        )}
-      />
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={!label ? "Lista Proveedores" : label}
+              variant={"outlined"}
+              color={"primary"}
+              required={required}
+              InputProps={{
+                ...params.InputProps,
+                autoComplete: "off",
+              }}
+            />
+          )}
+        />
+      </>
     );
   };
 
@@ -126,8 +137,8 @@ function LocationsSelect({
   }, []);
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+    <div className="md:flex md:flex-wrap">
+      <article className="md:w-1/2">
         <List
           type={"departments"}
           label={!labelDepartment ? "Tipo Documento" : labelDepartment}
@@ -139,9 +150,9 @@ function LocationsSelect({
           // @ts-ignore
           options={departments.map((type) => type.typeDocument)}
         />
-      </Grid>
+      </article>
 
-      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+      <article className="md:w-1/2">
         <List
           type={"cities"}
           label={!labelCity ? "Numero Documento" : labelCity}
@@ -153,11 +164,25 @@ function LocationsSelect({
           options={cities.map(
             (user) =>
               // @ts-ignore
-              `${user.users_name} ${user.users_lastname} - ${user.users_identification} -${user.users_identification_digital_check}`
+              `${user.users_identification}-${user.users_identification_digital_check}/ ${user.users_name} ${user.users_lastname}`
+          )}
+          // getOptionLabel={(options) => {
+          //   {
+          //     options.users_identification;
+          //   }
+          //   // `${options.users_identification}`;
+          // }}
+          renderOption={(props, option, index) => (
+            <Box component="li" {...props} key={option.idusers}>
+              {/* {`${option}`} */}
+              {option.users_identification}-
+              {option.users_identification_digital_check}/ {option.users_name}{" "}
+              {option.users_lastname}
+            </Box>
           )}
         />
-      </Grid>
-    </Grid>
+      </article>
+    </div>
   );
 }
 

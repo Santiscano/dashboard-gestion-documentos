@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TestAutocomplete from "../../components/common/TestAutocomplete";
+import TestAutocomplete from "../../components/common/SearchDobleDepCity";
 
 function NewEmployee() {
   const [documentType, setDocumentType] = useState("");
