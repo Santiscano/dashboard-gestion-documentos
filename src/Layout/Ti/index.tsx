@@ -3,9 +3,7 @@ import "./TI.css";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import Typography from "@mui/material/Typography";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { TabPanelProps } from "../../interfaces/TabPanel";
 import TextFieldOutlined from "../../components/common/TextFieldOutline";
 import Button from "../../components/common/Button";
 import {
@@ -18,41 +16,14 @@ import {
 } from "./Submits";
 import InputSelect from "./../../components/common/InputSelect/index";
 import { optionCediType } from "../../components/tools/OptionsValuesSelects";
-import InputSelectCountry from "../../components/common/InputSelectCity";
-import { getCitys } from './../../services/getCitysColombia';
+import { getCitys } from "./../../services/getCitysColombia";
 import InputSelectCity from "../../components/common/InputSelectCity";
 import InputSelectCedi from "../../components/common/InputSelectCedi";
 import { AllCedis } from "../../interfaces/Cedis";
 import { getCedis } from "../../services/Cedis.routes";
 import { getRoles } from "../../services/Roles.routes";
 import InputSelectRol from "../../components/common/InputSelectRol";
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
 
 function TI() {
   const [showValue, setShowValue] = useState(0);
@@ -63,8 +34,8 @@ function TI() {
   const [department, setDepartment] = useState("");
   const [listDepartment, setListDepartment] = useState<string[]>([]);
   const [city, setCity] = useState("");
-  const [listCitys, setListCitys] = useState<any>('');
-  const [allCitys, setAllCitys] = useState<any>('');
+  const [listCitys, setListCitys] = useState<any>("");
+  const [allCitys, setAllCitys] = useState<any>("");
   const [address, setAddress] = useState("");
   const [cediName, setCediName] = useState("");
   const [type, setType] = useState("");
@@ -85,7 +56,7 @@ function TI() {
   const [costCenterArea, setCostCenterArea] = useState("");
   const [costCenterAreaName, setCostCenterAreaName] = useState("");
   // create subArea
-  const [idcostCenterArea, setIdcostCenterArea ] = useState("");
+  const [idcostCenterArea, setIdcostCenterArea] = useState("");
   const [costCenterSubarea, setCostCenterSubarea] = useState("");
   const [costCenterSubareaName, setCostCenterSubareaName] = useState("");
   // create Center Cost
@@ -115,40 +86,44 @@ function TI() {
     setAllCitys(departmentsResponse?.DepartamentCity);
 
     const allCedis: AllCedis[] = await getCedis();
-    console.log('allCedis: ', allCedis);
+    console.log("allCedis: ", allCedis);
     setOptionsCedisIdName(allCedis);
 
     const allRoles = await getRoles();
-    console.log('allRoles: ', allRoles);
+    console.log("allRoles: ", allRoles);
     setOptionsRol(allRoles);
   };
   const handleDepartment = (e: SelectChangeEvent) => {
-    setCity('');
+    setCity("");
     setDepartment(e.target.value);
 
     // @ts-ignore
-    const filterCity = allCitys.filter(location => location.departamento === e.target.value )
+    const filterCity = allCitys.filter(
+      (location: any) => location.departamento === e.target.value
+    );
     // @ts-ignore
     setListCitys(filterCity);
   };
-  const handleCity =  (e: SelectChangeEvent) => {
+  const handleCity = (e: SelectChangeEvent) => {
     setCity(e.target.value);
   };
   const handleCediType = (e: SelectChangeEvent) => {
     setType(e.target.value);
   };
 
-  const handleRol = (e: SelectChangeEvent) => {setAssignRole(e.target.value); console.log(e.target.value)};
-  const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value); console.log(e.target.value)};
-
-
-
-
+  const handleRol = (e: SelectChangeEvent) => {
+    setAssignRole(e.target.value);
+    console.log(e.target.value);
+  };
+  const handleCedi = (e: SelectChangeEvent) => {
+    setCedi(e.target.value);
+    console.log(e.target.value);
+  };
 
   // --------------------------handles-------------------------------//
   useEffect(() => {
     handleGetCitys();
-  },[])
+  }, []);
 
   return (
     <div className="layout">
@@ -158,7 +133,9 @@ function TI() {
             <h3 className="createFiling">
               Administracion & Gestion de Plataforma TI
             </h3>
-            <code> {department[0]}  </code>
+            <h3 className="createFiling">
+              falta hacer funcional crear centro de costos
+            </h3>
           </div>
           <article className="filing-ti">
             <Box sx={{ width: "100%" }}>
@@ -182,8 +159,10 @@ function TI() {
                   onSubmit={() =>
                     handleSubmitCreateRol(
                       event,
-                      rolName, setRolName,
-                      rolDescription, setRolDescription
+                      rolName,
+                      setRolName,
+                      rolDescription,
+                      setRolDescription
                     )
                   }
                 >
@@ -223,11 +202,16 @@ function TI() {
                   onSubmit={() =>
                     handleSubmitCreateCedi(
                       event,
-                      department, setDepartment,
-                      city, setCity,
-                      address, setAddress,
-                      cediName, setCediName,
-                      type, setType
+                      department,
+                      setDepartment,
+                      city,
+                      setCity,
+                      address,
+                      setAddress,
+                      cediName,
+                      setCediName,
+                      type,
+                      setType
                     )
                   }
                 >
@@ -236,12 +220,12 @@ function TI() {
                       <InputSelect
                         type={"text"}
                         name="departament"
-                        title='Departamento'
-                        placeholder='Seleccione el Departamento'
+                        title="Departamento"
+                        placeholder="Seleccione el Departamento"
                         required
                         value={department}
                         onChange={handleDepartment}
-                        itemDefault='Selecciona el Departamento'
+                        itemDefault="Selecciona el Departamento"
                         items={listDepartment}
                       />
                     </article>
@@ -249,13 +233,13 @@ function TI() {
                       <InputSelectCity
                         type={"text"}
                         name="city"
-                        title='Ciudad'
-                        placeholder='Seleccione la Ciudad'
+                        title="Ciudad"
+                        placeholder="Seleccione la Ciudad"
                         required
                         disabled={!department}
                         value={city}
                         onChange={handleCity}
-                        itemDefault='Selecciona el Departamento'
+                        itemDefault="Selecciona el Departamento"
                         items={listCitys}
                       />
                       {/* <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
@@ -318,25 +302,38 @@ function TI() {
               </TabPanel>
               <TabPanel value={showValue} index={2}>
                 <form
-                  onSubmit={() => handleSubmitCreateUser(
-                    event,
-                    // @ts-ignore
-                    assignRole, setAssignRole,
-                    cedi, setCedi,
-                    identificationType, setIdentificationType,
-                    identificationNumber, setIdentificationNumber,
-                    firstName, setFirstname,
-                    lastName, setLastName,
-                    addressUser, setAddressUser,
-                    phone, setPhone,
-                    email, setEmail,
-                    password, setPassword
-                )}>
+                  onSubmit={() =>
+                    handleSubmitCreateUser(
+                      event,
+                      // @ts-ignore
+                      assignRole,
+                      setAssignRole,
+                      cedi,
+                      setCedi,
+                      identificationType,
+                      setIdentificationType,
+                      identificationNumber,
+                      setIdentificationNumber,
+                      firstName,
+                      setFirstname,
+                      lastName,
+                      setLastName,
+                      addressUser,
+                      setAddressUser,
+                      phone,
+                      setPhone,
+                      email,
+                      setEmail,
+                      password,
+                      setPassword
+                    )
+                  }
+                >
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <InputSelectRol
                         type={"text"}
-                        title='Asignar Rol'
+                        title="Asignar Rol"
                         placeholder="Rol"
                         name="role"
                         required
@@ -349,7 +346,7 @@ function TI() {
                     <article className="md:w-1/2">
                       <InputSelectCedi
                         type={"text"}
-                        title='Asignar Cedi'
+                        title="Asignar Cedi"
                         placeholder="Cedi"
                         name="cedi"
                         required

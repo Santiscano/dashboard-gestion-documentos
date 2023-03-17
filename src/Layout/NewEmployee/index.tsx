@@ -1,7 +1,18 @@
-import React from "react";
+import { useState } from "react";
+import TestAutocomplete from "../../components/common/SearchDobleDepCity";
 
 function NewEmployee() {
-  return <div></div>;
+  const [documentType, setDocumentType] = useState("");
+  const [user, setUser] = useState("");
+
+  return (
+    <TestAutocomplete
+      department={documentType}
+      setDepartment={setDocumentType}
+      city={user}
+      setCity={setUser}
+    />
+  );
 }
 
 export default NewEmployee;
