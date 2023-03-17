@@ -44,6 +44,7 @@ import { GeneralValuesContext } from "../../Context/GeneralValuesContext";
 import { roles } from "../../components/tools/SesionSettings";
 import LoadingMUI from "../../components/common/LoadingMUI";
 import { get } from "../../components/tools/SesionSettings";
+import SearchUser from "../../components/common/SearchUser";
 
 function GenerateFiles() {
   // ------------------------------VARIABLES------------------------------//
@@ -88,7 +89,7 @@ function GenerateFiles() {
   const [comments, setComments] = useState("");
 
   // captura de valores de formulario que no son necesariamente para el form
-  const [objectUser, setObjectUser] = useState<any>(""); // contiene un objeto con toda la info del usuario "proveedor"
+  const [objectUser, setObjectUser] = useState<any>([]); // contiene un objeto con toda la info del usuario "proveedor"
   const [docIdentity, setDocIdentity] = useState(""); //
   const [address, setAddress] = useState(""); // su valor es extraido del objectUser
   const [email, setEmail] = useState(""); // su valor es extraido del objectUser
@@ -133,22 +134,7 @@ function GenerateFiles() {
     const getAllFiles = await getFiles();
     setAllFiles(getAllFiles?.data);
 
-    setObjectUser({
-      idusers: "",
-      idroles: "",
-      idsedes: "",
-      users_identification_type: "",
-      users_identification: "",
-      users_identification_digital_check: "",
-      users_name: "",
-      users_lastname: "",
-      users_address: "",
-      users_phone: "",
-      users_email: "",
-      users_providers_paydays: "",
-      users_providers_expiration_date: "",
-      users_status: "",
-    });
+    setObjectUser([]);
   };
 
   /**
@@ -178,6 +164,7 @@ function GenerateFiles() {
         user.users_identification_type.toUpperCase() == SelectDocumentType
     );
     setOptionsProviders(filterDocumentType);
+    console.log("filterDocumentType: ", filterDocumentType);
   };
 
   /**
@@ -355,10 +342,10 @@ function GenerateFiles() {
    * @renderOption : cambia el renderizado del objeto option a como lo seleccione personalizado
    */
   const handleOptionsProviders = {
-    options: optionsProviders.length > 0 ? optionsProviders : [""],
+    // options: optionsProviders.length > 0 ? optionsProviders : [],
     // @ts-ignore
-    getOptionLabel: (options: { users_identification: string }) =>
-      `${options.users_identification}`,
+    // getOptionLabel: (options: { users_identification: string }) =>
+    //   `${options.users_identification}`,
     // @ts-ignore
     renderOption: (props, option, index) => {
       return (
@@ -403,15 +390,19 @@ function GenerateFiles() {
    * @param props
    */
   const handleValuesUser = (props: any) => {
-    setObjectUser(props === null ? "" : props);
-    // console.log("handleValueUser: ", props);
-    setDocIdentity(props.users_identification);
-    setIdUser(props.idusers);
-    setAddress(props.users_address);
-    setEmail(props.users_email);
-    setCompanyName(props.users_name);
-    setLastname(props.users_lastname);
-    setTelephone(props.users_phone);
+    console.log("handleValueUser: ", props);
+    if (![undefined, false, null, ""].includes(props)) {
+      setObjectUser(props);
+      setDocIdentity(props.users_identification);
+      setIdUser(props.idusers);
+      setAddress(props.users_address);
+      setEmail(props.users_email);
+      setCompanyName(props.users_name);
+      setLastname(props.users_lastname);
+      setTelephone(props.users_phone);
+    } else {
+      setObjectUser([]);
+    }
   };
 
   /**
@@ -441,7 +432,7 @@ function GenerateFiles() {
 
   const resetFullForm = () => {
     handleReset();
-    setObjectUser([""]);
+    setObjectUser([]);
     setStatusFileResponse(false);
     setFilePDFGoogle("");
     setComments("");
@@ -472,6 +463,12 @@ function GenerateFiles() {
             {!isSettled ? (
               <article className="filing">
                 <form onSubmit={handleSettledSubmit}>
+                  <SearchUser
+                    department={documentType}
+                    setDepartment={setDocumentType}
+                    city={objectUser}
+                    setCity={setObjectUser}
+                  />
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <InputSelect
@@ -501,36 +498,36 @@ function GenerateFiles() {
                         //   return option.value === value || value === '';
                         // }}
                         // clearOnEscape={false}
+                        options={optionsProviders.map(
+                          (user: any) => user.users_identification
+                        )}
+                        getOptionLabel={(options: {
+                          users_identification: string;
+                        }) => `${options.users_identification}`}
+                        // renderOption= {(props, option, index) => {
+                        //   return (
+                        //     <Box component="li" {...props} key={option.idusers}>
+                        //       {option.users_name} - {option.users_identification} -{" "}
+                        //       {option.users_identification_digital_check}
+                        //     </Box>
+                        //   );
+                        // }}
                         includeInputInList
                         value={objectUser}
                         onChange={(event, newValue) => {
-                          if (newValue == null || newValue == undefined) {
-                            console.log("me ejecute por aqui");
-                            setObjectUser({
-                              idusers: "",
-                              idroles: "",
-                              idsedes: "",
-                              users_identification_type: "",
-                              users_identification: "",
-                              users_identification_digital_check: "",
-                              users_name: "",
-                              users_lastname: "",
-                              users_address: "",
-                              users_phone: "",
-                              users_email: "",
-                              users_providers_paydays: "",
-                              users_providers_expiration_date: "",
-                              users_status: "",
-                            });
-                          } else {
-                            handleValuesUser(newValue);
-                          }
+                          handleValuesUser(newValue);
                         }}
                         onInputChange={(event, newValue) => {
                           // @ts-ignore
                           setObjectUser(newValue);
                         }}
                       />
+                      {/* <SearchUser
+                        optionsSelected={optionsProviders}
+                        value={objectUser}
+                        setvalue={handleValuesUser}
+                        disabled={!documentType}
+                      /> */}
                     </article>
                   </div>
                   <div className="md:flex md:flex-wrap">

@@ -23,6 +23,8 @@ export default {
       createUser: `${host}/postUser`,
       editUser: `${host}/putUser`,
       deleteUser: `${host}/deleteUser`,
+      getDocumentTypes: `${host}/getIdentificationByType`,
+      getTypeIdentification: `${host}/getTypeIdentification`,
     },
     stateFiles: {
       getStateFiles: `${host}/getStatesFiles`,
@@ -80,6 +82,7 @@ export default {
       withSettled: `${host}/registeredFilter`,
       withDocument: `${host}/accountTypeFilter`,
       getAllSettled: `${host}/getAllRegisteredFile`,
+      getDocumentTypes: `${host}/getIdentificationByType`,
     },
     pdfSettledNumber: `${hostPdf}/pdf`,
   },

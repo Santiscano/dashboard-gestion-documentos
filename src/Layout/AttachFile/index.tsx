@@ -22,6 +22,7 @@ import { uploadfile } from "../../services/Pdf.routes";
 import { createFilePath } from "../../services/FilesPath.routes";
 import { get } from "../../components/tools/SesionSettings";
 import ModalSuccess from "../../components/common/ModalSuccess";
+import SearchSettled from "./../../components/common/SearchSettled/index";
 // const optionAccountType = ["CUENTA COBRO", "FACTURA PROVEEDOR"];
 
 function AttachFile() {
@@ -104,15 +105,15 @@ function AttachFile() {
   //   onType(e.target.value);
   // };
 
-  const getAllRegisteredFiles = async () => {
-    try {
-      const Settleds = await GetAllSettled();
-      console.log("Settleds: ", Settleds?.data.data);
-    } catch (error) {
-      console.log("error: ", error);
-    } finally {
-    }
-  };
+  // const getAllRegisteredFiles = async () => {
+  //   try {
+  //     const Settleds = await GetAllSettled();
+  //     console.log("Settleds: ", Settleds?.data.data);
+  //   } catch (error) {
+  //     console.log("error: ", error);
+  //   } finally {
+  //   }
+  // };
 
   /**
    * consulta por radicado para traer info y almacena info
@@ -227,7 +228,7 @@ function AttachFile() {
   const handleCloseModalChild = () => setModalSuccess(false);
 
   useEffect(() => {
-    getAllRegisteredFiles();
+    // getAllRegisteredFiles();
   }, []);
 
   return (
@@ -259,18 +260,26 @@ function AttachFile() {
                   <Box>
                     <form onSubmit={handleSubmitSettled}>
                       <div className="md:flex md:flex-wrap">
-                        <article className="md:w-1/2">
+                        <article className="w-full">
                           <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
                             Numero de Radicado
                           </label>
-                          <TextFieldOutlined
+                          <SearchSettled
+                            label={"Radicado"}
+                            value={settled}
+                            setValue={setSettled}
+                            selected={["FINALIZADO"]}
+                            required
+                          />
+
+                          {/* <TextFieldOutlined
                             type={"text"}
                             label={"Radicado"}
                             value={settled}
                             setValue={setSettled}
                             required
                             // iconEnd={<PermIdentityRoundedIcon />}
-                          />
+                          /> */}
                         </article>
                       </div>
                       <Button name="Buscar Archivo" />
