@@ -21,13 +21,16 @@ export const getArea = async () => {
     console.log("error: ", error);
   }
 };
-export const createArea = async () => {
+export const createArea = async (
+  cost_center_area: string,
+  cost_center_area_name: string
+) => {
   try {
     const response = await axios.post(
       Routes.api.centerCost.area.createCostArea,
       {
-        cost_center_area: "02",
-        cost_center_area_name: "admonimoninononomo",
+        cost_center_area,
+        cost_center_area_name,
       },
       getHeader()
     );

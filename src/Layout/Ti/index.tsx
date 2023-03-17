@@ -24,7 +24,6 @@ import { getCedis } from "../../services/Cedis.routes";
 import { getRoles } from "../../services/Roles.routes";
 import InputSelectRol from "../../components/common/InputSelectRol";
 import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
-import InputNumberToString from "../../components/common/InputNumberToString";
 import { numberToStringWithTwoDigitNumber as numberToString } from "../../Utilities/formatted.utility";
 
 function TI() {
@@ -55,7 +54,7 @@ function TI() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // create Area Cost
-  const [areaNumber, setAreaNumber] = useState("");
+  const [areaNumber, setAreaNumber] = useState<number>(NaN);
   const [areaName, setAreaName] = useState("");
 
   // create subArea
@@ -485,7 +484,7 @@ function TI() {
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
                         Numero Area
                       </label>
-                      <InputNumberToString
+                      <TextFieldOutlined
                         type={"number"}
                         label={"numero"}
                         value={areaNumber}

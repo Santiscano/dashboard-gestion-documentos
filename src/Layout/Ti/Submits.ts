@@ -2,7 +2,7 @@ import { createRol } from "../../services/Roles.routes";
 import { createCedi } from "../../services/Cedis.routes";
 import { createUser } from '../../services/Users.routes'
 import { createArea } from "../../services/CenterCost.routes";
-
+import { numberToStringWithTwoDigitNumber as numberToString } from "../../Utilities/formatted.utility";
 
 export const handleSubmitCreateRol = async (
   e:any,
@@ -90,10 +90,15 @@ export const handleSubmitCreateUser = async (
   } finally{}
 }
 
-export const handleSubmitCreateArea = async (e:any, areaNumber:string, setAreaNumber:any, areaName:string, setAreaName:any) => {
+export const handleSubmitCreateArea = async (e:any, areaNumber:number, setAreaNumber:any, areaName:string, setAreaName:any) => {
   try{
     e.preventDefault();
-    const response = await createArea();
+    const response = await createArea(numberToString(areaNumber), areaName);
+    // console.log('response: ', response);
+    if(response?.status == 200){
+      setAreaNumber('');
+      setAreaName('');
+    }
     return response;
   } catch(error) {
     console.log('error: ', error);
