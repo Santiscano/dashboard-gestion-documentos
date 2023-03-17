@@ -57,6 +57,12 @@ function LocationsSelect({
       });
   };
 
+  /**
+   * parametros que recibe el autocomplete para renderizar las opciones
+   * @option : selecciona el array de opciones a usar
+   * @getOptionLabel : mostrara el valor seleccionado
+   * @renderOption : cambia el renderizado del objeto option a como lo seleccione personalizado
+   */
   const List = ({
     type,
     value,
@@ -67,8 +73,6 @@ function LocationsSelect({
     disabled,
     readOnly,
     required,
-    renderOption,
-    getOptionLabel,
   }: any) => {
     return (
       <>
@@ -84,9 +88,7 @@ function LocationsSelect({
           readOnly={readOnly}
           id="filter-providers"
           options={options}
-          getOptionLabel={getOptionLabel}
-          renderOption={renderOption}
-          // getOptionLabel={(option) => option}
+          getOptionLabel={(option) => option}
           getOptionDisabled={(option) => option === value}
           isOptionEqualToValue={(option, value) => option === value}
           itemID={itemID}
@@ -164,17 +166,10 @@ function LocationsSelect({
           options={cities.map(
             (user) =>
               // @ts-ignore
-              `${user.users_identification}-${user.users_identification_digital_check}/ ${user.users_name} ${user.users_lastname}`
+              `${user.users_identification}-${user.users_identification_digital_check}-${user.users_name} ${user.users_lastname}`
           )}
-          // getOptionLabel={(options) => {
-          //   {
-          //     options.users_identification;
-          //   }
-          //   // `${options.users_identification}`;
-          // }}
           renderOption={(props, option, index) => (
-            <Box component="li" {...props} key={option.idusers}>
-              {/* {`${option}`} */}
+            <Box component="li" {...props} key={index}>
               {option.users_identification}-
               {option.users_identification_digital_check}/ {option.users_name}{" "}
               {option.users_lastname}

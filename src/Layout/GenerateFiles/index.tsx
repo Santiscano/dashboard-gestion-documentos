@@ -38,6 +38,7 @@ import { GeneralValuesContext } from "../../Context/GeneralValuesContext";
 import { roles } from "../../components/tools/SesionSettings";
 import { get } from "../../components/tools/SesionSettings";
 import SearchUser from "../../components/common/SearchUser";
+import { AllUsers } from "./../../interfaces/User";
 
 function GenerateFiles() {
   // ------------------------------VARIABLES------------------------------//
@@ -109,7 +110,6 @@ function GenerateFiles() {
   const handleGetUsersCedis = async () => {
     // cedis
     const allCedis: AllCedis[] = await getCedis();
-    console.log("allCedis: ", allCedis);
     setAllCedis(allCedis);
 
     // users
@@ -119,11 +119,11 @@ function GenerateFiles() {
     // options redirectTo Administration
     const filterAuditors = getAllUsers?.filter(
       (user: { idroles: number }) =>
-        user.idroles == roles.AuditorGH &&
-        user.idroles == roles.AuditorCRTL &&
-        user.idroles == roles.AuditorRG &&
-        user.idroles == roles.Gerencia &&
-        user.idroles == roles.Contaduria &&
+        user.idroles == roles.AuditorGH ||
+        user.idroles == roles.AuditorCRTL ||
+        user.idroles == roles.AuditorRG ||
+        user.idroles == roles.Gerencia ||
+        user.idroles == roles.Contaduria ||
         user.idroles == roles.Tesoreria
     );
     setOptionsRedirectTo(filterAuditors);
@@ -160,28 +160,44 @@ function GenerateFiles() {
     setAccountType(e.target.value);
   const handleRedirectTo = (e: SelectChangeEvent) =>
     setRedirectTo(Number(e.target.value));
+  const handleComments = (e: SelectChangeEvent) => setComments(e.target.value);
 
   /**
    * se ejecuta cuando el auto complete se actualiza
+   * 1- tomo el valor seleccionado y capturo solo el numero identificacion
+   * 2- filtro con tipo y numero de documento
+   * 3- si el valor no es null entonces seteo valores
    * @param props
    */
   const handleValuesUser = (props: any) => {
-    console.log("object: ", objectUser);
-    console.log("handleValueUser: ", props);
-    // const ProviderSelected = allUsers.find(provider => provider. === && provider. === )
+    const documentNumberSelected = props.split("-")[0];
 
-    // if (![undefined, false, null, ""].includes(props)) {
-    setObjectUser(props);
-    //   setDocIdentity(props.users_identification);
-    //   setIdUser(props.idusers);
-    //   setAddress(props.users_address);
-    //   setEmail(props.users_email);
-    //   setCompanyName(props.users_name);
-    //   setLastname(props.users_lastname);
-    //   setTelephone(props.users_phone);
-    // } else {
-    //   setObjectUser([]);
-    // }
+    const ProviderSelected = allUsers.find(
+      (provider) =>
+        // @ts-ignore
+        provider.users_identification === documentNumberSelected &&
+        // @ts-ignore
+        provider.users_identification_type === documentType
+    );
+    if (![undefined, false, null, ""].includes(props)) {
+      setObjectUser(props);
+      // @ts-ignore
+      setDocIdentity(ProviderSelected?.users_identification);
+      // @ts-ignore
+      setIdUser(ProviderSelected?.idusers);
+      // @ts-ignore
+      setAddress(ProviderSelected?.users_address);
+      // @ts-ignore
+      setEmail(ProviderSelected?.users_email);
+      // @ts-ignore
+      setCompanyName(ProviderSelected?.users_name);
+      // @ts-ignore
+      setLastname(ProviderSelected?.users_lastname);
+      // @ts-ignore
+      setTelephone(ProviderSelected?.users_phone);
+    } else {
+      setObjectUser([]);
+    }
   };
 
   /**
@@ -322,65 +338,6 @@ function GenerateFiles() {
   const handleCloseModalChild = () => setModalSuccess(false);
 
   /**
-   * parametros que recibe el autocomplete para renderizar las opciones
-   * @option : selecciona el array de opciones a usar
-   * @getOptionLabel : mostrara el valor seleccionado
-   * @renderOption : cambia el renderizado del objeto option a como lo seleccione personalizado
-   */
-  const handleOptionsProviders = {
-    options: optionsProviders.length > 0 ? optionsProviders : [],
-    // @ts-ignore
-    getOptionLabel: (options: { users_identification: string }) =>
-      `${options.users_identification}`,
-    // @ts-ignore
-    renderOption: (props, option, index) => {
-      return (
-        <Box component="li" {...props} key={option.idusers}>
-          {option.users_name} - {option.users_identification} -{" "}
-          {option.users_identification_digital_check}
-        </Box>
-      );
-    },
-    renderInput: (params: any) => (
-      <TextField {...params} label="Numero"></TextField>
-    ),
-  };
-
-  /**
-   * por ahora cambie esta opcion por un SELECT
-   */
-  const handleOptionsAuditors = {
-    options: optionsRedirectTo.length > 0 ? optionsRedirectTo : [],
-    // @ts-ignore
-    getOptionLabel: (options: { idusers: number }) => options.idusers,
-    // @ts-ignore
-    renderOption: (props, option, index) => {
-      return (
-        <Box component="li" {...props} key={option.idusers}>
-          {option.users_name} {option.users_lastname} -
-          {option.idroles === 3
-            ? " Auditor"
-            : option.idroles === 4
-            ? " Gerente"
-            : option.idroles === 5
-            ? " Contabilidad"
-            : " Tesoreria"}
-        </Box>
-      );
-    },
-    renderInput: (params: any) => <TextField {...params}></TextField>,
-  };
-
-  /**
-   * actualiza el estado en estos tipos de select cedi - accountType - documentType - seleccionar area - redirigido a
-   * @param e
-   */
-  const handleComments = (e: SelectChangeEvent) => {
-    setComments(e.target.value);
-  };
-  // const handleAccountNumber=(e: any) => {setAccountNumber(e.target.value)};
-
-  /**
    * genero el nuevo numero de radicado
    * seteo los valores para esconder modales y limpiar las partes del formulario que son necesarias volver a llenar.
    */
@@ -396,6 +353,9 @@ function GenerateFiles() {
     setStatusResponse(false);
   };
 
+  /**
+   * reseteo formulario por completo
+   */
   const resetFullForm = () => {
     handleReset();
     setObjectUser([]);
@@ -434,7 +394,6 @@ function GenerateFiles() {
                     setDepartment={setDocumentType}
                     city={objectUser}
                     setCity={handleValuesUser}
-                    // handleValuesUser={handleValuesUser}
                   />
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
@@ -475,7 +434,7 @@ function GenerateFiles() {
                     department={documentType}
                     setDepartment={setDocumentType}
                     city={objectUser}
-                    setCity={setObjectUser}
+                    setCity={handleValuesUser}
                   />
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
