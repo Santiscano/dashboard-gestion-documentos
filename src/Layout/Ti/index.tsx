@@ -10,8 +10,8 @@ import {
   handleSubmitCreateRol,
   handleSubmitCreateCedi,
   handleSubmitCreateUser,
-  handleSubmitCreateCostArea,
-  handleSubmitCreateCostSubArea,
+  handleSubmitCreateArea,
+  handleSubmitCreateSubArea,
   handleSubmitCreateCostCenter,
 } from "./Submits";
 import InputSelect from "./../../components/common/InputSelect/index";
@@ -24,6 +24,8 @@ import { getCedis } from "../../services/Cedis.routes";
 import { getRoles } from "../../services/Roles.routes";
 import InputSelectRol from "../../components/common/InputSelectRol";
 import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
+import InputNumberToString from "../../components/common/InputNumberToString";
+import { numberToStringWithTwoDigitNumber as numberToString } from "../../Utilities/formatted.utility";
 
 function TI() {
   const [showValue, setShowValue] = useState(0);
@@ -53,8 +55,9 @@ function TI() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // create Area Cost
-  const [costCenterArea, setCostCenterArea] = useState("");
-  const [costCenterAreaName, setCostCenterAreaName] = useState("");
+  const [areaNumber, setAreaNumber] = useState("");
+  const [areaName, setAreaName] = useState("");
+
   // create subArea
   const [idcostCenterArea, setIdcostCenterArea] = useState("");
   const [costCenterSubarea, setCostCenterSubarea] = useState("");
@@ -86,11 +89,11 @@ function TI() {
     setAllCitys(departmentsResponse?.DepartamentCity);
 
     const allCedis: AllCedis[] = await getCedis();
-    console.log("allCedis: ", allCedis);
+    // console.log("allCedis: ", allCedis);
     setOptionsCedisIdName(allCedis);
 
     const allRoles = await getRoles();
-    console.log("allRoles: ", allRoles);
+    // console.log("allRoles: ", allRoles);
     setOptionsRol(allRoles);
   };
   const handleDepartment = (e: SelectChangeEvent) => {
@@ -104,12 +107,8 @@ function TI() {
     // @ts-ignore
     setListCitys(filterCity);
   };
-  const handleCity = (e: SelectChangeEvent) => {
-    setCity(e.target.value);
-  };
-  const handleCediType = (e: SelectChangeEvent) => {
-    setType(e.target.value);
-  };
+  const handleCity = (e: SelectChangeEvent) => setCity(e.target.value);
+  const handleCediType = (e: SelectChangeEvent) => setType(e.target.value);
 
   const handleRol = (e: SelectChangeEvent) => {
     setAssignRole(e.target.value);
@@ -150,8 +149,6 @@ function TI() {
                   <Tab label="Crear Cedi" {...a11yProps(1)} />
                   <Tab label="Crear Usuario" {...a11yProps(2)} />
                   <Tab label="Crear Centro de Costos" {...a11yProps(3)} />
-                  {/* <Tab label="Crear sub Area" {...a11yProps(4)} /> */}
-                  {/* <Tab label="Crear Centro de costos" {...a11yProps(5)} /> */}
                 </Tabs>
               </Box>
               <TabPanel value={showValue} index={0}>
@@ -305,7 +302,6 @@ function TI() {
                   onSubmit={() =>
                     handleSubmitCreateUser(
                       event,
-                      // @ts-ignore
                       assignRole,
                       setAssignRole,
                       cedi,
@@ -473,30 +469,39 @@ function TI() {
                 </form>
               </TabPanel>
               <TabPanel value={showValue} index={3}>
-                <form onSubmit={(e) => handleSubmitCreateCostArea(e)}>
+                <form
+                  onSubmit={(e) =>
+                    handleSubmitCreateArea(
+                      e,
+                      areaNumber,
+                      setAreaNumber,
+                      areaName,
+                      setAreaName
+                    )
+                  }
+                >
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Centro De Costos
+                        Numero Area
                       </label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"Numero"}
-                        value={costCenterArea}
-                        setValue={setCostCenterArea}
+                      <InputNumberToString
+                        type={"number"}
+                        label={"numero"}
+                        value={areaNumber}
+                        setValue={setAreaNumber}
                         required
-                        // iconEnd={}
                       />
                     </article>
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Nombre Centro De Costos
+                        Nombre Area
                       </label>
                       <TextFieldOutlined
                         type={"text"}
                         label={"Nombre"}
-                        value={costCenterAreaName}
-                        setValue={setCostCenterAreaName}
+                        value={areaName}
+                        setValue={setAreaName}
                         required
                         // iconEnd={}
                       />
@@ -505,11 +510,11 @@ function TI() {
                   <Button name="Crear Centro De Costos" />
                 </form>
 
-                <form onSubmit={() => handleSubmitCreateCostSubArea()}>
+                <form onSubmit={() => handleSubmitCreateSubArea()}>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Id Centro De Costos
+                        Numero Sub-Area
                       </label>
                       <TextFieldOutlined
                         type={"text"}
@@ -522,7 +527,7 @@ function TI() {
                     </article>
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        C.C SubArea
+                        Nombre Sub-Area
                       </label>
                       <TextFieldOutlined
                         type={"text"}
@@ -536,7 +541,7 @@ function TI() {
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Nombre subArea
+                        Relacion Area
                       </label>
                       <TextFieldOutlined
                         type={"text"}
@@ -555,7 +560,7 @@ function TI() {
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Id SubArea
+                        Numero Centro de Costos
                       </label>
                       <TextFieldOutlined
                         type={"text"}
@@ -567,7 +572,7 @@ function TI() {
                     </article>
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Centro de Costos
+                        Nombre Centro de Costos
                       </label>
                       <TextFieldOutlined
                         type={"text"}
@@ -581,7 +586,7 @@ function TI() {
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Nombre Centro de Costos
+                        Relacion Sub-Area
                       </label>
                       <TextFieldOutlined
                         type={"text"}

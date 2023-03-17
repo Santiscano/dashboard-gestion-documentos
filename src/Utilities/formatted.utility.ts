@@ -28,3 +28,7 @@ export function capitalizeFirstLatterUppercase(text: string): string {
   })
   return capitalizedWords.join(' ');
 }
+
+export function numberToStringWithTwoDigitNumber(num: number): string {
+  return num < 10 ? `0${num.toString()}` : num.toString();
+};
