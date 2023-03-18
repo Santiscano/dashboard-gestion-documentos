@@ -1,6 +1,6 @@
 import { Roles, DisplayRoles } from '../../interfaces/Roles';
 
-export const roles:Roles = {
+export const roles:Roles = Object.freeze({
   Proveedor   : 1,
   Radicacion  : 2,
   AuditorGH   : 3,
@@ -11,7 +11,7 @@ export const roles:Roles = {
   Tesoreria   : 8,
   AuditorTI   : 9,
   Eliminar    : 10,
-}
+});
 
 const roleDisplay:DisplayRoles = {
   1:"Proveedor",
@@ -100,13 +100,32 @@ export function getHeaderMultipart() {
   };
 }
 
+/**
+ * @param param0 lista de roles que podran ver el resultado
+ * @param param1 rol que esta en sesion y quiere observar
+ * ?listRoles toma el array de roles su valor, tener en cuenta que tambien se puede utilizar Object.keys pero en este caso seria un string
+ * ?doTheseRolExist es el nuevo array que filtro los roles no existentes de listRoles en allowedRolesList y despues de limpiar con find solo toma el primer valor que coincide
+ * lo anterior fue para limpiar los roles prosiblemente falsos
+ * @returns toma el nuevo array y devuelve true o false si el rol tiene o no permisos de ver
+ */
+export const validateHasRoleAllowed = (allowedRolesList:any[], rolRequestView:any): boolean => {
+  const listRoles = Object.values(roles);
+  const doTheseRolExist = allowedRolesList.filter((role) =>
+  listRoles.find((item) => item === role)
+  );
+  console.log('doTheseRolExist: ', doTheseRolExist);
+
+  // return true;
+  return doTheseRolExist.includes(parseInt(rolRequestView));
+};
+
 export function session() {
   return Boolean(get("accessToken"));
 }
 
 /**
  *
- * @returns comprueba si el valor almacenado en la clave
+ * @returns comprueba si el valor de sesion storage es undefinend o null y de ser asi retorna false
  * @accessToken en el sesionStorage es undefined o null. si es asi devuelve true
  */
 // export function session() {

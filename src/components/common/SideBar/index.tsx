@@ -21,7 +21,8 @@ import working from "../../../assets/icons/data-analysis-case-study.png";
 import { Collapse } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
-import { session } from "../../tools/SesionSettings";
+import { get, session } from "../../tools/SesionSettings";
+import WithRoleAllowed from "./../../../Middlewares/WithRoleAllowed";
 
 const drawerWidth = 240;
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -81,6 +82,14 @@ function index(props: any) {
       </DrawerHeader>
 
       <Divider />
+
+      <WithRoleAllowed
+        allowedRolesList={[1, 2, 3, 4, 5, 6, 8, 9, 11]}
+        // rolRequestView={get("idroles")}
+        rolRequestView={11}
+      >
+        <h1>test de permisos de roles</h1>
+      </WithRoleAllowed>
 
       <List>
         <ListItemButton onClick={handleOpenFiles}>
