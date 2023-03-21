@@ -27,7 +27,7 @@ import NewEmployee from "./Layout/NewEmployee";
 import AttachEmployeeDocuments from "./Layout/AttachEmployeeDocuments";
 import AllEmployees from "./Layout/AllEmployees";
 import SearchEmployee from "./Layout/SearchEmployee";
-import WithRoleAllowed from "./Middlewares/WithRoleAllowed";
+import { WithRoleAllowedComponent } from "./Middlewares/WithRoleAllowed";
 import {
   optionsViewsSettled,
   optionsViewsAuth,
@@ -52,9 +52,9 @@ function App() {
 
               <Route
                 element={
-                  <WithRoleAllowed
+                  // @ts-ignore
+                  <WithRoleAllowedComponent
                     allowedRolesList={optionsViewsSettled}
-                    isComponent={true}
                   />
                 }
               >

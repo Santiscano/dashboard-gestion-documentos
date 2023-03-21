@@ -8,7 +8,7 @@ import SideBar from "../../components/common/SideBar";
 import { useNavigate, Outlet } from "react-router-dom";
 import "./admin.css";
 import Loading from "../../components/common/Loading";
-import { validateUser } from "../../services/Firebase.routes";
+import { validateUserFirebase } from "../../services/Firebase.routes";
 import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
 import { useContext } from "react";
 import { get, session } from "../../components/tools/SesionSettings";
@@ -101,7 +101,7 @@ function index() {
    * ?setUser crea el usuario con la respuesta
    */
   const loadingUser = async () => {
-    const userValidate = await validateUser();
+    const userValidate = await validateUserFirebase();
     if (
       userValidate?.status === 201 &&
       userValidate?.data.users_status === "ACTIVO"

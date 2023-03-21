@@ -1,4 +1,5 @@
 import { Roles, DisplayRoles } from '../../interfaces/Roles';
+import { validateUserFirebase } from './../../services/Firebase.routes';
 
 export const roles:Roles = Object.freeze({
   Proveedor   : 1,
@@ -107,10 +108,27 @@ export function getHeaderMultipart() {
  * ?doTheseRolExist es el nuevo array que filtro los roles no existentes de listRoles en allowedRolesList y despues de limpiar con find solo toma el primer valor que coincide
  * lo anterior fue para limpiar los roles prosiblemente falsos
  * @returns toma el nuevo array y devuelve true o false si el rol tiene o no permisos de ver
+ * conclusion la lista de roles permitidos el rol actual y dice si tiene permisos
  */
-export const validateHasRoleAllowed = (allowedRolesList:any[]): boolean => {
+// export const validateHasRoleAllowedPromise = async (allowedRolesList:any[]): Promise<boolean> => {
+//   const response = await validateUserFirebase();
+//   // @ts-ignore
+//   const idrole = await response?.data.idroles;
+//   console.log('idrole promise: ', idrole);
+//   if(!idrole || !allowedRolesList){
+//     return false;
+//   } else {
+//     const listRoles = Object.values(roles);
+//     const doTheseRolExist = allowedRolesList.filter((role) =>
+//     listRoles.find((item) => item === role)
+//     );
+//     console.log('includes: ', doTheseRolExist.includes(parseInt(idrole)));
+//     return doTheseRolExist.includes(parseInt(idrole));
+//   }
+// };
+export const validateHasRoleAllowed = (allowedRolesList:any[]):boolean => {
   const idrole = get("idroles");
-  // console.log('idrole: ', idrole);
+  console.log('idrole notPromise: ', idrole);
   if(!idrole || !allowedRolesList){
     return false;
   } else {

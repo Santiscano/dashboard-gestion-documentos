@@ -22,7 +22,7 @@ import { Collapse } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
 import { session } from "../../tools/SesionSettings";
-import WithRoleAllowed from "./../../../Middlewares/WithRoleAllowed";
+import { WithRoleAllowedRoutes } from "./../../../Middlewares/WithRoleAllowed";
 import {
   optionsViewsSettled,
   optionsViewsAuth,
@@ -93,7 +93,7 @@ function index(props: any) {
         <h1>test de permisos de roles</h1>
       </WithRoleAllowed> */}
 
-      <WithRoleAllowed allowedRolesList={optionsViewsSettled}>
+      <WithRoleAllowedRoutes allowedRolesList={optionsViewsSettled}>
         <List>
           <ListItemButton onClick={handleOpenFiles}>
             <ListItemIcon>
@@ -115,9 +115,9 @@ function index(props: any) {
             </List>
           </Collapse>
         </List>
-      </WithRoleAllowed>
+      </WithRoleAllowedRoutes>
 
-      <WithRoleAllowed allowedRolesList={optionsViewsAuth}>
+      <WithRoleAllowedRoutes allowedRolesList={optionsViewsAuth}>
         <List>
           <ListItemButton onClick={handleOpenAuth}>
             <ListItemIcon>
@@ -142,11 +142,11 @@ function index(props: any) {
             </List>
           </Collapse>
         </List>
-      </WithRoleAllowed>
+      </WithRoleAllowedRoutes>
 
       <Divider />
 
-      <WithRoleAllowed allowedRolesList={optionsViewsTI}>
+      <WithRoleAllowedRoutes allowedRolesList={optionsViewsTI}>
         <List>
           {rutero.online.ti.map((list, index) => (
             <ListItem key={index} disablePadding>
@@ -158,9 +158,9 @@ function index(props: any) {
           ))}
         </List>
         <Divider />
-      </WithRoleAllowed>
+      </WithRoleAllowedRoutes>
 
-      <WithRoleAllowed allowedRolesList={optionsViewsDigitization}>
+      <WithRoleAllowedRoutes allowedRolesList={optionsViewsDigitization}>
         <List>
           <ListItemButton onClick={handleOpenDG}>
             <ListItemIcon>
@@ -185,7 +185,7 @@ function index(props: any) {
             </List>
           </Collapse>
         </List>
-      </WithRoleAllowed>
+      </WithRoleAllowedRoutes>
 
       <img
         src={working}
