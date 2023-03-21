@@ -92,7 +92,7 @@ function TI() {
     setOptionsCedisIdName(allCedis);
 
     const allRoles = await getRoles();
-    // console.log("allRoles: ", allRoles);
+    console.log("allRoles: ", allRoles);
     setOptionsRol(allRoles);
   };
   const handleDepartment = (e: SelectChangeEvent) => {
@@ -114,8 +114,9 @@ function TI() {
     console.log(e.target.value);
   };
   const handleCedi = (e: SelectChangeEvent) => {
-    setCedi(e.target.value);
-    console.log(e.target.value);
+    const cedi = e.target.value;
+    // @ts-ignore
+    setCedi(cedi.idsedes);
   };
 
   // --------------------------handles-------------------------------//

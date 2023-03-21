@@ -53,38 +53,42 @@ export const handleSubmitCreateUser = async (
   idroles: number,
   setIdroles:any,
   idsedes: number,
-  setIdsedes: any,
+  setIdsedes:any,
   identification_type: string,
-  setIdentification_type: any,
+  setIdentification_type:any,
   identification_number: string,
-  setIdentification_number: any,
+  setIdentification_number:any,
   firstname: string,
-  setFirstname: any,
+  setFirstname:any,
   lastname: string,
-  setLastname: any,
+  setLastname:any,
   address: string,
-  setAddress: any,
+  setAddress:any,
   phone: string,
-  setPhone: any,
+  setPhone:any,
   email: string,
-  setEmail: any,
+  setEmail:any,
   password: string,
-  setPassword: any,
+  setPassword:any,
 ) => {
+  // console.log(idroles, idsedes, identification_type, identification_number, firstname, lastname,address,phone, email,password)
   try{
+    // console.log(idroles, idsedes)
     e.preventDefault();
     const res = await createUser(idroles, idsedes, identification_type, identification_number, firstname, lastname,address,phone, email,password)
     console.log('res createUser: ', res);
-    setIdroles('');
-    setIdsedes('');
-    setIdentification_type('');
-    setIdentification_number('');
-    setFirstname('');
-    setLastname('');
-    setAddress('');
-    setPhone('');
-    setEmail('');
-    setPassword('');
+    if(res?.status == 200 && res.statusText == 'OK') {
+      setIdroles('');
+      setIdsedes('');
+      setIdentification_type('');
+      setIdentification_number('');
+      setFirstname('');
+      setLastname('');
+      setAddress('');
+      setPhone('');
+      setEmail('');
+      setPassword('');
+    }
   } catch(error) {
     console.log('error: ', error);
   } finally{}

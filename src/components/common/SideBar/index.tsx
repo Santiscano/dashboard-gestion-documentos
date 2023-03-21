@@ -21,8 +21,14 @@ import working from "../../../assets/icons/data-analysis-case-study.png";
 import { Collapse } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
-import { get, session } from "../../tools/SesionSettings";
+import { session } from "../../tools/SesionSettings";
 import WithRoleAllowed from "./../../../Middlewares/WithRoleAllowed";
+import {
+  optionsViewsSettled,
+  optionsViewsAuth,
+  optionsViewsTI,
+  optionsViewsDigitization,
+} from "../../tools/OptionsValuesSelects";
 
 const drawerWidth = 240;
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -83,98 +89,103 @@ function index(props: any) {
 
       <Divider />
 
-      <WithRoleAllowed
-        allowedRolesList={[1, 2, 3, 4, 5, 6, 8, 9, 11]}
-        // rolRequestView={get("idroles")}
-        rolRequestView={11}
-      >
+      {/* <WithRoleAllowed allowedRolesList={optionsViewsSettled}>
         <h1>test de permisos de roles</h1>
+      </WithRoleAllowed> */}
+
+      <WithRoleAllowed allowedRolesList={optionsViewsSettled}>
+        <List>
+          <ListItemButton onClick={handleOpenFiles}>
+            <ListItemIcon>
+              <AssignmentRoundedIcon sx={{ color: "#293184" }} />
+            </ListItemIcon>
+            <ListItemText primary="Radicados" />
+            {openFiles ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={openFiles} timeout="auto" unmountOnExit>
+            <List>
+              {rutero.online.settling.map((list, index) => (
+                <ListItem key={index} disablePadding>
+                  <ListItemButton onClick={() => handleRouteValidate(list)}>
+                    <ListItemIcon>{list.icon}</ListItemIcon>
+                    <ListItemText primary={list.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Collapse>
+        </List>
       </WithRoleAllowed>
 
-      <List>
-        <ListItemButton onClick={handleOpenFiles}>
-          <ListItemIcon>
-            <AssignmentRoundedIcon sx={{ color: "#293184" }} />
-          </ListItemIcon>
-          <ListItemText primary="Radicados" />
-          {openFiles ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={openFiles} timeout="auto" unmountOnExit>
-          <List>
-            {rutero.online.settling.map((list, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton onClick={() => handleRouteValidate(list)}>
-                  <ListItemIcon>{list.icon}</ListItemIcon>
-                  <ListItemText primary={list.name} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Collapse>
-
-        <ListItemButton onClick={handleOpenAuth}>
-          <ListItemIcon>
-            <VerifiedRoundedIcon sx={{ color: "#293184" }} />
-          </ListItemIcon>
-          <ListItemText primary="Autorizaciones" />
-          {openAuths ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={openAuths} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {rutero.online.auth.map((list, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton
-                  sx={{ pl: 4 }}
-                  onClick={() => navigate(`${list.url}`)}
-                >
-                  <ListItemIcon>{list.icon}</ListItemIcon>
-                  <ListItemText primary={list.name} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Collapse>
-      </List>
+      <WithRoleAllowed allowedRolesList={optionsViewsAuth}>
+        <List>
+          <ListItemButton onClick={handleOpenAuth}>
+            <ListItemIcon>
+              <VerifiedRoundedIcon sx={{ color: "#293184" }} />
+            </ListItemIcon>
+            <ListItemText primary="Autorizaciones" />
+            {openAuths ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={openAuths} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {rutero.online.auth.map((list, index) => (
+                <ListItem key={index} disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => navigate(`${list.url}`)}
+                  >
+                    <ListItemIcon>{list.icon}</ListItemIcon>
+                    <ListItemText primary={list.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Collapse>
+        </List>
+      </WithRoleAllowed>
 
       <Divider />
 
-      <List>
-        {rutero.online.ti.map((list, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton onClick={() => navigate(`${list.url}`)}>
-              <ListItemIcon>{list.icon}</ListItemIcon>
-              <ListItemText primary={list.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <WithRoleAllowed allowedRolesList={optionsViewsTI}>
+        <List>
+          {rutero.online.ti.map((list, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton onClick={() => navigate(`${list.url}`)}>
+                <ListItemIcon>{list.icon}</ListItemIcon>
+                <ListItemText primary={list.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+      </WithRoleAllowed>
 
-      <Divider />
-
-      <List>
-        <ListItemButton onClick={handleOpenDG}>
-          <ListItemIcon>
-            <CreateNewFolderRoundedIcon sx={{ color: "#293184" }} />
-          </ListItemIcon>
-          <ListItemText primary="Digitalización" />
-          {openDG ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={openDG} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {rutero.online.digitalizacion.map((list, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton
-                  sx={{ pl: 4 }}
-                  onClick={() => navigate(`${list.url}`)}
-                >
-                  <ListItemIcon>{list.icon}</ListItemIcon>
-                  <ListItemText primary={list.name} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Collapse>
-      </List>
+      <WithRoleAllowed allowedRolesList={optionsViewsDigitization}>
+        <List>
+          <ListItemButton onClick={handleOpenDG}>
+            <ListItemIcon>
+              <CreateNewFolderRoundedIcon sx={{ color: "#293184" }} />
+            </ListItemIcon>
+            <ListItemText primary="Digitalización" />
+            {openDG ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={openDG} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {rutero.online.digitalizacion.map((list, index) => (
+                <ListItem key={index} disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onClick={() => navigate(`${list.url}`)}
+                  >
+                    <ListItemIcon>{list.icon}</ListItemIcon>
+                    <ListItemText primary={list.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Collapse>
+        </List>
+      </WithRoleAllowed>
 
       <img
         src={working}

@@ -108,15 +108,18 @@ export function getHeaderMultipart() {
  * lo anterior fue para limpiar los roles prosiblemente falsos
  * @returns toma el nuevo array y devuelve true o false si el rol tiene o no permisos de ver
  */
-export const validateHasRoleAllowed = (allowedRolesList:any[], rolRequestView:any): boolean => {
-  const listRoles = Object.values(roles);
-  const doTheseRolExist = allowedRolesList.filter((role) =>
-  listRoles.find((item) => item === role)
-  );
-  console.log('doTheseRolExist: ', doTheseRolExist);
-
-  // return true;
-  return doTheseRolExist.includes(parseInt(rolRequestView));
+export const validateHasRoleAllowed = (allowedRolesList:any[]): boolean => {
+  const idrole = get("idroles");
+  // console.log('idrole: ', idrole);
+  if(!idrole || !allowedRolesList){
+    return false;
+  } else {
+    const listRoles = Object.values(roles);
+    const doTheseRolExist = allowedRolesList.filter((role) =>
+    listRoles.find((item) => item === role)
+    );
+    return doTheseRolExist.includes(parseInt(idrole));
+  }
 };
 
 export function session() {

@@ -23,6 +23,11 @@ export default {
         url: "/dashboard/adjuntar",
         icon: <AttachEmailIcon sx={{ color: "#293184" }} />,
       },
+      {
+        name: "Todos los archivos",
+        url: "/dashboard/todos-los-archivos",
+        icon: <TopicRoundedIcon sx={{ color: "#293184" }} />,
+      },
     ],
     auth: [
       {
