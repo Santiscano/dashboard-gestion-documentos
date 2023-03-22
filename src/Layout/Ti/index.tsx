@@ -92,7 +92,7 @@ function TI() {
    * y almaceno en variables
    */
   const handleGetCitys = async () => {
-    const departmentsResponse = await getCitys();
+    const departmentsResponse: any = await getCitys();
     setListDepartment(departmentsResponse?.Department);
 
     setListCitys(departmentsResponse?.DepartamentCity);

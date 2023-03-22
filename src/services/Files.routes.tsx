@@ -30,7 +30,13 @@ export const addFile = async (
   IdUserSession: number
 ) => {
   try {
-    // console.log("info que envio: settledNumber: ",settledNumber, " price: ",price," redirectTo: ",redirectTo," idsedes: ",idsedes)
+    console.log(
+      "info que envio: settledNumber: ",
+      settledNumber,
+      price,
+      redirectTo,
+      idsedes
+    );
     const response = await axios.post(
       Routes.api.files.addFile,
       {

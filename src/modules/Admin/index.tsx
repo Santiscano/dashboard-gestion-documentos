@@ -72,7 +72,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 function index() {
   const { user, setUser, setIsLoading } = useContext(GeneralValuesContext);
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
   const handleDrawerOpen = () => {

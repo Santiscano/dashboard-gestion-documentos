@@ -1,60 +1,70 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import 'animate.css';
-import TextFieldOutlined from '../TextFieldOutline';
-// mui
-import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
-import { optionAccountType, optionDocumentType, optionsCities } from '../../tools/OptionsValuesSelects';
-import InputSelect from '../InputSelect';
-import { SelectChangeEvent } from '@mui/material';
-
-import BrandingWatermarkRoundedIcon from '@mui/icons-material/BrandingWatermarkRounded';
-import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
-import PhoneAndroidRoundedIcon from '@mui/icons-material/PhoneAndroidRounded';
-import AttachEmailRoundedIcon from '@mui/icons-material/AttachEmailRounded';
-import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
-import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
-
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import "animate.css";
+import {
+  capitalizeFirstLatterUppercase,
+  formattedAmount,
+} from "../../../Utilities/formatted.utility";
+import { Divider } from "@mui/material";
+import PreviewPDF from "../PreviewPDF";
+import { useState } from "react";
 
 const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 700,
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "95vw",
   height: "80vh",
-  overflow: 'scroll',
-  bgcolor: 'background.paper',
-  borderRadius: '5px',
+  overflow: "scroll",
+  bgcolor: "background.paper",
+  borderRadius: "5px",
   boxShadow: 24,
   p: 4,
 };
 
-export default function BasicModal(props: any) {
-  const [settledNumber, setSettledNumber] = React.useState(props.id);
-  const [cedi, setCedi ]                  = React.useState(props.cedi);
-  const [accountType, setAccountType ]    = React.useState(props.account_type);
-  const [documentType, setDocumentType ]  = React.useState('');
-  const [documentNumber,setDocumentNumber]= React.useState('');
-  const [companyName, setCompanyName]     = React.useState('');
-  const [address, setAddress]             = React.useState('');
-  const [telephone, setTelephone]         = React.useState('');
-  const [email, setEmail]                 = React.useState('');
-  const [documentDate, setDocumentDate]   = React.useState('');
-  const [price, setPrice]                 = React.useState('');
-// state document
-// open document
-  const [invoiceType, setInvoiceType]     = React.useState('');
-  const [redirectTo, setRedirectTo]       = React.useState('');
+const listRoutesPDF = ["ruta1", "ruta2", "ruta3"];
 
-  const handleCedi = (e: SelectChangeEvent) => {setCedi(e.target.value)};
-  const handleDocumentType = (e: SelectChangeEvent) => {setDocumentType(e.target.value)};
-  const handleAccountType = (e: SelectChangeEvent) => {setAccountType(e.target.value)};
+function TitleValues(title: any, value: any) {
+  return (
+    <>
+      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        {title}
+      </h5>
+      <p className="font-normal text-gray-700 dark:text-gray-400">{value}</p>
+    </>
+  );
+}
 
+export default function ModalInfoFile(props: any) {
+  const {
+    users_name,
+    users_lastname,
+    users_identification_type,
+    users_identification,
+    users_identification_digital_check,
+    users_email,
+    users_phone,
+    users_address,
+    users_status,
+    files_registered,
+    files_price,
+    files_account_type,
+    files_account_type_number,
+    files_type,
+    idfiles,
+    sedes_type,
+    sedes_name,
+    idfiles_states,
+  } = props.valueFile;
+  const [openPDF, setOpenPdf] = useState(false);
+  const handlePDF = () => {
+    setOpenPdf(!openPDF);
+  };
+  // console.log("values: ", props.valueFile);
+  // console.log("props modal", props.valueFile);
   return (
     <>
       <Modal
@@ -62,160 +72,155 @@ export default function BasicModal(props: any) {
         onClose={props.close}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        className='animate__animated animate__fadeIn'
+        className="animate__animated animate__fadeIn"
       >
-        <Box
-          sx={style}
-        >
-          <h3 className='createFiling'>Actualizar informacion radicado</h3>
-          <div className='w-full'>
-            <InputSelect
-              index='1'
-              title='Seleccionar Area'
-              placeholder="Requerimiento"
-              value={cedi}
-              onChange={handleCedi}
-              itemDefault="selecciona una opcion"
-              items={optionsCities}/>
+        <Box sx={style}>
+          <div className="flex justify-between mx-2">
+            <h3 className="createFiling mb-2">Autorizar Radicado</h3>
+            {/* <button className="button" onClick={handlePDF}>
+              abrir pdf
+            </button> */}
           </div>
-          <div className='md:flex md:flex-wrap'>
-            <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                >Numero de Radicado</label>
-              <TextFieldOutlined
-                type={"text"}
-                label={"radicado"}
-                value={settledNumber}
-                setValue={setSettledNumber}
-                required
-                disabled
-                iconEnd={<NumbersRoundedIcon/>}
-              />
-            </article>
-            <article className='md:w-1/2' >
-              <InputSelect
-                type={"text"}
-                title='Tipo de cuenta'
-                placeholder="cuenta"
-                value={accountType}
-                onChange={handleAccountType}
-                itemDefault="selecciona el tipo de cuenta"
-                items={optionAccountType}
-              />
-            </article>
-          </div>
+          <Divider />
+          <div className="flex flex-col items-center w-auto mt-2">
+            <section className="flex flex-wrap w-full items-center justify-between ">
+              <div className="flex justify-between flex-wrap">
+                <div className="text-2xl font-bold mr-8">
+                  {capitalizeFirstLatterUppercase(users_name)}{" "}
+                  {capitalizeFirstLatterUppercase(users_lastname)}
+                </div>
+              </div>
 
-          <div className='md:flex md:flex-wrap'>
-            <article className='md:w-1/2'>
-              <InputSelect
-                type={"text"}
-                title='Tipo Documento'
-                placeholder="Tipo Documento*"
-                value={documentType}
-                onChange={handleDocumentType}
-                itemDefault="selecciona el tipo de documento"
-                items={optionDocumentType}
-              />
-            </article>
-            <article className='md:w-1/2'>
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                >Numero Documento</label>
-              <TextFieldOutlined
-                type={"text"}
-                label={"Numero documento"}
-                value={documentNumber}
-                setValue={setDocumentNumber}
-                required
-                iconEnd={<BrandingWatermarkRoundedIcon/>}
-              />
+              <div className="flex mt-4 w-full">
+                <p className="font-bold inline-block mr-4 w-1/2">
+                  Tipo De Documento:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(
+                      users_identification_type
+                    )}`}
+                  </span>
+                </p>
+                <p className="font-bold inline-block">
+                  Numero De Documento:
+                  <span className="text-slate-600 font-normal">
+                    {` ${users_identification}-${users_identification_digital_check}`}
+                  </span>
+                </p>
+              </div>
 
+              <div className="flex mt-4 w-full">
+                <p className="font-bold inline-block mr-4 w-1/2">
+                  Email:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(users_email)}`}
+                  </span>
+                </p>
+                <p className="font-bold inline-block">
+                  Telefono:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(users_phone)}`}
+                  </span>
+                </p>
+              </div>
 
+              <div className="flex mt-4 w-full">
+                <p className="font-bold inline-block mr-4 w-1/2">
+                  Direccion:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(users_address)}`}
+                  </span>
+                </p>
+                <p className="font-bold inline-block">
+                  Estado:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(users_status)}`}
+                  </span>
+                </p>
+              </div>
 
+              <div className="flex mt-4 w-full">
+                <p className="font-bold inline-block mr-4 w-1/2">
+                  Radicado:{" "}
+                  <span className="text-slate-600 font-normal">
+                    {files_registered}
+                  </span>
+                </p>
+                <p className="mr-8 font-bold text-lg">
+                  Precio: {formattedAmount(files_price)}
+                </p>
+              </div>
 
-            </article>
-          </div>
+              <div className="flex mt-4 w-full">
+                <p className="font-bold inline-block mr-4 w-1/2">
+                  Tipo De Cuenta:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(files_account_type)}`}
+                  </span>
+                </p>
+                <p className="font-bold inline-block mr-4">
+                  Numero de Cuenta:
+                  <span className="text-slate-600 font-normal">
+                    {` ${files_account_type_number}`}
+                  </span>
+                </p>
+              </div>
 
-          <div className='md:flex md:flex-wrap'>
-            <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                >Razon social</label>
-              <TextFieldOutlined
-                type={"text"}
-                label={"automatico"}
-                value={companyName}
-                setValue={setCompanyName}
-                required
-                disabled
-                iconEnd={<PermIdentityRoundedIcon/>}
-              />
-            </article>
-            <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                >Direccion</label>
-              <TextFieldOutlined
-                type={"text"}
-                label={"automatico"}
-                value={address}
-                setValue={setAddress}
-                required
-                disabled
-                iconEnd={<LocationOnRoundedIcon/>}
-              />
-            </article>
-          </div>
+              <div className="flex mt-4 w-full">
+                <p className="font-bold inline-block mr-4 w-1/2">
+                  Tipo De Archivo:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(files_type)}`}
+                  </span>
+                </p>
+                <p className="font-bold inline-block">
+                  ID Del Archivo:
+                  <span className="text-slate-600 font-normal">
+                    {` ${idfiles}`}
+                  </span>
+                </p>
+              </div>
 
-          <div className='md:flex md:flex-wrap'>
-            <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                >Telefono</label>
-              <TextFieldOutlined
-                  type={"text"}
-                  label={"automatico"}
-                  value={telephone}
-                  setValue={setTelephone}
-                  required
-                  disabled
-                iconEnd={<PhoneAndroidRoundedIcon/>}
-                />
-            </article>
-            <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                >Correo</label>
-              <TextFieldOutlined
-              type={"text"}
-              label={"automatico"}
-              value={email}
-              setValue={setEmail}
-              required
-              disabled
-              iconEnd={<AttachEmailRoundedIcon/>}
-              />
-            </article>
-          </div>
+              <div className="flex mt-4 w-full">
+                <p className="font-bold inline-block mr-4 w-1/2">
+                  Tipo de Cedi:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(sedes_type)}`}
+                  </span>
+                </p>
+                <p className="font-bold inline-block">
+                  Nombre Cedi:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(sedes_name)}`}
+                  </span>
+                </p>
+              </div>
 
-          <div className='md:flex md:flex-wrap'>
-            <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                >Fecha Documento</label>
-              <TextFieldOutlined
-                type={"date"}
-                value={documentDate}
-                setValue={setDocumentDate}
-                required
-              />
-            </article>
-            <article className='md:w-1/2' >
-              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white"
-                >Valor</label>
-              <TextFieldOutlined
-                type={"number"}
-                label={"valor"}
-                value={price}
-                setValue={setPrice}
-                required
-                iconEnd={<AttachMoneyRoundedIcon/>}
-              />
-            </article>
+              <div className="flex mt-4 w-full">
+                <p className="font-bold inline-block mr-4 w-1/2">
+                  Asignacion Actual:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase("gerencia")}`}
+                  </span>
+                </p>
+                {/* <p className="font-bold inline-block">
+                  Nombre Cedi:
+                  <span className="text-slate-600 font-normal">
+                    {` ${capitalizeFirstLatterUppercase(sedes_name)}`}
+                  </span>
+                </p> */}
+              </div>
+
+              <div className="flex mt-4 w-fu">
+                {listRoutesPDF.map((pdf, index) => (
+                  <a key={index} href={pdf} target="_blank">
+                    <button className="button">
+                      abrir archivo {index + 1}
+                    </button>
+                  </a>
+                ))}
+              </div>
+            </section>
+            {/* <section className="flex-auto">{openPDF && <PreviewPDF />}</section> */}
           </div>
         </Box>
       </Modal>
