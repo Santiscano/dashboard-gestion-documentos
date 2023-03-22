@@ -1,13 +1,16 @@
 import DataTablePending from "../../components/common/DataTablePending";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { showTablePending } from "../../services/showTable.routes";
 import { get } from "../../components/tools/SesionSettings";
+import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
 
 function PendingFilesTable() {
   const [row, setRow] = useState([]);
+  const { setPreLoad } = useContext(GeneralValuesContext);
 
   const handleGetTableData = async () => {
     try {
+      setPreLoad(true);
       const table = await showTablePending();
       const rows = await table?.data.dataInfo;
       setRow(rows ? rows : []);
@@ -15,6 +18,7 @@ function PendingFilesTable() {
     } catch (error) {
       console.log("error: ", error);
     } finally {
+      setPreLoad(false);
     }
   };
 

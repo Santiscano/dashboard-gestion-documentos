@@ -9,10 +9,12 @@ import {
 import pdf from "../../../assets/Requerimientos.pdf";
 import columns from "../../../interfaces/GridColumns";
 import LoadingMUI from "../LoadingMUI";
-import NotFound from "../../../assets/images/file-searching.gif";
+import NotFound from "../../../assets/images/notFile.jpg";
 import { ButtonToggleOpenEdit } from "../ButtonToggleOpenEdit";
 import { formattedAmount } from "../../../Utilities/formatted.utility";
 import { styled } from "@mui/material";
+import { useContext } from "react";
+import { GeneralValuesContext } from "../../../Context/GeneralValuesContext";
 
 let open: boolean = false;
 const openModalPDF = (params: any) => {
@@ -75,8 +77,10 @@ function getRowId(row: any) {
 }
 
 export default function DataTablePending({ row }: any) {
+  // const { preLoad } = useContext(GeneralValuesContext);
   return (
     <>
+      <LoadingMUI />
       <div className="flex flex-row justify-between">
         <label className="block mb-2 ml-4 text-base font-semibold dark:text-white">
           Todos Los Radicados
