@@ -23,7 +23,8 @@ interface Props {
     | ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void)
     | undefined;
   setModalSuccess?: React.Dispatch<React.SetStateAction<boolean>>;
-  settledNumber: string;
+  type: string;
+  identification: string;
   newSettledSameUser?: any;
   resetFullForm?: any;
 }
@@ -32,12 +33,13 @@ const ModalSuccess: FC<Props> = ({
   open,
   close,
   setModalSuccess,
-  settledNumber,
+  type,
+  identification,
   newSettledSameUser,
   resetFullForm,
 }) => {
   const [showCheckmark, setShowCheckmark] = useState(false);
-
+  // console.log(identification);
   useEffect(() => {
     setShowCheckmark(true);
     setTimeout(() => {
@@ -69,7 +71,7 @@ const ModalSuccess: FC<Props> = ({
             </div>
           </div>
           <h3 className="animate__animated animate__fadeIn">
-            Radicado {settledNumber} guardado con exito
+            {type} {identification} guardado con exito
           </h3>
 
           {resetFullForm && (

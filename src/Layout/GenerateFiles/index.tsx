@@ -638,7 +638,8 @@ function GenerateFiles() {
                     open={modalSuccess}
                     close={handleCloseModalChild}
                     setModalSuccess={setModalSuccess}
-                    settledNumber={settledNumber}
+                    type={"Radicado"}
+                    identification={settledNumber}
                     newSettledSameUser={newSettledSameUser}
                     resetFullForm={resetFullForm}
                   />

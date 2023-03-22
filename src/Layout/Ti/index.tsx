@@ -29,6 +29,7 @@ import { numberToStringWithTwoDigitNumber as numberToString } from "../../Utilit
 import LoadingMUI from "../../components/common/LoadingMUI";
 import { createUser } from "../../services/Users.routes";
 import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
+import ModalSuccess from "../../components/common/ModalSuccess";
 
 function TI() {
   const [showValue, setShowValue] = useState(0);
@@ -69,6 +70,8 @@ function TI() {
   const [idCostCenterSubarea, setIdCostCenterSubarea] = useState("");
   const [costCenter, setCostCenter] = useState("");
   const [costCenterName, setCostCenterName] = useState("");
+  // success
+  const [modalSuccess, setModalSuccess] = useState(false); // status 200 filePath para mostrar hijo modal
 
   // --------------------------context-------------------------------//
 
@@ -193,6 +196,7 @@ function TI() {
         setPhone("");
         setEmail("");
         setPassword("");
+        setModalSuccess(true);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -200,6 +204,7 @@ function TI() {
       setPreLoad(false);
     }
   };
+  const handleCloseModalChild = () => setModalSuccess(false);
 
   // --------------------------handles-------------------------------//
   useEffect(() => {
@@ -563,6 +568,13 @@ function TI() {
                   </div>
                   <Button name="Crear Usuario" />
                 </form>
+                <ModalSuccess
+                  open={modalSuccess}
+                  close={handleCloseModalChild}
+                  setModalSuccess={setModalSuccess}
+                  type={"Usuario"}
+                  identification={firstName}
+                />
               </TabPanel>
               <TabPanel value={showValue} index={3}>
                 <form
