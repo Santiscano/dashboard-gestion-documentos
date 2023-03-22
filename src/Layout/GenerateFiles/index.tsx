@@ -394,6 +394,7 @@ function GenerateFiles() {
                     setDepartment={setDocumentType}
                     city={objectUser}
                     setCity={handleValuesUser}
+                    required
                   />
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
@@ -435,6 +436,7 @@ function GenerateFiles() {
                     setDepartment={setDocumentType}
                     city={objectUser}
                     setCity={handleValuesUser}
+                    required
                   />
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
@@ -628,6 +630,7 @@ function GenerateFiles() {
                         id="comentary"
                         placeholder="si necesita comentarios ingreselos aquí"
                         className="border-neutral-300 border-2 division--containers"
+                        required
                         value={comments}
                         // @ts-ignore
                         onChange={handleComments}
@@ -638,7 +641,8 @@ function GenerateFiles() {
                     open={modalSuccess}
                     close={handleCloseModalChild}
                     setModalSuccess={setModalSuccess}
-                    settledNumber={settledNumber}
+                    type={"Radicado"}
+                    identification={settledNumber}
                     newSettledSameUser={newSettledSameUser}
                     resetFullForm={resetFullForm}
                   />

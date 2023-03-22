@@ -54,7 +54,7 @@ export const login = async (users_email:string, users_password:string) => {
   }
 };
 
-export const validateUser = async () => {
+export const validateUserFirebase = async () => {
   try{
     const response = await axios.post(Routes.api.firebase.validateUser,{},getHeader())
     const user = response?.data;
@@ -64,7 +64,6 @@ export const validateUser = async () => {
     set('idroles', user.idroles);
     set('idsedes', user.idsedes);
     set('fullName', `${user.users_name} ${user.users_lastname}`)
-
     return response;
   } catch(error) {
 

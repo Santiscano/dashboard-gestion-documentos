@@ -1,8 +1,12 @@
 import { createRol } from "../../services/Roles.routes";
 import { createCedi } from "../../services/Cedis.routes";
-import { createUser } from '../../services/Users.routes'
+import { createUser } from '../../services/Users.routes';
 import { createArea } from "../../services/CenterCost.routes";
 import { numberToStringWithTwoDigitNumber as numberToString } from "../../Utilities/formatted.utility";
+import { useContext } from 'react';
+import { GeneralValuesContext } from "../../Context/GeneralValuesContext";
+
+
 
 export const handleSubmitCreateRol = async (
   e:any,
@@ -11,14 +15,18 @@ export const handleSubmitCreateRol = async (
   rolDescription:string,
   setRolDescription:any,
   ) => {
-  try{
+    const { setPreLoad } = useContext(GeneralValuesContext);
+    try{
+    setPreLoad(true);
     e.preventDefault();
     const res = await createRol(rolName, rolDescription);
     setRolName('');
     setRolDescription('');
   } catch(error) {
     console.log('error: ', error);
-  } finally {}
+  } finally {
+    setPreLoad(false);
+  }
 };
 
 export const handleSubmitCreateCedi = async (
@@ -34,7 +42,9 @@ export const handleSubmitCreateCedi = async (
   type:string,
   setType: any,
 ) => {
+  const { setPreLoad } = useContext(GeneralValuesContext);
   try{
+    setPreLoad(true);
     e.preventDefault();
     const res = await createCedi(city, country, address, cediName, type)
     console.log('res create cedis: ', res);
@@ -45,7 +55,9 @@ export const handleSubmitCreateCedi = async (
     setType('');
   } catch(error) {
     console.log('error: ', error);
-  } finally{}
+  } finally{
+    setPreLoad(false);
+  }
 }
 
 export const handleSubmitCreateUser = async (
@@ -53,45 +65,54 @@ export const handleSubmitCreateUser = async (
   idroles: number,
   setIdroles:any,
   idsedes: number,
-  setIdsedes: any,
+  setIdsedes:any,
   identification_type: string,
-  setIdentification_type: any,
+  setIdentification_type:any,
   identification_number: string,
-  setIdentification_number: any,
+  setIdentification_number:any,
   firstname: string,
-  setFirstname: any,
+  setFirstname:any,
   lastname: string,
-  setLastname: any,
+  setLastname:any,
   address: string,
-  setAddress: any,
+  setAddress:any,
   phone: string,
-  setPhone: any,
+  setPhone:any,
   email: string,
-  setEmail: any,
+  setEmail:any,
   password: string,
-  setPassword: any,
+  setPassword:any,
 ) => {
+  // const { setPreLoad } = useContext(GeneralValuesContext);
   try{
+    // setPreLoad(true);
     e.preventDefault();
+    console.log(idroles, idsedes, identification_type, identification_number, firstname, lastname,address,phone, email,password)
     const res = await createUser(idroles, idsedes, identification_type, identification_number, firstname, lastname,address,phone, email,password)
     console.log('res createUser: ', res);
-    setIdroles('');
-    setIdsedes('');
-    setIdentification_type('');
-    setIdentification_number('');
-    setFirstname('');
-    setLastname('');
-    setAddress('');
-    setPhone('');
-    setEmail('');
-    setPassword('');
+    if(res?.status == 200 && res.statusText == 'OK') {
+      setIdroles('');
+      setIdsedes('');
+      setIdentification_type('');
+      setIdentification_number('');
+      setFirstname('');
+      setLastname('');
+      setAddress('');
+      setPhone('');
+      setEmail('');
+      setPassword('');
+    }
   } catch(error) {
     console.log('error: ', error);
-  } finally{}
+  } finally{
+    // setPreLoad(false);
+  }
 }
 
 export const handleSubmitCreateArea = async (e:any, areaNumber:number, setAreaNumber:any, areaName:string, setAreaName:any) => {
+  const { setPreLoad } = useContext(GeneralValuesContext);
   try{
+    setPreLoad(true);
     e.preventDefault();
     const response = await createArea(numberToString(areaNumber), areaName);
     // console.log('response: ', response);
@@ -102,17 +123,29 @@ export const handleSubmitCreateArea = async (e:any, areaNumber:number, setAreaNu
     return response;
   } catch(error) {
     console.log('error: ', error);
-  } finally{}
+  } finally{
+    setPreLoad(false);
+  }
 }
 
 export const handleSubmitCreateSubArea = async () => {
-  try{} catch(error) {
+  const { setPreLoad } = useContext(GeneralValuesContext);
+  try{
+    setPreLoad(true);
+  } catch(error) {
     console.log('error: ', error);
-  } finally{}
+  } finally{
+    setPreLoad(false);
+  }
 }
 
 export const handleSubmitCreateCostCenter = async () => {
-  try{} catch(error) {
+  const { setPreLoad } = useContext(GeneralValuesContext);
+  try{
+    setPreLoad(true);
+  } catch(error) {
     console.log('error: ', error);
-  } finally{}
+  } finally{
+    setPreLoad(false);
+  }
 }

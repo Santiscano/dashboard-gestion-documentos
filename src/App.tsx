@@ -27,6 +27,13 @@ import NewEmployee from "./Layout/NewEmployee";
 import AttachEmployeeDocuments from "./Layout/AttachEmployeeDocuments";
 import AllEmployees from "./Layout/AllEmployees";
 import SearchEmployee from "./Layout/SearchEmployee";
+import { WithRoleAllowedComponent } from "./Middlewares/WithRoleAllowed";
+import {
+  optionsViewsSettled,
+  optionsViewsAuth,
+  optionsViewsTI,
+  optionsViewsDigitization,
+} from "./components/tools/OptionsValuesSelects";
 
 function App() {
   return (
@@ -42,8 +49,19 @@ function App() {
             <Route path="/dashboard" element={<Admin />}>
               <Route path="home" element={<Home />} />
               {/* generar - adjuntar */}
-              <Route path="radicar" element={<GenerateFiles />} />
-              <Route path="adjuntar" element={<AttachFile />} />
+
+              <Route
+                element={
+                  // @ts-ignore
+                  <WithRoleAllowedComponent
+                    allowedRolesList={optionsViewsSettled}
+                  />
+                }
+              >
+                <Route path="radicar" element={<GenerateFiles />} />
+                <Route path="adjuntar" element={<AttachFile />} />
+              </Route>
+
               {/* tablas... pendientes - todos */}
               <Route path="pendientes" element={<PendingFilesTable />} />
               <Route path="todos-los-archivos" element={<AllFilesTable />} />

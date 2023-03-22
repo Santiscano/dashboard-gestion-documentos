@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./TI.css";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -9,7 +9,7 @@ import Button from "../../components/common/Button";
 import {
   handleSubmitCreateRol,
   handleSubmitCreateCedi,
-  handleSubmitCreateUser,
+  // handleSubmitCreateUser,
   handleSubmitCreateArea,
   handleSubmitCreateSubArea,
   handleSubmitCreateCostCenter,
@@ -19,12 +19,17 @@ import { optionCediType } from "../../components/tools/OptionsValuesSelects";
 import { getCitys } from "./../../services/getCitysColombia";
 import InputSelectCity from "../../components/common/InputSelectCity";
 import InputSelectCedi from "../../components/common/InputSelectCedi";
+import InputSelectDocType from "../../components/common/InputSelectDocType";
 import { AllCedis } from "../../interfaces/Cedis";
 import { getCedis } from "../../services/Cedis.routes";
 import { getRoles } from "../../services/Roles.routes";
 import InputSelectRol from "../../components/common/InputSelectRol";
 import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
 import { numberToStringWithTwoDigitNumber as numberToString } from "../../Utilities/formatted.utility";
+import LoadingMUI from "../../components/common/LoadingMUI";
+import { createUser } from "../../services/Users.routes";
+import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
+import ModalSuccess from "../../components/common/ModalSuccess";
 
 function TI() {
   const [showValue, setShowValue] = useState(0);
@@ -65,6 +70,12 @@ function TI() {
   const [idCostCenterSubarea, setIdCostCenterSubarea] = useState("");
   const [costCenter, setCostCenter] = useState("");
   const [costCenterName, setCostCenterName] = useState("");
+  // success
+  const [modalSuccess, setModalSuccess] = useState(false); // status 200 filePath para mostrar hijo modal
+
+  // --------------------------context-------------------------------//
+
+  const { setPreLoad } = useContext(GeneralValuesContext);
 
   // --------------------------handles-------------------------------//
   /**
@@ -81,7 +92,7 @@ function TI() {
    * y almaceno en variables
    */
   const handleGetCitys = async () => {
-    const departmentsResponse = await getCitys();
+    const departmentsResponse: any = await getCitys();
     setListDepartment(departmentsResponse?.Department);
 
     setListCitys(departmentsResponse?.DepartamentCity);
@@ -92,7 +103,7 @@ function TI() {
     setOptionsCedisIdName(allCedis);
 
     const allRoles = await getRoles();
-    // console.log("allRoles: ", allRoles);
+    console.log("allRoles: ", allRoles);
     setOptionsRol(allRoles);
   };
   const handleDepartment = (e: SelectChangeEvent) => {
@@ -114,9 +125,86 @@ function TI() {
     console.log(e.target.value);
   };
   const handleCedi = (e: SelectChangeEvent) => {
-    setCedi(e.target.value);
+    const cedi = e.target.value;
     console.log(e.target.value);
+    // @ts-ignore
+    setCedi(cedi.idsedes);
   };
+  const handleCedity = (e: SelectChangeEvent) => {
+    setIdentificationType(e.target.value);
+  };
+
+  const handleSubmitCreateUser = async (
+    e: any,
+    idroles: number,
+    setIdroles: any,
+    idsedes: number,
+    setIdsedes: any,
+    identification_type: string,
+    setIdentification_type: any,
+    identification_number: string,
+    setIdentification_number: any,
+    firstname: string,
+    setFirstname: any,
+    lastname: string,
+    setLastname: any,
+    address: string,
+    setAddress: any,
+    phone: string,
+    setPhone: any,
+    email: string,
+    setEmail: any,
+    password: string,
+    setPassword: any
+  ) => {
+    try {
+      setPreLoad(true);
+      e.preventDefault();
+      console.log(
+        idroles,
+        idsedes,
+        identification_type,
+        identification_number,
+        firstname,
+        lastname,
+        address,
+        phone,
+        email,
+        password
+      );
+      const res = await createUser(
+        idroles,
+        idsedes,
+        identification_type,
+        identification_number,
+        firstname,
+        lastname,
+        address,
+        phone,
+        email,
+        password
+      );
+      console.log("res createUser: ", res);
+      if (res?.status == 200 && res.statusText == "OK") {
+        setIdroles("");
+        setIdsedes("");
+        setIdentification_type("");
+        setIdentification_number("");
+        setFirstname("");
+        setLastname("");
+        setAddress("");
+        setPhone("");
+        setEmail("");
+        setPassword("");
+        setModalSuccess(true);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
+      setPreLoad(false);
+    }
+  };
+  const handleCloseModalChild = () => setModalSuccess(false);
 
   // --------------------------handles-------------------------------//
   useEffect(() => {
@@ -125,6 +213,7 @@ function TI() {
 
   return (
     <div className="layout">
+      <LoadingMUI />
       <section className="layout-section">
         <div className="layout-left">
           <div className="container__createFiling">
@@ -354,6 +443,19 @@ function TI() {
                   </div>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
+                      <InputSelectDocType
+                        type={"text"}
+                        title="Tipo de Documento"
+                        placeholder="C.C, NIT..."
+                        name="type"
+                        required
+                        value={identificationType}
+                        onChange={handleCedity}
+                        itemDefault="selecciona un tipo"
+                      />
+                    </article>
+
+                    {/* <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
                         Tipo de Documento
                       </label>
@@ -365,7 +467,7 @@ function TI() {
                         required
                         // iconEnd={}
                       />
-                    </article>
+                    </article> */}
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
                         Numero de documento
@@ -466,6 +568,13 @@ function TI() {
                   </div>
                   <Button name="Crear Usuario" />
                 </form>
+                <ModalSuccess
+                  open={modalSuccess}
+                  close={handleCloseModalChild}
+                  setModalSuccess={setModalSuccess}
+                  type={"Usuario"}
+                  identification={firstName}
+                />
               </TabPanel>
               <TabPanel value={showValue} index={3}>
                 <form

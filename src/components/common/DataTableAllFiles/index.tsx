@@ -96,6 +96,7 @@ export default function DataTableAllFiles({ row }: any) {
           initialState={{
             columns: {
               columnVisibilityModel: {
+                files_cost_center: false,
                 files_code_accounting: false,
                 files_code_treasury: false,
                 files_type: false,

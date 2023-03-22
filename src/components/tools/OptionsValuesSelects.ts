@@ -38,3 +38,7 @@ export const optionCediType = [
   'PROPIA',
   'NACIONAL',
 ];
+export const optionsViewsSettled = [2, 9];
+export const optionsViewsAuth = [3, 4, 5, 6, 7, 8, 9];
+export const optionsViewsTI = [9];
+export const optionsViewsDigitization = [3, 9];

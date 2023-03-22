@@ -436,7 +436,8 @@ function AttachFile() {
                 <ModalSuccess
                   open={modalSuccess}
                   close={handleCloseModalChild}
-                  settledNumber={file.settled}
+                  type="radicado"
+                  identification={file.settled}
                 />
               </>
             )}

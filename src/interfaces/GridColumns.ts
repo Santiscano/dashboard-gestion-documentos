@@ -6,7 +6,7 @@ const columns: GridColDef[] = [
   {
     field: 'files_registered',
     headerName: 'Radicado',
-    width: 170,
+    width: 230,
   },
   {
     field: 'files_account_type',
@@ -20,8 +20,13 @@ const columns: GridColDef[] = [
   },
   {
     field: 'files_code_accounting',
-    headerName: 'nombre',
+    headerName: 'Nombre',
     width: 70,
+  },
+  {
+    field: 'users_name',
+    headerName: 'Razon Social',
+    width: 120,
   },
   {
     field: 'files_cost_center',
@@ -36,7 +41,7 @@ const columns: GridColDef[] = [
   {
     field: 'files_price',
     headerName: 'Precio',
-    width: 150,
+    width: 100,
     valueFormatter: (params) => formattedAmount(params.value),
   },
   {
@@ -52,7 +57,7 @@ const columns: GridColDef[] = [
   {
     field: 'idfiles_states',
     headerName: 'Estado Archivo',
-    width: 70,
+    width: 105,
   },
   {
     field: 'idproviders',
@@ -127,11 +132,6 @@ const columns: GridColDef[] = [
   {
     field: 'users_lastname',
     headerName: 'nombre',
-    width: 70,
-  },
-  {
-    field: 'users_name',
-    headerName: 'Razon Social',
     width: 70,
   },
   {

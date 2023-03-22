@@ -30,7 +30,7 @@ function PendingFilesTable() {
             Pendientes por Autorizar
           </h3>
           <h3 className="container__createFiling createFiling">
-            falta cambiar la carga por la de la otra tabla
+            el boton de abrir aun no muestra la info necesaria
           </h3>
           <div className="filing">
             <section className="viewTableEdit">
