@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { ChangeEventHandler, useContext, useEffect, useState } from "react";
 import "./provider.css";
 import { SelectChangeEvent } from "@mui/material/Select";
 import InputSelect from "../../components/common/InputSelect";
@@ -160,7 +160,8 @@ function GenerateFiles() {
     setAccountType(e.target.value);
   const handleRedirectTo = (e: SelectChangeEvent) =>
     setRedirectTo(Number(e.target.value));
-  const handleComments = (e: SelectChangeEvent) => setComments(e.target.value);
+  const handleComments = (e: any) => setComments(e.target.value);
+  //ChangeEventHandler<HTMLTextAreaElement>
 
   /**
    * se ejecuta cuando el auto complete se actualiza
@@ -628,11 +629,10 @@ function GenerateFiles() {
                       <textarea
                         name="Comentario"
                         id="comentary"
-                        placeholder="si necesita comentarios ingreselos aquí"
-                        className="border-neutral-300 border-2 division--containers"
+                        placeholder="Es necesario dejar alguna observacion"
+                        className="border-neutral-300 border-2 resize-none division--containers"
                         required
                         value={comments}
-                        // @ts-ignore
                         onChange={handleComments}
                       ></textarea>
                     </div>
