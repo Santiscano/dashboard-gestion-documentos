@@ -1,7 +1,7 @@
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import Routes from "./Routes";
-import { getHeader, set } from "../components/tools/SesionSettings";
+import { get, getHeader, set } from "../components/tools/SesionSettings";
 
 export const getFiles = async () => {
   try {
@@ -59,21 +59,40 @@ export const addFile = async (
   }
 };
 
-export const editFile = async () => {
+export const editFile = async (
+  user: any,
+  idfiles: number,
+  idproviders: number,
+  idusers: number,
+  idfiles_states: number,
+  files_type: string,
+  files_registered: string,
+  files_cost_center: string,
+  files_code_accounting: string,
+  files_code_treasury: string,
+  files_price: number,
+  files_account_type: string,
+  files_account_type_number: string,
+  tracking_observation: string
+) => {
   try {
     const response = await axios.put(
       Routes.api.files.editFile,
       {
-        idfiles: 1,
-        idproviders: 2,
-        idusers: 2,
-        idfiles_states: 1,
-        files_type: "operativo",
-        files_registered: "123456",
-        files_cost_center: "012031",
-        files_code_accounting: "090909",
-        files_code_treasury: "101010",
-        files_price: 500001,
+        idfiles: user.idfiles,
+        idproviders: user.idproviders,
+        idusers: user.idusers,
+        idfiles_states: user.idfiles_states,
+        files_type: user.files_type,
+        files_registered: user.files_registered,
+        files_cost_center: user.files_cost_center,
+        files_code_accounting: user.files_code_accounting,
+        files_code_treasury: user.files_code_treasury,
+        files_price: user.files_price,
+        files_account_type: user.files_account_type,
+        files_account_type_number: user.files_account_type_number,
+        tracking_observation,
+        userSession: get("idusers"),
       },
       getHeader()
     );

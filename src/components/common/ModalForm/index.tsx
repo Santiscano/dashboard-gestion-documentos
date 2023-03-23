@@ -14,6 +14,8 @@ import InputSelectRedirectTo from "../InputSelectRedirectTo";
 import { getUsers } from "../../../services/Users.routes";
 import { roles } from "../../tools/SesionSettings";
 import { get } from "./../../tools/SesionSettings";
+import { editFile } from "../../../services/Files.routes";
+import PendingTemporaryState from "../../../Layout/PendingFilesTable/components/PendingTemporaryState";
 
 const style = {
   position: "absolute" as "absolute",
@@ -32,6 +34,7 @@ const style = {
 const listRoutesPDF = ["ruta1", "ruta2", "ruta3"];
 
 export default function ModalInfoFile(props: any) {
+  console.log("props completas: ", props);
   // ------------------------------VARIABLES------------------------------//
   const [comments, setComments] = useState("");
   const [openPDF, setOpenPdf] = useState(false);
@@ -86,6 +89,20 @@ export default function ModalInfoFile(props: any) {
     );
     setOptionsRedirectTo(filterAuditors);
   };
+
+  // buttons
+  // const handleApprove = async () => {
+  //   const response = await  editFile();
+  //   console.log(response);
+  // };
+  // const handle = async () => {
+  //   const response = await ;
+  //   console.log(response);
+  // };
+  // const handle = async () => {
+  //   const response = await ;
+  //   console.log(response);
+  // };
 
   useEffect(() => {
     handleGetUsers();
@@ -237,8 +254,22 @@ export default function ModalInfoFile(props: any) {
               </div>
             </section>
 
+            <section className="flex w-full my-4">
+              <Button variant="contained" color="success" sx={{ mx: 2, my: 1 }}>
+                Aprobar
+              </Button>
+              <Button variant="contained" color="error" sx={{ mx: 2, my: 1 }}>
+                Rechazar
+              </Button>
+              <Button variant="contained" color="info" sx={{ mx: 2, my: 1 }}>
+                Devolver
+              </Button>
+              <Button variant="contained" color="warning" sx={{ mx: 2, my: 1 }}>
+                Pendiente / Temporal
+              </Button>
+            </section>
+            <PendingTemporaryState user={props.valueFile} />
             <section className="flex flex-row w-full">
-              <form></form>
               <article className="md:w-1/2">
                 <InputSelectRedirectTo
                   type={"number"}
@@ -263,12 +294,11 @@ export default function ModalInfoFile(props: any) {
                 ></textarea>
               </article>
             </section>
+            <h4>Aprobar "putfile idfiles_states + 1 iduser"</h4>
+            <h4>Rechazar "estado rechazado"</h4>
+            <h4>Devolver "enviar cualquier auditor o gerente"</h4>
+            <h4>Pendiente "estado pendiente"</h4>
           </div>
-
-          <button>aprovar "putfile idfiles_states + 1 iduser"</button>
-          <button>rechazar "estado rechazado"</button>
-          <button>devolver "enviar cualquier auditor o gerente" </button>
-          <button>pendiente "estado pendiente"</button>
         </Box>
       </Modal>
     </>
