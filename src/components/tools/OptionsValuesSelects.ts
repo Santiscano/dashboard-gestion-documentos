@@ -38,6 +38,18 @@ export const optionCediType = [
   'PROPIA',
   'NACIONAL',
 ];
+export const optionsActivity = [
+  'APROBAR',
+  'RECHAZAR',
+  'DEVOLVER',
+  'PENDIENTE/TEMPORAL',
+];
+export const optionsCostCenter = [
+  {name: 'Administracion', value: '01'},
+  {name: 'Nombre 2', value: '02'},
+  {name: 'Nombre 3', value: '03'},
+  {name: 'Nombre 4', value: '04'},
+]
 export const optionsViewsSettled = [2, 9];
 export const optionsViewsAuth = [3, 4, 5, 6, 7, 8, 9];
 export const optionsViewsTI = [9];

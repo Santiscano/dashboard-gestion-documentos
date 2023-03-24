@@ -57,7 +57,6 @@ function TextFieldOutlined({
         endAdornment: iconEnd ? (
           <InputAdornment position="end"> {iconEnd} </InputAdornment>
         ) : null,
-        inputProps: inputProps,
       }}
     />
   );

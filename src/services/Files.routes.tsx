@@ -60,14 +60,13 @@ export const addFile = async (
 };
 
 export const editFile = async (
-  user: any,
   idfiles: number,
   idproviders: number,
   idusers: number,
   idfiles_states: number,
   files_type: string,
   files_registered: string,
-  files_cost_center: string,
+  files_cost_center: any,
   files_code_accounting: string,
   files_code_treasury: string,
   files_price: number,
@@ -76,27 +75,44 @@ export const editFile = async (
   tracking_observation: string
 ) => {
   try {
+    console.log(
+      "lo que estoy mandando a pufile:",
+      idfiles,
+      idproviders,
+      idusers,
+      idfiles_states,
+      files_type,
+      files_registered,
+      files_cost_center,
+      files_code_accounting,
+      files_code_treasury,
+      files_price,
+      files_account_type,
+      files_account_type_number,
+      tracking_observation,
+      get("idusers")
+    );
     const response = await axios.put(
       Routes.api.files.editFile,
       {
-        idfiles: user.idfiles,
-        idproviders: user.idproviders,
-        idusers: user.idusers,
-        idfiles_states: user.idfiles_states,
-        files_type: user.files_type,
-        files_registered: user.files_registered,
-        files_cost_center: user.files_cost_center,
-        files_code_accounting: user.files_code_accounting,
-        files_code_treasury: user.files_code_treasury,
-        files_price: user.files_price,
-        files_account_type: user.files_account_type,
-        files_account_type_number: user.files_account_type_number,
+        idfiles,
+        idproviders,
+        idusers,
+        idfiles_states,
+        files_type,
+        files_registered,
+        files_cost_center,
+        files_code_accounting,
+        files_code_treasury,
+        files_price,
+        files_account_type,
+        files_account_type_number,
         tracking_observation,
         userSession: get("idusers"),
       },
       getHeader()
     );
-    console.log(response);
+    console.log("res putfile", response);
     return response;
   } catch (error) {
     console.log("error: ", error);

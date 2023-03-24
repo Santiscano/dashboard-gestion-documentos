@@ -6,16 +6,20 @@ import "animate.css";
 import {
   capitalizeFirstLatterUppercase,
   formattedAmount,
-} from "../../../Utilities/formatted.utility";
+} from "../../../../Utilities/formatted.utility";
 import { Divider, SelectChangeEvent } from "@mui/material";
-import PreviewPDF from "../PreviewPDF";
-import { ChangeEventHandler, useEffect, useState } from "react";
-import InputSelectRedirectTo from "../InputSelectRedirectTo";
-import { getUsers } from "../../../services/Users.routes";
-import { roles } from "../../tools/SesionSettings";
-import { get } from "./../../tools/SesionSettings";
-import { editFile } from "../../../services/Files.routes";
-import PendingTemporaryState from "../../../Layout/PendingFilesTable/components/PendingTemporaryState";
+import PreviewPDF from "../../../../components/common/PreviewPDF";
+import { ChangeEventHandler, useContext, useEffect, useState } from "react";
+import InputSelectRedirectTo from "../../../../components/common/InputSelectRedirectTo";
+import { getUsers } from "../../../../services/Users.routes";
+import { roles } from "../../../../components/tools/SesionSettings";
+import { get } from "../../../../components/tools/SesionSettings";
+import { editFile } from "../../../../services/Files.routes";
+import PendingTemporaryState from "../PendingTemporaryState";
+import InputSelect from "../../../../components/common/InputSelect";
+import { optionsActivity } from "../../../../components/tools/OptionsValuesSelects";
+import Approve from "./../Approve/index";
+import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -36,11 +40,14 @@ const listRoutesPDF = ["ruta1", "ruta2", "ruta3"];
 export default function ModalInfoFile(props: any) {
   console.log("props completas: ", props);
   // ------------------------------VARIABLES------------------------------//
+  const { openModalAuth, handleOpenModalAuth } =
+    useContext(GeneralValuesContext);
   const [comments, setComments] = useState("");
   const [openPDF, setOpenPdf] = useState(false);
   const [redirectTo, setRedirectTo] = useState<number>();
   const [allUsers, setAllUsers] = useState([""]); // recibi todos los usuarios de DB
   const [optionsRedirectTo, setOptionsRedirectTo] = useState([""]); // filtro allUsers con opciones redirectTo
+  const [activitySelect, setActivitySelect] = useState(""); //valor opcion seleccionada de actividad a realizar
 
   const {
     users_name,
@@ -70,6 +77,8 @@ export default function ModalInfoFile(props: any) {
   const handleComments = (e: any) => setComments(e.target.value);
   const handleRedirectTo = (e: SelectChangeEvent) =>
     setRedirectTo(Number(e.target.value));
+  const handleActivitySelect = (e: SelectChangeEvent) =>
+    setActivitySelect(e.target.value);
 
   const handleGetUsers = async () => {
     // users
@@ -90,28 +99,14 @@ export default function ModalInfoFile(props: any) {
     setOptionsRedirectTo(filterAuditors);
   };
 
-  // buttons
-  // const handleApprove = async () => {
-  //   const response = await  editFile();
-  //   console.log(response);
-  // };
-  // const handle = async () => {
-  //   const response = await ;
-  //   console.log(response);
-  // };
-  // const handle = async () => {
-  //   const response = await ;
-  //   console.log(response);
-  // };
-
   useEffect(() => {
     handleGetUsers();
   }, []);
   return (
     <>
       <Modal
-        open={props.open}
-        onClose={props.close}
+        open={openModalAuth}
+        onClose={handleOpenModalAuth}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="animate__animated animate__fadeIn"
@@ -254,26 +249,34 @@ export default function ModalInfoFile(props: any) {
               </div>
             </section>
 
-            <section className="flex w-full my-4">
-              <Button variant="contained" color="success" sx={{ mx: 2, my: 1 }}>
-                Aprobar
-              </Button>
-              <Button variant="contained" color="error" sx={{ mx: 2, my: 1 }}>
-                Rechazar
-              </Button>
-              <Button variant="contained" color="info" sx={{ mx: 2, my: 1 }}>
-                Devolver
-              </Button>
-              <Button variant="contained" color="warning" sx={{ mx: 2, my: 1 }}>
-                Pendiente / Temporal
-              </Button>
+            <section className="flex w-full mt-2">
+              <article className="w-1/2">
+                <InputSelect
+                  title="Estado a Generar"
+                  placeholder="Seleccione una Actividad"
+                  value={activitySelect}
+                  onChange={handleActivitySelect}
+                  required
+                  name="accion"
+                  itemDefault="Que Accion tomaras"
+                  items={optionsActivity}
+                />
+              </article>
             </section>
-            <PendingTemporaryState user={props.valueFile} />
-            <section className="flex flex-row w-full">
+            {activitySelect == "APROBAR" && <Approve user={props.valueFile} />}
+            {/* {activitySelect == "RECHAZAR" && (</>) } */}
+            {/* {activitySelect == "DEVOLVER" && (</>) } */}
+            {activitySelect == "PENDIENTE/TEMPORAL" && (
+              <PendingTemporaryState
+                user={props.valueFile}
+                // closeModal={props}
+              />
+            )}
+            {/* <section className="flex flex-row w-full">
               <article className="md:w-1/2">
                 <InputSelectRedirectTo
                   type={"number"}
-                  title="Dirigido "
+                  title="Dirigido"
                   placeholder="Para"
                   required
                   value={redirectTo}
@@ -297,7 +300,7 @@ export default function ModalInfoFile(props: any) {
             <h4>Aprobar "putfile idfiles_states + 1 iduser"</h4>
             <h4>Rechazar "estado rechazado"</h4>
             <h4>Devolver "enviar cualquier auditor o gerente"</h4>
-            <h4>Pendiente "estado pendiente"</h4>
+            <h4>Pendiente "estado pendiente"</h4> */}
           </div>
         </Box>
       </Modal>

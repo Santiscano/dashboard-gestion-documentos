@@ -1,21 +1,28 @@
-import { Button, SelectChangeEvent } from "@mui/material";
-import { useContext, useState } from "react";
-import InputsSelectCenterCost from "../InputsSelectCenterCost";
-import InputSelectState from "../../../../components/common/InputSelectState";
-import { optionsCostCenter } from "../../../../components/tools/OptionsValuesSelects";
+import { Button } from "@mui/material";
+import { useState } from "react";
 import { get } from "../../../../components/tools/SesionSettings";
 import { editFile } from "../../../../services/Files.routes";
-import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
+import InputsSelectCenterCost from "../InputsSelectCenterCost";
 
-function PendingTemporaryState(user: any) {
+function Approve(user: any) {
   const [state, setState] = useState<any>();
+  const [area, setArea] = useState<any>();
+  const [subArea, setSubArea] = useState<any>();
+  const [centerCost, setCenterCost] = useState("");
   const [comments, setComments] = useState("");
-  const { handleOpenModalAuth } = useContext(GeneralValuesContext);
 
   const handleState = (e: any) => setState(e.target.value);
-
+  const handleArea = (e: any) => {
+    setArea(e.target.value);
+    setSubArea("");
+    setCenterCost("");
+  };
+  const handleSubArea = (e: any) => {
+    setSubArea(e.target.value);
+    setCenterCost("");
+  };
+  const handleCenter = (e: any) => setCenterCost(e.target.value);
   const handleComments = (e: any) => setComments(e.target.value);
-  console.log("user: ", user.user);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -26,7 +33,9 @@ function PendingTemporaryState(user: any) {
       state,
       user.user.files_type,
       user.user.files_registered,
-      user.user.files_cost_center,
+      user.user.files_cost_center == null
+        ? centerCost
+        : user.user.files_cost_center,
       user.user.files_code_accounting,
       user.user.files_code_treasury,
       user.user.files_price,
@@ -34,29 +43,21 @@ function PendingTemporaryState(user: any) {
       user.user.files_account_type_number,
       comments
     );
-    console.log(response);
-    if (response?.status == 200) {
-      setState("");
-      setComments("");
-      handleOpenModalAuth();
-    }
   };
 
   return (
     <section className="flex flex-wrap w-full items-center justify-between ">
       <form className="w-full my-0" onSubmit={handleSubmit}>
-        <div className="flex mt-4 w-full">
-          <article className="w-1/2">
-            <InputSelectState
-              title="Cambiar estado"
-              placeholder="seleccione el estado"
-              value={state}
-              onChange={handleState}
-              required
-              itemDefault="Selecciona un estado"
-            />
-          </article>
-        </div>
+        {user.user.files_cost_center == null && (
+          <InputsSelectCenterCost
+            valueArea={area}
+            onChangeArea={handleArea}
+            valueSubArea={subArea}
+            onChangeSubArea={handleSubArea}
+            valueCostCenter={centerCost}
+            onChangeCostCenter={handleCenter}
+          />
+        )}
         <div className="flex mt-4 w-full">
           <textarea
             name="Comentario"
@@ -84,4 +85,4 @@ function PendingTemporaryState(user: any) {
   );
 }
 
-export default PendingTemporaryState;
+export default Approve;
