@@ -92,28 +92,28 @@ export const editFile = async (
       tracking_observation,
       get("idusers")
     );
-    const response = await axios.put(
-      Routes.api.files.editFile,
-      {
-        idfiles,
-        idproviders,
-        idusers,
-        idfiles_states,
-        files_type,
-        files_registered,
-        files_cost_center,
-        files_code_accounting,
-        files_code_treasury,
-        files_price,
-        files_account_type,
-        files_account_type_number,
-        tracking_observation,
-        userSession: get("idusers"),
-      },
-      getHeader()
-    );
-    console.log("res putfile", response);
-    return response;
+    // const response = await axios.put(
+    //   Routes.api.files.editFile,
+    //   {
+    //     idfiles,
+    //     idproviders,
+    //     idusers,
+    //     idfiles_states,
+    //     files_type,
+    //     files_registered,
+    //     files_cost_center,
+    //     files_code_accounting,
+    //     files_code_treasury,
+    //     files_price,
+    //     files_account_type,
+    //     files_account_type_number,
+    //     tracking_observation,
+    //     userSession: get("idusers"),
+    //   },
+    //   getHeader()
+    // );
+    // console.log("res putfile", response);
+    // return response;
   } catch (error) {
     console.log("error: ", error);
   }

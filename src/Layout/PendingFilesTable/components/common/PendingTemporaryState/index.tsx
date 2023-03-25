@@ -1,11 +1,11 @@
 import { Button, SelectChangeEvent } from "@mui/material";
 import { useContext, useState } from "react";
 import InputsSelectCenterCost from "../InputsSelectCenterCost";
-import InputSelectState from "../../../../components/common/InputSelectState";
-import { optionsCostCenter } from "../../../../components/tools/OptionsValuesSelects";
-import { get } from "../../../../components/tools/SesionSettings";
-import { editFile } from "../../../../services/Files.routes";
-import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
+import InputSelectState from "../../../../../components/common/InputSelectState";
+import { optionsCostCenter } from "../../../../../components/tools/OptionsValuesSelects";
+import { get } from "../../../../../components/tools/SesionSettings";
+import { editFile } from "../../../../../services/Files.routes";
+import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
 
 function PendingTemporaryState(user: any) {
   const [state, setState] = useState<any>();

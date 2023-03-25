@@ -8,7 +8,7 @@ import {
   getArea,
   getCostSubAreaById,
   getCostCenterById,
-} from "../../../../services/CenterCost.routes";
+} from "../../../../../services/CenterCost.routes";
 
 const Selecting = styled(FormControl)({
   "& .MuiOutlinedInput-root": {

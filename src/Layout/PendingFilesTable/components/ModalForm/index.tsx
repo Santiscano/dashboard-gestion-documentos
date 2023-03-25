@@ -15,11 +15,14 @@ import { getUsers } from "../../../../services/Users.routes";
 import { roles } from "../../../../components/tools/SesionSettings";
 import { get } from "../../../../components/tools/SesionSettings";
 import { editFile } from "../../../../services/Files.routes";
-import PendingTemporaryState from "../PendingTemporaryState";
+import PendingTemporaryState from "../common/PendingTemporaryState";
 import InputSelect from "../../../../components/common/InputSelect";
-import { optionsActivity } from "../../../../components/tools/OptionsValuesSelects";
-import Approve from "./../Approve/index";
+// import { optionsActivity } from "../../../../components/tools/OptionsValuesSelects";
+import Approve from "../Approve/index";
 import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
+import InputSelectStateFile from "../common/InputSelectStateFile";
+import { getStatesFiles } from "../../../../services/StateFiles.routes";
+import { useApprove } from "../../Hooks/useApprove";
 
 const style = {
   position: "absolute" as "absolute",
@@ -38,16 +41,10 @@ const style = {
 const listRoutesPDF = ["ruta1", "ruta2", "ruta3"];
 
 export default function ModalInfoFile(props: any) {
-  console.log("props completas: ", props);
+  // console.log("props completas: ", props);
   // ------------------------------VARIABLES------------------------------//
   const { openModalAuth, handleOpenModalAuth } =
     useContext(GeneralValuesContext);
-  const [comments, setComments] = useState("");
-  const [openPDF, setOpenPdf] = useState(false);
-  const [redirectTo, setRedirectTo] = useState<number>();
-  const [allUsers, setAllUsers] = useState([""]); // recibi todos los usuarios de DB
-  const [optionsRedirectTo, setOptionsRedirectTo] = useState([""]); // filtro allUsers con opciones redirectTo
-  const [activitySelect, setActivitySelect] = useState(""); //valor opcion seleccionada de actividad a realizar
 
   const {
     users_name,
@@ -70,38 +67,15 @@ export default function ModalInfoFile(props: any) {
     idfiles_states,
   } = props.valueFile;
 
-  // -----------------------METHODS INPUTS--------------------------------//
-  const handlePDF = () => {
-    setOpenPdf(!openPDF);
-  };
-  const handleComments = (e: any) => setComments(e.target.value);
-  const handleRedirectTo = (e: SelectChangeEvent) =>
-    setRedirectTo(Number(e.target.value));
-  const handleActivitySelect = (e: SelectChangeEvent) =>
-    setActivitySelect(e.target.value);
+  const {
+    activitySelect,
+    handleActivitySelect,
+    optionsActivity,
+    redirectTo,
+    handleRedirectTo,
+    optionsRedirectTo,
+  } = useApprove();
 
-  const handleGetUsers = async () => {
-    // users
-    const getAllUsers = await getUsers();
-    setAllUsers(getAllUsers);
-
-    // options redirectTo Administration
-    const filterAuditors = getAllUsers?.filter(
-      (user: { idroles: number; idusers: number }) =>
-        (user.idroles == roles.AuditorGH ||
-          user.idroles == roles.AuditorCRTL ||
-          user.idroles == roles.AuditorRG ||
-          user.idroles == roles.Gerencia ||
-          user.idroles == roles.Contaduria ||
-          user.idroles == roles.Tesoreria) &&
-        user.idusers !== Number(get("idusers"))
-    );
-    setOptionsRedirectTo(filterAuditors);
-  };
-
-  useEffect(() => {
-    handleGetUsers();
-  }, []);
   return (
     <>
       <Modal
@@ -251,7 +225,7 @@ export default function ModalInfoFile(props: any) {
 
             <section className="flex w-full mt-2">
               <article className="w-1/2">
-                <InputSelect
+                <InputSelectStateFile
                   title="Estado a Generar"
                   placeholder="Seleccione una Actividad"
                   value={activitySelect}
@@ -262,29 +236,37 @@ export default function ModalInfoFile(props: any) {
                   items={optionsActivity}
                 />
               </article>
+              {(activitySelect == 2 || activitySelect == 4) && (
+                <article className="w-1/2">
+                  <InputSelectRedirectTo
+                    title="Asignar A"
+                    placeholder="Quien debe continuar?"
+                    type={"number"}
+                    required
+                    value={redirectTo}
+                    onChange={handleRedirectTo}
+                    itemDefault="selecciona el Auditor"
+                    items={optionsRedirectTo}
+                  />
+                </article>
+              )}
             </section>
-            {activitySelect == "APROBAR" && <Approve user={props.valueFile} />}
+            {activitySelect == 2 && (
+              <Approve
+                user={props.valueFile}
+                newAssigned={redirectTo}
+                idfiles_state={activitySelect}
+              />
+            )}
             {/* {activitySelect == "RECHAZAR" && (</>) } */}
             {/* {activitySelect == "DEVOLVER" && (</>) } */}
-            {activitySelect == "PENDIENTE/TEMPORAL" && (
+            {activitySelect == 5 && (
               <PendingTemporaryState
                 user={props.valueFile}
                 // closeModal={props}
               />
             )}
             {/* <section className="flex flex-row w-full">
-              <article className="md:w-1/2">
-                <InputSelectRedirectTo
-                  type={"number"}
-                  title="Dirigido"
-                  placeholder="Para"
-                  required
-                  value={redirectTo}
-                  onChange={handleRedirectTo}
-                  itemDefault="selecciona el Auditor"
-                  items={optionsRedirectTo}
-                />
-              </article>
               <article className="md:w-1/2">
                 <textarea
                   name="Comentario"

@@ -1,4 +1,4 @@
-import DataTablePending from "../../components/common/DataTablePending";
+import DataTablePending from "./components/common/DataTablePending";
 import { useContext, useEffect, useState } from "react";
 import { showTablePending } from "../../services/showTable.routes";
 import { get } from "../../components/tools/SesionSettings";
@@ -32,9 +32,6 @@ function PendingFilesTable() {
         <div className="layout-left">
           <h3 className="container__createFiling createFiling">
             Pendientes por Autorizar
-          </h3>
-          <h3 className="container__createFiling createFiling">
-            el boton de abrir aun no muestra la info necesaria
           </h3>
           <div className="filing">
             <section className="viewTableEdit">

@@ -2,10 +2,10 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { TouchRippleActions } from "@mui/material/ButtonBase/TouchRipple";
-import ModalInfoFile from "../../../Layout/PendingFilesTable/components/ModalForm";
-import { GeneralValuesContext } from "../../../Context/GeneralValuesContext";
+import ModalInfoFile from "../../ModalForm";
+import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
 
-export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
+export const ButtonOpenModalEdit = (props: GridRenderCellParams<Date>) => {
   const { hasFocus, value } = props;
   const buttonElement = React.useRef<HTMLButtonElement | null>(null);
   const rippleRef = React.useRef<TouchRippleActions | null>(null);

@@ -39,10 +39,10 @@ export const optionCediType = [
   'NACIONAL',
 ];
 export const optionsActivity = [
-  'APROBAR',
-  'RECHAZAR',
-  'DEVOLVER',
-  'PENDIENTE/TEMPORAL',
+  {name:'APROBAR', value:2 },
+  {name:'RECHAZAR', value:3 },
+  {name:'DEVOLVER', value:4 },
+  {name:'PENDIENTE/TEMPORAL', value:5 },
 ];
 export const optionsCostCenter = [
   {name: 'Administracion', value: '01'},

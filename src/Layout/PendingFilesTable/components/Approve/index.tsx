@@ -2,9 +2,10 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import { get } from "../../../../components/tools/SesionSettings";
 import { editFile } from "../../../../services/Files.routes";
-import InputsSelectCenterCost from "../InputsSelectCenterCost";
+import InputsSelectCenterCost from "../common/InputsSelectCenterCost";
 
 function Approve(user: any) {
+  console.log("user: ", user);
   const [state, setState] = useState<any>();
   const [area, setArea] = useState<any>();
   const [subArea, setSubArea] = useState<any>();
@@ -29,12 +30,12 @@ function Approve(user: any) {
     const response = await editFile(
       user.user.idfiles,
       user.user.idproviders,
-      Number(get("idusers")),
-      state,
+      user.newAssigned,
+      user.idfiles_state,
       user.user.files_type,
       user.user.files_registered,
       user.user.files_cost_center == null
-        ? centerCost
+        ? `${area}${subArea}${centerCost}`
         : user.user.files_cost_center,
       user.user.files_code_accounting,
       user.user.files_code_treasury,
