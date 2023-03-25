@@ -57,8 +57,25 @@ export const deleteArea = async () => {
  */
 export const getCostSubArea = async () => {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       Routes.api.centerCost.subArea.getCostSubArea,
+      { api_key: import.meta.env.VITE_API_KEY },
+      getHeader()
+    );
+    console.log("response:", response);
+    return response;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+export const getCostSubAreaById = async (id: any) => {
+  try {
+    const response = await axios.post(
+      Routes.api.centerCost.subArea.getCostSubAreaById,
+      {
+        api_key: import.meta.env.VITE_API_KEY,
+        idcost_center_area: id,
+      },
       getHeader()
     );
     console.log("response:", response);
@@ -96,11 +113,32 @@ export const deleteCostSubArea = async () => {
  */
 export const getCostCenter = async () => {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       Routes.api.centerCost.CenterCost.getCostCenter,
+      // @ts-ignore
+      { api_key: import.meta.env.VITE_API_KEY },
+      // @ts-ignore
       getHeader()
     );
-    console.log("response:", response);
+    console.log("getCostCenter:", response);
+    return response;
+  } catch (error) {
+  } finally {
+  }
+};
+export const getCostCenterById = async (id: any) => {
+  try {
+    const response = await axios.post(
+      Routes.api.centerCost.CenterCost.getCostCenterById,
+      // @ts-ignore
+      {
+        api_key: import.meta.env.VITE_API_KEY,
+        idcost_center_subarea: id,
+      },
+      // @ts-ignore
+      getHeader()
+    );
+    console.log("getCostCenter:", response);
     return response;
   } catch (error) {
   } finally {

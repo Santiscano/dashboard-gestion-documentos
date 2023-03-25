@@ -1,5 +1,5 @@
 import { GridColDef } from '@mui/x-data-grid';
-import { ButtonToggleOpenEdit } from '../components/common/ButtonToggleOpenEdit';
+import { ButtonOpenModalEdit } from '../Layout/PendingFilesTable/components/common/ButtonOpenModalEdit';
 import { formattedAmount } from '../Utilities/formatted.utility';
 
 const columns: GridColDef[] = [
@@ -160,7 +160,7 @@ const columns: GridColDef[] = [
     headerName: 'Acciones',
     width:90,
     filterable: false,
-    renderCell: ButtonToggleOpenEdit,
+    renderCell: ButtonOpenModalEdit,
   }
 ];
 

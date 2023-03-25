@@ -4,7 +4,7 @@ import "./App.css";
 import Auth from "./modules/Auth";
 import Admin from "./modules/Admin";
 // import { NotFound } from './modules/NotFound';
-import Error from "./components/common/error";
+import Error from "./Layout/Error";
 import GenerateFiles from "./Layout/GenerateFiles";
 import AttachFile from "./Layout/AttachFile";
 import Ti from "./Layout/Ti";
@@ -20,7 +20,6 @@ import { Route, Routes } from "react-router-dom";
 import NotAuthentication from "./Middlewares/NotAuthentication";
 import WithAuthentication from "./Middlewares/WithAuthentication";
 import Home from "./Layout/Home/index";
-import Testing from "./modules/Testing";
 import PendingFilesTable from "./Layout/PendingFilesTable/index";
 import AllFilesTable from "./Layout/AllFilesTable";
 import NewEmployee from "./Layout/NewEmployee";
@@ -77,8 +76,6 @@ function App() {
               <Route path="buscar-empleado" element={<SearchEmployee />} />
             </Route>
           </Route>
-
-          <Route path="testing" element={<Testing />} />
 
           <Route
             path="forbidden403"

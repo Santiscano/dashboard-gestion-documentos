@@ -8,7 +8,7 @@ import {
 import pdf from "../../../assets/Requerimientos.pdf";
 import columns from "../../../interfaces/GridColumns";
 import LoadingMUI from "../LoadingMUI";
-import NotFound from "../../../assets/images/file-searching.gif";
+import NotFound from "../../../assets/images/notFile.jpg";
 import { styled } from "@mui/material";
 
 let open: boolean = false;

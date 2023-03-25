@@ -51,11 +51,13 @@ export default {
       },
       subArea: {
         getCostSubArea: `${host}/getCostSubArea`,
+        getCostSubAreaById: `${host}/getCostSubAreaById`,
         createCostSubArea: `${host}/postCostSubArea`,
         deleteCostSubArea: `${host}/deleteCostSubArea`,
       },
       CenterCost: {
         getCostCenter: `${host}/getCostCenter`,
+        getCostCenterById: `${host}/getCostCenterById`,
         createCostCenter: `${host}/postCostCenter`,
         deleteCostCenter: `${host}/deleteCostCenter`,
       },

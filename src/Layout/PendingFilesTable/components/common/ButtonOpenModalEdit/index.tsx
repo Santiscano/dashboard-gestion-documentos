@@ -2,24 +2,20 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { TouchRippleActions } from "@mui/material/ButtonBase/TouchRipple";
-import ModalInfoFile from "../ModalForm";
+import ModalInfoFile from "../../ModalForm";
+import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
 
-export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
+export const ButtonOpenModalEdit = (props: GridRenderCellParams<Date>) => {
   const { hasFocus, value } = props;
   const buttonElement = React.useRef<HTMLButtonElement | null>(null);
   const rippleRef = React.useRef<TouchRippleActions | null>(null);
 
   // useState
-  const [open, setOpen] = React.useState(false);
+  const { openModalAuth, handleOpenModalAuth } =
+    React.useContext(GeneralValuesContext);
   // ----------------------------------------
   // Methods
   // ----------------------------------------
-  const handleOpen = () => {
-    console.log(props);
-    setOpen(true);
-    console.log("open: ", open);
-  };
-  const handleClose = () => setOpen(false);
 
   React.useLayoutEffect(() => {
     if (hasFocus) {
@@ -48,14 +44,14 @@ export const ButtonToggleOpenEdit = (props: GridRenderCellParams<Date>) => {
             event.stopPropagation();
           }
         }}
-        onClick={handleOpen}
+        onClick={handleOpenModalAuth}
       >
         Abrir
       </Button>
       <ModalInfoFile
         key={props.row.id}
-        open={open}
-        close={handleClose}
+        open={openModalAuth}
+        close={handleOpenModalAuth}
         valueFile={props.row}
       />
     </>

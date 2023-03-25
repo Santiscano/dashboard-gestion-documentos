@@ -6,15 +6,18 @@ import {
   GridToolbarColumnsButton,
   GridToolbarExport,
 } from "@mui/x-data-grid";
-import pdf from "../../../assets/Requerimientos.pdf";
-import columns from "../../../interfaces/GridColumns";
-import LoadingMUI from "../LoadingMUI";
-import NotFound from "../../../assets/images/file-searching.gif";
-import { ButtonToggleOpenEdit } from "../ButtonToggleOpenEdit";
-import { formattedAmount } from "../../../Utilities/formatted.utility";
+import pdf from "../../../../../assets/Requerimientos.pdf";
+import NotFound from "../../../../../assets/images/notFile.jpg";
+import columns from "../../../../../interfaces/GridColumns";
+import LoadingMUI from "../../../../../components/common/LoadingMUI";
+import { ButtonOpenModalEdit } from "../ButtonOpenModalEdit";
+import { formattedAmount } from "../../../../../Utilities/formatted.utility";
 import { styled } from "@mui/material";
+import { useContext } from "react";
+import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
 
 let open: boolean = false;
+
 const openModalPDF = (params: any) => {
   console.log("open: ", open);
   let parameters = params;
@@ -22,6 +25,7 @@ const openModalPDF = (params: any) => {
   open = true;
   console.log("open: ", open);
 };
+
 const openPdf = () => {
   console.log("funcionando");
   window.open(pdf);
@@ -75,8 +79,10 @@ function getRowId(row: any) {
 }
 
 export default function DataTablePending({ row }: any) {
+  // const { preLoad } = useContext(GeneralValuesContext);
   return (
     <>
+      <LoadingMUI />
       <div className="flex flex-row justify-between">
         <label className="block mb-2 ml-4 text-base font-semibold dark:text-white">
           Todos Los Radicados

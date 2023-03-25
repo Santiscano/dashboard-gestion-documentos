@@ -1,4 +1,4 @@
-import logoEnviexpress from "../../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png";
+import logoEnviexpress from "../../assets/images/LOGOTIPO_ENVIEXPRESS_horizontal_150x50.png";
 import { useNavigate } from "react-router-dom";
 import "./error.css";
 

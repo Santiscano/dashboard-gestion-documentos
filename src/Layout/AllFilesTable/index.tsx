@@ -1,17 +1,16 @@
 import DataTableAllFiles from "../../components/common/DataTableAllFiles";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { showTableAllFiles } from "../../services/showTable.routes";
-import { useContext } from "react";
 import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
 import LoadingMUI from "../../components/common/LoadingMUI";
 
 function AllFilesTable() {
   const [row, setRow] = useState([]);
-  // const { setPreLoad } = useContext(GeneralValuesContext);
+  const { setPreLoad } = useContext(GeneralValuesContext);
 
   const handleGetTableData = async () => {
     try {
-      // setPreLoad(true);
+      setPreLoad(true);
       const table = await showTableAllFiles();
       const rows = await table?.data.dataInfo;
       setRow(rows ? rows : []);
@@ -19,7 +18,7 @@ function AllFilesTable() {
     } catch (error) {
       console.log("error: ", error);
     } finally {
-      // setPreLoad(false);
+      setPreLoad(false);
     }
   };
 
@@ -28,21 +27,24 @@ function AllFilesTable() {
   }, []);
 
   return (
-    <div className="layout">
-      <section className="layout-section">
-        <div className="layout-left">
-          {/* <LoadingMUI/> */}
-          <h3 className="container__createFiling createFiling">
-            Todos los archivos
-          </h3>
-          <div className="filing">
-            <section className="viewTableEdit">
-              <DataTableAllFiles row={row} />
-            </section>
+    <>
+      <LoadingMUI />
+      <div className="layout">
+        <section className="layout-section">
+          <div className="layout-left">
+            {/* <LoadingMUI/> */}
+            <h3 className="container__createFiling createFiling">
+              Todos los archivos
+            </h3>
+            <div className="filing">
+              <section className="viewTableEdit">
+                <DataTableAllFiles row={row} />
+              </section>
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 }
 

@@ -12,9 +12,21 @@ const Selecting = styled(FormControl)({
     },
   },
 });
-export default function InputSelectStateFile(props: any) {
+
+const statesView = [
+  {
+    value: 9,
+    name: "Pendiente",
+  },
+  {
+    value: 10,
+    name: "Temporal",
+  },
+];
+
+export default function index(props: any) {
   return (
-    <div>
+    <>
       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
         {props.title}
       </label>
@@ -39,7 +51,7 @@ export default function InputSelectStateFile(props: any) {
             <em>{props.itemDefault}</em>
           </MenuItem>
 
-          {props.items.map((item: any, index: any) => (
+          {statesView.map((item: any, index: any) => (
             <MenuItem
               key={index}
               value={item.value}
@@ -50,6 +62,6 @@ export default function InputSelectStateFile(props: any) {
           ))}
         </Select>
       </Selecting>
-    </div>
+    </>
   );
 }

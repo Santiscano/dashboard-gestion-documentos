@@ -6,10 +6,23 @@ import "animate.css";
 import {
   capitalizeFirstLatterUppercase,
   formattedAmount,
-} from "../../../Utilities/formatted.utility";
-import { Divider } from "@mui/material";
-import PreviewPDF from "../PreviewPDF";
-import { useState } from "react";
+} from "../../../../Utilities/formatted.utility";
+import { Divider, SelectChangeEvent } from "@mui/material";
+import PreviewPDF from "../../../../components/common/PreviewPDF";
+import { ChangeEventHandler, useContext, useEffect, useState } from "react";
+import InputSelectRedirectTo from "../../../../components/common/InputSelectRedirectTo";
+import { getUsers } from "../../../../services/Users.routes";
+import { roles } from "../../../../components/tools/SesionSettings";
+import { get } from "../../../../components/tools/SesionSettings";
+import { editFile } from "../../../../services/Files.routes";
+import PendingTemporaryState from "../common/PendingTemporaryState";
+import InputSelect from "../../../../components/common/InputSelect";
+// import { optionsActivity } from "../../../../components/tools/OptionsValuesSelects";
+import Approve from "../Approve/index";
+import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
+import InputSelectStateFile from "../common/InputSelectStateFile";
+import { getStatesFiles } from "../../../../services/StateFiles.routes";
+import { useModalForm } from "../../Hooks/useModalForm";
 
 const style = {
   position: "absolute" as "absolute",
@@ -27,18 +40,12 @@ const style = {
 
 const listRoutesPDF = ["ruta1", "ruta2", "ruta3"];
 
-function TitleValues(title: any, value: any) {
-  return (
-    <>
-      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        {title}
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400">{value}</p>
-    </>
-  );
-}
-
 export default function ModalInfoFile(props: any) {
+  console.log("props completas: ", props);
+  // ------------------------------VARIABLES------------------------------//
+  const { openModalAuth, handleOpenModalAuth } =
+    useContext(GeneralValuesContext);
+
   const {
     users_name,
     users_lastname,
@@ -49,6 +56,7 @@ export default function ModalInfoFile(props: any) {
     users_phone,
     users_address,
     users_status,
+    files_cost_center,
     files_registered,
     files_price,
     files_account_type,
@@ -59,17 +67,21 @@ export default function ModalInfoFile(props: any) {
     sedes_name,
     idfiles_states,
   } = props.valueFile;
-  const [openPDF, setOpenPdf] = useState(false);
-  const handlePDF = () => {
-    setOpenPdf(!openPDF);
-  };
-  // console.log("values: ", props.valueFile);
-  // console.log("props modal", props.valueFile);
+
+  const {
+    activitySelect,
+    handleActivitySelect,
+    optionsActivity,
+    redirectTo,
+    handleRedirectTo,
+    optionsRedirectTo,
+  } = useModalForm();
+
   return (
     <>
       <Modal
-        open={props.open}
-        onClose={props.close}
+        open={openModalAuth}
+        onClose={handleOpenModalAuth}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="animate__animated animate__fadeIn"
@@ -77,9 +89,6 @@ export default function ModalInfoFile(props: any) {
         <Box sx={style}>
           <div className="flex justify-between mx-2">
             <h3 className="createFiling mb-2">Autorizar Radicado</h3>
-            {/* <button className="button" onClick={handlePDF}>
-              abrir pdf
-            </button> */}
           </div>
           <Divider />
           <div className="flex flex-col items-center w-auto mt-2">
@@ -202,12 +211,6 @@ export default function ModalInfoFile(props: any) {
                     {` ${capitalizeFirstLatterUppercase("gerencia")}`}
                   </span>
                 </p>
-                {/* <p className="font-bold inline-block">
-                  Nombre Cedi:
-                  <span className="text-slate-600 font-normal">
-                    {` ${capitalizeFirstLatterUppercase(sedes_name)}`}
-                  </span>
-                </p> */}
               </div>
 
               <div className="flex mt-4 w-fu">
@@ -220,7 +223,75 @@ export default function ModalInfoFile(props: any) {
                 ))}
               </div>
             </section>
-            {/* <section className="flex-auto">{openPDF && <PreviewPDF />}</section> */}
+
+            <section className="flex w-full mt-2">
+              <article className="w-1/2">
+                <InputSelectStateFile
+                  title="Estado a Generar"
+                  placeholder="Seleccione una Actividad"
+                  value={activitySelect}
+                  onChange={handleActivitySelect}
+                  required
+                  name="accion"
+                  itemDefault="Que Accion tomaras"
+                  items={optionsActivity}
+                />
+              </article>
+              {/* si es Aprobar mostrara */}
+              {(activitySelect == 3 ||
+                activitySelect == 4 ||
+                activitySelect == 5) && (
+                <article className="w-1/2">
+                  <InputSelectRedirectTo
+                    title="Asignar A"
+                    placeholder="Quien debe continuar?"
+                    type={"number"}
+                    required
+                    value={redirectTo}
+                    onChange={handleRedirectTo}
+                    itemDefault="selecciona el Auditor"
+                    items={optionsRedirectTo}
+                  />
+                </article>
+              )}
+            </section>
+
+            {/* auditor aprueba a gerencia */}
+            {(activitySelect == 3 ||
+              activitySelect == 4 ||
+              activitySelect == 5) && (
+              <Approve
+                user={props.valueFile}
+                newAssigned={redirectTo}
+                idfiles_state={activitySelect}
+              />
+            )}
+
+            {/* {activitySelect == "RECHAZAR" && (</>) } */}
+            {/* {activitySelect == "DEVOLVER" && (</>) } */}
+            {(activitySelect == 9 || activitySelect == 10) && (
+              <PendingTemporaryState
+                user={props.valueFile}
+                // closeModal={props}
+              />
+            )}
+            {/* <section className="flex flex-row w-full">
+              <article className="md:w-1/2">
+                <textarea
+                  name="Comentario"
+                  id="comentary"
+                  placeholder="Es necesario dejar alguna observacion"
+                  className="border-neutral-300 border-2 resize-none w-full my-3 h-24"
+                  required
+                  value={comments}
+                  onChange={handleComments}
+                ></textarea>
+              </article>
+            </section>
+            <h4>Aprobar "putfile idfiles_states + 1 iduser"</h4>
+            <h4>Rechazar "estado rechazado"</h4>
+            <h4>Devolver "enviar cualquier auditor o gerente"</h4>
+            <h4>Pendiente "estado pendiente"</h4> */}
           </div>
         </Box>
       </Modal>

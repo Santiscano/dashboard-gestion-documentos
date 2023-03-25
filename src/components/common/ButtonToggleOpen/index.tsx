@@ -2,7 +2,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { TouchRippleActions } from "@mui/material/ButtonBase/TouchRipple";
-import ModalInfoFile from "../ModalForm";
+import ModalInfoFile from "../../../Layout/PendingFilesTable/components/ModalForm";
 
 export const ButtonToggleOpen = (props: GridRenderCellParams<Date>) => {
   const { hasFocus, value } = props;

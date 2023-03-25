@@ -54,6 +54,7 @@ function AttachFile() {
   const [modalSuccess, setModalSuccess] = useState(false); // status 200 filePath para mostrar hijo modal
 
   const { setPreLoad } = useContext(GeneralValuesContext);
+  const listRoutesPDF = ["ruta1", "ruta2", "ruta3", "ruta4", "ruta5", "ruta6"];
 
   // --------------SETSTATES ---------------//
   const onType = (newValue: any) => {
@@ -412,6 +413,18 @@ function AttachFile() {
                         )}`}
                       </span>
                     </p>
+                  </div>
+                </article>
+                <article className="filing-attachFile">
+                  <h2 className="font-bold text-2xl ml-3">Archivos Cargados</h2>
+                  <div className="flex flex-wrap my-3">
+                    {listRoutesPDF.map((pdf, index) => (
+                      <a key={index} href={pdf} target="_blank">
+                        <button className="button">
+                          abrir archivo {index + 1}
+                        </button>
+                      </a>
+                    ))}
                   </div>
                 </article>
                 <article className="filing-attachFile">
