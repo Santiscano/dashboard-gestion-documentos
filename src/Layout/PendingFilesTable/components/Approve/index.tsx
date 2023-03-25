@@ -3,6 +3,7 @@ import { useState } from "react";
 import { get } from "../../../../components/tools/SesionSettings";
 import { editFile } from "../../../../services/Files.routes";
 import InputsSelectCenterCost from "../common/InputsSelectCenterCost";
+import { useNavigate } from "react-router-dom";
 
 function Approve(user: any) {
   console.log("user: ", user);
@@ -11,6 +12,8 @@ function Approve(user: any) {
   const [subArea, setSubArea] = useState<any>();
   const [centerCost, setCenterCost] = useState("");
   const [comments, setComments] = useState("");
+
+  const navigate = useNavigate();
 
   const handleState = (e: any) => setState(e.target.value);
   const handleArea = (e: any) => {
@@ -44,6 +47,9 @@ function Approve(user: any) {
       user.user.files_account_type_number,
       comments
     );
+    if (response?.status == 200) {
+      navigate("/dashboard/pendientes");
+    }
   };
 
   return (

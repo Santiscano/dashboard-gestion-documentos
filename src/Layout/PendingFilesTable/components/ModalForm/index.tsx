@@ -22,7 +22,7 @@ import Approve from "../Approve/index";
 import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
 import InputSelectStateFile from "../common/InputSelectStateFile";
 import { getStatesFiles } from "../../../../services/StateFiles.routes";
-import { useApprove } from "../../Hooks/useApprove";
+import { useModalForm } from "../../Hooks/useModalForm";
 
 const style = {
   position: "absolute" as "absolute",
@@ -41,7 +41,7 @@ const style = {
 const listRoutesPDF = ["ruta1", "ruta2", "ruta3"];
 
 export default function ModalInfoFile(props: any) {
-  // console.log("props completas: ", props);
+  console.log("props completas: ", props);
   // ------------------------------VARIABLES------------------------------//
   const { openModalAuth, handleOpenModalAuth } =
     useContext(GeneralValuesContext);
@@ -56,6 +56,7 @@ export default function ModalInfoFile(props: any) {
     users_phone,
     users_address,
     users_status,
+    files_cost_center,
     files_registered,
     files_price,
     files_account_type,
@@ -74,7 +75,7 @@ export default function ModalInfoFile(props: any) {
     redirectTo,
     handleRedirectTo,
     optionsRedirectTo,
-  } = useApprove();
+  } = useModalForm();
 
   return (
     <>
@@ -236,7 +237,10 @@ export default function ModalInfoFile(props: any) {
                   items={optionsActivity}
                 />
               </article>
-              {(activitySelect == 2 || activitySelect == 4) && (
+              {/* si es Aprobar mostrara */}
+              {(activitySelect == 3 ||
+                activitySelect == 4 ||
+                activitySelect == 5) && (
                 <article className="w-1/2">
                   <InputSelectRedirectTo
                     title="Asignar A"
@@ -251,16 +255,21 @@ export default function ModalInfoFile(props: any) {
                 </article>
               )}
             </section>
-            {activitySelect == 2 && (
+
+            {/* auditor aprueba a gerencia */}
+            {(activitySelect == 3 ||
+              activitySelect == 4 ||
+              activitySelect == 5) && (
               <Approve
                 user={props.valueFile}
                 newAssigned={redirectTo}
                 idfiles_state={activitySelect}
               />
             )}
+
             {/* {activitySelect == "RECHAZAR" && (</>) } */}
             {/* {activitySelect == "DEVOLVER" && (</>) } */}
-            {activitySelect == 5 && (
+            {(activitySelect == 9 || activitySelect == 10) && (
               <PendingTemporaryState
                 user={props.valueFile}
                 // closeModal={props}
