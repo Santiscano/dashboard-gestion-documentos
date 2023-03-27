@@ -5,8 +5,10 @@ import { TouchRippleActions } from "@mui/material/ButtonBase/TouchRipple";
 import ModalInfoFile from "../../ModalForm";
 import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
 
-export const ButtonOpenModalEdit = (props: GridRenderCellParams<Date>) => {
-  const { hasFocus, value } = props;
+export const ButtonOpenModalEdit = (params: GridRenderCellParams<any>) => {
+  const { hasFocus, value } = params;
+  console.log("value: ", value);
+  console.log("params: ", params);
   const buttonElement = React.useRef<HTMLButtonElement | null>(null);
   const rippleRef = React.useRef<TouchRippleActions | null>(null);
 
@@ -19,6 +21,7 @@ export const ButtonOpenModalEdit = (props: GridRenderCellParams<Date>) => {
 
   React.useLayoutEffect(() => {
     if (hasFocus) {
+      console.log("hasFocus: ", hasFocus);
       const input = buttonElement.current?.querySelector("input");
       input?.focus();
     } else if (rippleRef.current) {
@@ -46,13 +49,13 @@ export const ButtonOpenModalEdit = (props: GridRenderCellParams<Date>) => {
         }}
         onClick={handleOpenModalAuth}
       >
-        Abrir
+        Abrir {params.id}
       </Button>
       <ModalInfoFile
-        key={props.row.id}
+        key={params.row.id}
         open={openModalAuth}
         close={handleOpenModalAuth}
-        valueFile={props.row}
+        valueFile={params.row}
       />
     </>
   );

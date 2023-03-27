@@ -54,8 +54,10 @@ export default function ModalInfoFile(props: any) {
   console.log("props completas: ", props);
   // ------------------------------VARIABLES------------------------------//
   const [listRoutesPDF, setListRoutesPDF] = useState<any>("");
-  const { openModalAuth, handleOpenModalAuth } =
+  const [viewPDF, setViewPDF] = useState(false);
+  const { openModalAuth, handleOpenModalAuth, dataUser, setDataUser } =
     useContext(GeneralValuesContext);
+  console.log("datauser: ", dataUser);
 
   const {
     users_name,
@@ -77,13 +79,15 @@ export default function ModalInfoFile(props: any) {
     sedes_type,
     sedes_name,
     idfiles_states,
-  } = props.valueFile;
+  } = dataUser?.row;
 
   const {
     activitySelect,
+    setActivitySelect,
     handleActivitySelect,
     optionsActivity,
     redirectTo,
+    setRedirectTo,
     handleRedirectTo,
     optionsRedirectTo,
     style,
@@ -91,8 +95,9 @@ export default function ModalInfoFile(props: any) {
 
   const handleListFilesPDF = async () => {
     const getFilesFromSettled = await SearchWithSettled(files_registered);
-    // console.log("getFilesFromSettled: ", getFilesFromSettled?.data.rutas);
+    console.log("getFilesFromSettled: ", getFilesFromSettled);
     setListRoutesPDF(getFilesFromSettled?.data.rutas);
+    getFilesFromSettled?.status == 200 && setViewPDF(true);
     // console.log("listroutesPDF", listRoutesPDF);
   };
 
@@ -236,7 +241,7 @@ export default function ModalInfoFile(props: any) {
                 </p>
               </div>
 
-              {openModalAuth && (
+              {viewPDF && (
                 <div className="flex mt-4 w-fu">
                   {listRoutesPDF.map((pdf: any, index: any) => (
                     <a key={index} href={pdf.files_path} target="_blank">
@@ -293,9 +298,11 @@ export default function ModalInfoFile(props: any) {
               activitySelect == 4 ||
               activitySelect == 5) && (
               <Approve
-                user={props.valueFile}
+                user={dataUser?.row}
                 newAssigned={redirectTo}
                 idfiles_state={activitySelect}
+                setActivitySelect={setActivitySelect}
+                setRedirectTo={setRedirectTo}
               />
             )}
 
@@ -303,7 +310,7 @@ export default function ModalInfoFile(props: any) {
             {/* {activitySelect == "DEVOLVER" && (</>) } */}
             {(activitySelect == 9 || activitySelect == 10) && (
               <PendingTemporaryState
-                user={props.valueFile}
+                user={dataUser?.row}
                 // closeModal={props}
               />
             )}

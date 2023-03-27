@@ -71,6 +71,7 @@ export function CustomNoRowsOverlay() {
 }
 
 function getRowId(row: any) {
+  // console.log("row.idfiles: ", row.idfiles);
   return row.idfiles;
 }
 
@@ -80,14 +81,14 @@ export default function DataTablePending({ row }: any) {
       <LoadingMUI />
       <div className="flex flex-row justify-between">
         <label className="block mb-2 ml-4 text-base font-semibold dark:text-white">
-          Todos Los Radicados
+          Radicados Pendientes por Autorizar
         </label>
       </div>
       <Box sx={{ height: "90%", width: "100%" }}>
         {/* <LoadingMUI/> */}
         <DataGrid
           rows={row}
-          getRowId={getRowId}
+          getRowId={(row) => row.idfiles}
           columns={columns}
           pageSize={7}
           rowsPerPageOptions={[7]}

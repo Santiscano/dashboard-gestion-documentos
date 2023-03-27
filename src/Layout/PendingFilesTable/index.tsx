@@ -11,6 +11,9 @@ function PendingFilesTable() {
           <h3 className="container__createFiling createFiling">
             Pendientes por Autorizar
           </h3>
+          <h3 className="container__createFiling createFiling">
+            Falta refrescar los datos despues de actualizados
+          </h3>
           <div className="filing">
             <section className="viewTableEdit">
               <DataTablePending row={row} />

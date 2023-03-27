@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { get } from "../../../../components/tools/SesionSettings";
 import { editFile } from "../../../../services/Files.routes";
 import InputsSelectCenterCost from "../common/InputsSelectCenterCost";
 import { useNavigate } from "react-router-dom";
+import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
 
 function Approve(user: any) {
   console.log("user: ", user);
@@ -13,7 +14,8 @@ function Approve(user: any) {
   const [centerCost, setCenterCost] = useState("");
   const [comments, setComments] = useState("");
 
-  const navigate = useNavigate();
+  const { setPreLoad, handleOpenModalAuth, handleCloseModalAuth } =
+    useContext(GeneralValuesContext);
 
   const handleState = (e: any) => setState(e.target.value);
   const handleArea = (e: any) => {
@@ -28,27 +30,42 @@ function Approve(user: any) {
   const handleCenter = (e: any) => setCenterCost(e.target.value);
   const handleComments = (e: any) => setComments(e.target.value);
 
+  const handleClear = () => {
+    user.setActivitySelect("");
+    user.setRedirectTo("");
+    setArea("");
+    setComments("");
+    setPreLoad(false);
+    handleOpenModalAuth();
+  };
+
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const response = await editFile(
-      user.user.idfiles,
-      user.user.idproviders,
-      user.newAssigned,
-      user.idfiles_state,
-      user.user.files_type,
-      user.user.files_registered,
-      user.user.files_cost_center == null
-        ? `${area}${subArea}${centerCost}`
-        : user.user.files_cost_center,
-      user.user.files_code_accounting,
-      user.user.files_code_treasury,
-      user.user.files_price,
-      user.user.files_account_type,
-      user.user.files_account_type_number,
-      comments
-    );
-    if (response?.status == 200) {
-      navigate("/dashboard/pendientes");
+    try {
+      setPreLoad(true);
+      e.preventDefault();
+      const response = await editFile(
+        user.user.idfiles,
+        user.user.idproviders,
+        user.newAssigned,
+        user.idfiles_state,
+        user.user.files_type,
+        user.user.files_registered,
+        user.user.files_cost_center == null
+          ? `${area}${subArea}${centerCost}`
+          : user.user.files_cost_center,
+        user.user.files_code_accounting,
+        user.user.files_code_treasury,
+        user.user.files_price,
+        user.user.files_account_type,
+        user.user.files_account_type_number,
+        comments
+      );
+      if (response?.status == 200) {
+        handleClear();
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
     }
   };
 
@@ -84,7 +101,7 @@ function Approve(user: any) {
             color="success"
             sx={{ mx: 2, my: 1 }}
           >
-            Cambiar
+            Aprobar
           </Button>
         </div>
       </form>

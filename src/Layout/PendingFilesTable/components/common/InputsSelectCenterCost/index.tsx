@@ -126,7 +126,7 @@ export default function InputSelect(props: any) {
       </div>
       <div className="inline-block w-1/2">
         <List
-          title="Agregar Centro de Costos - 'necesitamos recibir esto de la API'"
+          title="Agregar Centro de Costos"
           placeholder="Selecciona centro de costos"
           value={props.valueCostCenter}
           onChange={props.onChangeCostCenter}

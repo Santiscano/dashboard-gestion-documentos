@@ -40,13 +40,13 @@ export const useModalForm = () => {
   const handleGetUsers = async () => {
     // users
     const getAllUsers = await getUsers();
-    console.log("getAllUsers: ", getAllUsers);
+    // console.log("getAllUsers: ", getAllUsers);
     setAllUsers(getAllUsers);
 
     // get states files & nextAuditor
     const getAllStates = await getStatesFiles();
     const states = await getAllStates?.data.data;
-    console.log("states: ", states);
+    // console.log("states: ", states);
 
     if (getAllUsers && states) {
       if (Number(get("idroles")) == 3) {
@@ -65,11 +65,7 @@ export const useModalForm = () => {
     }
   };
 
-  const search = () => {};
-
   const isGH = (stateList: any, auditors: any) => {
-    // console.log("stateList: ", stateList);
-    // console.log("auditors: ", auditors);
     const view = stateList.filter(
       (state: { idfiles_states: number }) =>
         state.idfiles_states == 3 ||
@@ -79,14 +75,12 @@ export const useModalForm = () => {
         state.idfiles_states == 10
     );
     setOptionsActivity(view);
-    // console.log("view: ", view);
 
     const nextAuditor = auditors?.filter(
       (user: { idroles: number; idusers: number }) =>
         user.idroles == roles.Gerencia
     );
     setOptionsRedirectTo(nextAuditor);
-    // console.log("nextAuditor: ", nextAuditor);
   };
 
   const isCRTL = (stateList: any, auditors: any) => {
@@ -171,6 +165,12 @@ export const useModalForm = () => {
         state.idfiles_states == 10
     );
     setOptionsActivity(view);
+
+    const nextAuditor = auditors?.filter(
+      (user: { idroles: number; idusers: number }) =>
+        user.idroles == roles.Eliminar
+    );
+    setOptionsRedirectTo(nextAuditor);
   };
 
   useEffect(() => {
@@ -179,9 +179,11 @@ export const useModalForm = () => {
 
   return {
     activitySelect,
+    setActivitySelect,
     handleActivitySelect,
     optionsActivity,
     redirectTo,
+    setRedirectTo,
     handleRedirectTo,
     optionsRedirectTo,
     style,

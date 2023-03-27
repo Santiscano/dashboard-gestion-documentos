@@ -4,7 +4,7 @@ import { getHeader } from "../components/tools/SesionSettings";
 
 export const SearchWithSettled = async (settled: any) => {
   try {
-    console.log("se activo withsettled");
+    // console.log("se activo withsettled");
     const response = await axios.post(
       Routes.api.searchingFile.withSettled,
       {

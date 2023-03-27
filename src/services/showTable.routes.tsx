@@ -14,7 +14,7 @@ export const showTablePending = async () => {
       },
       getHeader()
     );
-    console.log("response showtablePending: ", response);
+    // console.log("response showtablePending: ", response);
     return response;
   } catch (error) {
     console.log("error: ", error);

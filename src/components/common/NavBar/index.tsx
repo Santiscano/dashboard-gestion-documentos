@@ -28,7 +28,12 @@ import userIcon from "../../../assets/icons/avatar.png";
 import "./navbar.css";
 import Avatar from "@mui/material/Avatar";
 import { styled } from "@mui/material/styles";
-import { get, remove, removeAll, viewDisplayRol } from "../../tools/SesionSettings";
+import {
+  get,
+  remove,
+  removeAll,
+  viewDisplayRol,
+} from "../../tools/SesionSettings";
 import { useContext } from "react";
 import { GeneralValuesContext } from "../../../Context/GeneralValuesContext";
 
@@ -42,13 +47,6 @@ export default function MenuAppBar(props: any) {
 
   // menu avatar
   const menuAvatar = [
-    // {
-    //   name: "configurar perfil",
-    //   navigate: "/config",
-    //   handleClick: () => {
-    //     navigate("/config");
-    //   },
-    // },
     {
       name: "Cerrar Sesion",
       navigate: "/login",
@@ -99,6 +97,10 @@ export default function MenuAppBar(props: any) {
   const [isDark, setIsDark] = useState(false);
   const handleMode = () => setIsDark(!isDark);
 
+  const handleLogo = () => {
+    navigate("/dashboard/home");
+  };
+
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -114,8 +116,9 @@ export default function MenuAppBar(props: any) {
         </IconButton>
         <img
           src={logo}
-          className="mx-3"
+          className="mx-3 cursor-pointer"
           style={{ width: "110px", height: "auto" }}
+          onClick={handleLogo}
         />
 
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} />
@@ -176,7 +179,7 @@ export default function MenuAppBar(props: any) {
                 <Typography
                   textAlign="center"
                   onClick={() => {
-                    setting.handleClick()
+                    setting.handleClick();
                   }}
                 >
                   {setting.name}
