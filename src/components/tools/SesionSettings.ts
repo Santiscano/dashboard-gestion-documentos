@@ -128,7 +128,7 @@ export function getHeaderMultipart() {
 // };
 export const validateHasRoleAllowed = (allowedRolesList:any[]):boolean => {
   const idrole = get("idroles");
-  console.log('idrole notPromise: ', idrole);
+  // console.log('idrole notPromise: ', idrole);
   if(!idrole || !allowedRolesList){
     return false;
   } else {

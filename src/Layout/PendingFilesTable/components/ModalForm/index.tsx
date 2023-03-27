@@ -1,50 +1,63 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import "animate.css";
 import {
   capitalizeFirstLatterUppercase,
   formattedAmount,
 } from "../../../../Utilities/formatted.utility";
-import { Divider, SelectChangeEvent } from "@mui/material";
-import PreviewPDF from "../../../../components/common/PreviewPDF";
-import { ChangeEventHandler, useContext, useEffect, useState } from "react";
+import { Divider, Tooltip } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import InputSelectRedirectTo from "../../../../components/common/InputSelectRedirectTo";
-import { getUsers } from "../../../../services/Users.routes";
-import { roles } from "../../../../components/tools/SesionSettings";
-import { get } from "../../../../components/tools/SesionSettings";
-import { editFile } from "../../../../services/Files.routes";
 import PendingTemporaryState from "../common/PendingTemporaryState";
-import InputSelect from "../../../../components/common/InputSelect";
-// import { optionsActivity } from "../../../../components/tools/OptionsValuesSelects";
 import Approve from "../Approve/index";
 import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
 import InputSelectStateFile from "../common/InputSelectStateFile";
-import { getStatesFiles } from "../../../../services/StateFiles.routes";
 import { useModalForm } from "../../Hooks/useModalForm";
+import { SearchWithSettled } from "./../../../../services/SearchFile.routes";
 
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "95vw",
-  height: "80vh",
-  overflow: "scroll",
-  bgcolor: "background.paper",
-  borderRadius: "5px",
-  boxShadow: 24,
-  p: 4,
-};
-
-const listRoutesPDF = ["ruta1", "ruta2", "ruta3"];
+// const listRoutesPDF = [
+//   {
+//     idfiles_path: 4,
+//     idfiles: 183,
+//     files_path:
+//       "https://storage.cloud.google.com/digitalizacion-enviexpress-bucket/radicacion/administrativo/183-MEDELLÍN-2732023T8:55:22AM-1.pdf?authuser=3",
+//     files_path_date: "2023-03-27T13:57:06.000Z",
+//     files_path_observation: "FLUJO 1 GH",
+//   },
+//   {
+//     idfiles_path: 5,
+//     idfiles: 183,
+//     files_path:
+//       "https://storage.cloud.google.com/digitalizacion-enviexpress-bucket/radicacion/administrativo/183-MEDELLÍN-2732023T8:55:22AM-2.pdf?authuser=3",
+//     files_path_date: "2023-03-27T14:34:36.000Z",
+//     files_path_observation: "ARCHIVO 2 ADJUNTADO",
+//   },
+//   {
+//     idfiles_path: 6,
+//     idfiles: 183,
+//     files_path:
+//       "https://storage.cloud.google.com/digitalizacion-enviexpress-bucket/radicacion/administrativo/183-MEDELLÍN-2732023T8:55:22AM-3.pdf?authuser=3",
+//     files_path_date: "2023-03-27T14:35:25.000Z",
+//     files_path_observation: "ARCHIVO 3 ADJUNTADO",
+//   },
+//   {
+//     idfiles_path: 7,
+//     idfiles: 183,
+//     files_path:
+//       "https://storage.cloud.google.com/digitalizacion-enviexpress-bucket/radicacion/administrativo/183-MEDELLÍN-2732023T8:55:22AM-4.pdf?authuser=3",
+//     files_path_date: "2023-03-27T14:35:43.000Z",
+//     files_path_observation: "ARCHIVO 4",
+//   },
+// ];
 
 export default function ModalInfoFile(props: any) {
   console.log("props completas: ", props);
   // ------------------------------VARIABLES------------------------------//
-  const { openModalAuth, handleOpenModalAuth } =
+  const [listRoutesPDF, setListRoutesPDF] = useState<any>("");
+  const [viewPDF, setViewPDF] = useState(false);
+  const { openModalAuth, handleOpenModalAuth, dataUser, setDataUser } =
     useContext(GeneralValuesContext);
+  console.log("datauser: ", dataUser);
 
   const {
     users_name,
@@ -66,16 +79,31 @@ export default function ModalInfoFile(props: any) {
     sedes_type,
     sedes_name,
     idfiles_states,
-  } = props.valueFile;
+  } = dataUser?.row;
 
   const {
     activitySelect,
+    setActivitySelect,
     handleActivitySelect,
     optionsActivity,
     redirectTo,
+    setRedirectTo,
     handleRedirectTo,
     optionsRedirectTo,
+    style,
   } = useModalForm();
+
+  const handleListFilesPDF = async () => {
+    const getFilesFromSettled = await SearchWithSettled(files_registered);
+    console.log("getFilesFromSettled: ", getFilesFromSettled);
+    setListRoutesPDF(getFilesFromSettled?.data.rutas);
+    getFilesFromSettled?.status == 200 && setViewPDF(true);
+    // console.log("listroutesPDF", listRoutesPDF);
+  };
+
+  useEffect(() => {
+    handleListFilesPDF();
+  }, [openModalAuth]);
 
   return (
     <>
@@ -213,29 +241,38 @@ export default function ModalInfoFile(props: any) {
                 </p>
               </div>
 
-              <div className="flex mt-4 w-fu">
-                {listRoutesPDF.map((pdf, index) => (
-                  <a key={index} href={pdf} target="_blank">
-                    <button className="button">
-                      abrir archivo {index + 1}
-                    </button>
-                  </a>
-                ))}
-              </div>
+              {viewPDF && (
+                <div className="flex mt-4 w-fu">
+                  {listRoutesPDF.map((pdf: any, index: any) => (
+                    <a key={index} href={pdf.files_path} target="_blank">
+                      <Tooltip
+                        title={pdf.files_path_observation}
+                        placement="top"
+                      >
+                        <button className="button">
+                          abrir archivo {index + 1}
+                        </button>
+                      </Tooltip>
+                    </a>
+                  ))}
+                </div>
+              )}
             </section>
 
             <section className="flex w-full mt-2">
               <article className="w-1/2">
-                <InputSelectStateFile
-                  title="Estado a Generar"
-                  placeholder="Seleccione una Actividad"
-                  value={activitySelect}
-                  onChange={handleActivitySelect}
-                  required
-                  name="accion"
-                  itemDefault="Que Accion tomaras"
-                  items={optionsActivity}
-                />
+                {optionsActivity && (
+                  <InputSelectStateFile
+                    title="Estado a Generar"
+                    placeholder="Seleccione una Actividad"
+                    value={activitySelect}
+                    onChange={handleActivitySelect}
+                    required
+                    name="accion"
+                    itemDefault="Que Accion tomaras"
+                    items={optionsActivity}
+                  />
+                )}
               </article>
               {/* si es Aprobar mostrara */}
               {(activitySelect == 3 ||
@@ -261,9 +298,11 @@ export default function ModalInfoFile(props: any) {
               activitySelect == 4 ||
               activitySelect == 5) && (
               <Approve
-                user={props.valueFile}
+                user={dataUser?.row}
                 newAssigned={redirectTo}
                 idfiles_state={activitySelect}
+                setActivitySelect={setActivitySelect}
+                setRedirectTo={setRedirectTo}
               />
             )}
 
@@ -271,7 +310,7 @@ export default function ModalInfoFile(props: any) {
             {/* {activitySelect == "DEVOLVER" && (</>) } */}
             {(activitySelect == 9 || activitySelect == 10) && (
               <PendingTemporaryState
-                user={props.valueFile}
+                user={dataUser?.row}
                 // closeModal={props}
               />
             )}

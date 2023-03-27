@@ -10,11 +10,7 @@ import pdf from "../../../../../assets/Requerimientos.pdf";
 import NotFound from "../../../../../assets/images/notFile.jpg";
 import columns from "../../../../../interfaces/GridColumns";
 import LoadingMUI from "../../../../../components/common/LoadingMUI";
-import { ButtonOpenModalEdit } from "../ButtonOpenModalEdit";
-import { formattedAmount } from "../../../../../Utilities/formatted.utility";
 import { styled } from "@mui/material";
-import { useContext } from "react";
-import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
 
 let open: boolean = false;
 
@@ -75,24 +71,24 @@ export function CustomNoRowsOverlay() {
 }
 
 function getRowId(row: any) {
+  // console.log("row.idfiles: ", row.idfiles);
   return row.idfiles;
 }
 
 export default function DataTablePending({ row }: any) {
-  // const { preLoad } = useContext(GeneralValuesContext);
   return (
     <>
       <LoadingMUI />
       <div className="flex flex-row justify-between">
         <label className="block mb-2 ml-4 text-base font-semibold dark:text-white">
-          Todos Los Radicados
+          Radicados Pendientes por Autorizar
         </label>
       </div>
       <Box sx={{ height: "90%", width: "100%" }}>
         {/* <LoadingMUI/> */}
         <DataGrid
           rows={row}
-          getRowId={getRowId}
+          getRowId={(row) => row.idfiles}
           columns={columns}
           pageSize={7}
           rowsPerPageOptions={[7]}

@@ -26,6 +26,9 @@ export const GeneralValuesContext = createContext<GeneralValuesType>({
   openModalAuth: false,
   setOpenModalAuth: () => {},
   handleOpenModalAuth: () => {},
+  handleCloseModalAuth: () => {},
+  dataUser: [],
+  setDataUser: () => {},
 });
 
 const GeneralValuesProvider: FC = ({ children }: any) => {
@@ -34,8 +37,10 @@ const GeneralValuesProvider: FC = ({ children }: any) => {
   const [errorLogin, setErrorLogin] = useState("");
   const [user, setUser] = useState({});
   const [openModalAuth, setOpenModalAuth] = useState(false);
+  const [dataUser, setDataUser] = useState();
 
   const handleOpenModalAuth = () => setOpenModalAuth(!openModalAuth);
+  const handleCloseModalAuth = () => setOpenModalAuth(false);
 
   return (
     <GeneralValuesContext.Provider
@@ -52,6 +57,9 @@ const GeneralValuesProvider: FC = ({ children }: any) => {
         openModalAuth,
         setOpenModalAuth,
         handleOpenModalAuth,
+        handleCloseModalAuth,
+        dataUser,
+        setDataUser,
       }}
     >
       {children}

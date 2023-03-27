@@ -9,4 +9,7 @@ export interface GeneralValuesType extends IsLoadingType {
   openModalAuth: boolean;
   setOpenModalAuth: React.Dispatch<React.SetStateAction<any>>;
   handleOpenModalAuth: any;
+  handleCloseModalAuth: any;
+  dataUser: any;
+  setDataUser: React.Dispatch<React.SetStateAction<any>>;
 }

@@ -43,6 +43,10 @@ export default {
       createFilePath: `${host}/postFilePath`,
       deleteFilePath: `${host}/deleteFilePath`,
     },
+    tracking: {
+      getAllTrackings: `${host}/getTrackings`,
+      getTrackingById: `${host}/getTracking`,
+    },
     centerCost: {
       area: {
         getCostArea: `${host}/getCostArea`,
@@ -62,6 +66,12 @@ export default {
         deleteCostCenter: `${host}/deleteCostCenter`,
       },
     },
+    firebase: {
+      createUser: `${host}/createUser`,
+      login: `${host}/logIn`,
+      validateUser: `${host}/validateUser`,
+      changePassword: `${host}/changePassword`,
+    },
     Pdf: {
       uploadfile: `${host}/uploadFileDocument`,
       getFile: `${host}/pdfFile/:radicado`,
@@ -70,21 +80,17 @@ export default {
     routesApi: {
       getRoutes: `${host}/routerApi`,
     },
-    firebase: {
-      createUser: `${host}/createUser`,
-      login: `${host}/logIn`,
-      validateUser: `${host}/validateUser`,
-      changePassword: `${host}/changePassword`,
-    },
+
     tables: {
-      pending: `${host}/pendingTable`,
       allFiles: `${host}/showTable`,
+      pending: `${host}/pendingTable`,
     },
     searchingFile: {
       withSettled: `${host}/registeredFilter`,
       withDocument: `${host}/accountTypeFilter`,
       getAllSettled: `${host}/getAllRegisteredFile`,
       getDocumentTypes: `${host}/getIdentificationByType`,
+      getTypesIdentification: `${host}/getTypeIdentification`,
     },
     pdfSettledNumber: `${hostPdf}/pdf`,
   },

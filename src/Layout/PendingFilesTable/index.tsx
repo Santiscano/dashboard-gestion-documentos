@@ -1,30 +1,8 @@
 import DataTablePending from "./components/common/DataTablePending";
-import { useContext, useEffect, useState } from "react";
-import { showTablePending } from "../../services/showTable.routes";
-import { get } from "../../components/tools/SesionSettings";
-import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
+import { usePending } from "./Hooks/usePending";
 
 function PendingFilesTable() {
-  const [row, setRow] = useState([]);
-  const { setPreLoad } = useContext(GeneralValuesContext);
-
-  const handleGetTableData = async () => {
-    try {
-      setPreLoad(true);
-      const table = await showTablePending();
-      const rows = await table?.data.dataInfo;
-      setRow(rows ? rows : []);
-      console.log("row table--: ", rows);
-    } catch (error) {
-      console.log("error: ", error);
-    } finally {
-      setPreLoad(false);
-    }
-  };
-
-  useEffect(() => {
-    handleGetTableData();
-  }, []);
+  const { row } = usePending();
 
   return (
     <div className="layout">
@@ -32,6 +10,9 @@ function PendingFilesTable() {
         <div className="layout-left">
           <h3 className="container__createFiling createFiling">
             Pendientes por Autorizar
+          </h3>
+          <h3 className="container__createFiling createFiling">
+            Falta refrescar los datos despues de actualizados
           </h3>
           <div className="filing">
             <section className="viewTableEdit">

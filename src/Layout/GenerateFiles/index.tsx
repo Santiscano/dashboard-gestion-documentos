@@ -39,6 +39,7 @@ import { roles } from "../../components/tools/SesionSettings";
 import { get } from "../../components/tools/SesionSettings";
 import SearchUser from "../../components/common/SearchUser";
 import { AllUsers } from "./../../interfaces/User";
+import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
 
 function GenerateFiles() {
   // ------------------------------VARIABLES------------------------------//
@@ -399,7 +400,7 @@ function GenerateFiles() {
                   />
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
-                      <InputSelect
+                      <InputSelectOnlyValue
                         type={"text"}
                         name="cediType"
                         title="Tipo de Cedi"
@@ -537,7 +538,7 @@ function GenerateFiles() {
 
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
-                      <InputSelect
+                      <InputSelectOnlyValue
                         type={"text"}
                         title="Tipo de cuenta"
                         placeholder="cuenta de"

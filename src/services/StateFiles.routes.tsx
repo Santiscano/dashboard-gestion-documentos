@@ -11,7 +11,7 @@ export const getStatesFiles = async () => {
       },
       getHeader()
     );
-    console.log("response: ", response.data.states);
+    // console.log("response: ", response.data);
     return response;
   } catch (error) {
     console.log("error: ", error);
