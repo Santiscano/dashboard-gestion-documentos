@@ -13,6 +13,19 @@ export const useModalForm = () => {
   const [optionsRedirectTo, setOptionsRedirectTo] = useState([""]); // filtro allUsers con opciones redirectTo
   const [activitySelect, setActivitySelect] = useState<any>(); //valor opcion seleccionada de actividad a realizar
   const [optionsActivity, setOptionsActivity] = useState<any>();
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "95vw",
+    height: "80vh",
+    overflow: "scroll",
+    bgcolor: "background.paper",
+    borderRadius: "5px",
+    boxShadow: 24,
+    p: 4,
+  };
   // -----------------------METHODS INPUTS--------------------------------//
   const handleComments = (e: any) => setComments(e.target.value);
 
@@ -27,27 +40,36 @@ export const useModalForm = () => {
   const handleGetUsers = async () => {
     // users
     const getAllUsers = await getUsers();
+    console.log("getAllUsers: ", getAllUsers);
     setAllUsers(getAllUsers);
 
     // get states files & nextAuditor
     const getAllStates = await getStatesFiles();
-    const states = getAllStates?.data.states;
-    if (Number(get("idroles")) == 3) {
-      return isGH(states, getAllUsers);
-    } else if (Number(get("idroles")) == 4) {
-      return isCRTL(states, getAllUsers);
-    } else if (Number(get("idroles")) == 5) {
-      return isRG(states, getAllUsers);
-    } else if (Number(get("idroles")) == 6) {
-      return isGerencia(states, getAllUsers);
-    } else if (Number(get("idroles")) == 7) {
-      return isContaduria(states, getAllUsers);
-    } else if (Number(get("idroles")) == 8) {
-      return isTesoreria(states, getAllUsers);
+    const states = await getAllStates?.data.data;
+    console.log("states: ", states);
+
+    if (getAllUsers && states) {
+      if (Number(get("idroles")) == 3) {
+        return isGH(states, getAllUsers);
+      } else if (Number(get("idroles")) == 4) {
+        return isCRTL(states, getAllUsers);
+      } else if (Number(get("idroles")) == 5) {
+        return isRG(states, getAllUsers);
+      } else if (Number(get("idroles")) == 6) {
+        return isGerencia(states, getAllUsers);
+      } else if (Number(get("idroles")) == 7) {
+        return isContaduria(states, getAllUsers);
+      } else if (Number(get("idroles")) == 8) {
+        return isTesoreria(states, getAllUsers);
+      }
     }
   };
 
+  const search = () => {};
+
   const isGH = (stateList: any, auditors: any) => {
+    // console.log("stateList: ", stateList);
+    // console.log("auditors: ", auditors);
     const view = stateList.filter(
       (state: { idfiles_states: number }) =>
         state.idfiles_states == 3 ||
@@ -57,13 +79,16 @@ export const useModalForm = () => {
         state.idfiles_states == 10
     );
     setOptionsActivity(view);
+    // console.log("view: ", view);
 
     const nextAuditor = auditors?.filter(
       (user: { idroles: number; idusers: number }) =>
         user.idroles == roles.Gerencia
     );
     setOptionsRedirectTo(nextAuditor);
+    // console.log("nextAuditor: ", nextAuditor);
   };
+
   const isCRTL = (stateList: any, auditors: any) => {
     const view = stateList.filter(
       (state: { idfiles_states: number }) =>
@@ -81,6 +106,7 @@ export const useModalForm = () => {
     );
     setOptionsRedirectTo(nextAuditor);
   };
+
   const isRG = (stateList: any, auditors: any) => {
     const view = stateList.filter(
       (state: { idfiles_states: number }) =>
@@ -98,6 +124,7 @@ export const useModalForm = () => {
     );
     setOptionsRedirectTo(nextAuditor);
   };
+
   const isGerencia = (stateList: any, auditors: any) => {
     const view = stateList.filter(
       (state: { idfiles_states: number }) =>
@@ -115,6 +142,7 @@ export const useModalForm = () => {
     );
     setOptionsRedirectTo(nextAuditor);
   };
+
   const isContaduria = (stateList: any, auditors: any) => {
     const view = stateList.filter(
       (state: { idfiles_states: number }) =>
@@ -132,6 +160,7 @@ export const useModalForm = () => {
     );
     setOptionsRedirectTo(nextAuditor);
   };
+
   const isTesoreria = (stateList: any, auditors: any) => {
     const view = stateList.filter(
       (state: { idfiles_states: number }) =>
@@ -155,5 +184,6 @@ export const useModalForm = () => {
     redirectTo,
     handleRedirectTo,
     optionsRedirectTo,
+    style,
   };
 };
