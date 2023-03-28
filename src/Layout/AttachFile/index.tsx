@@ -23,6 +23,7 @@ import { createFilePath } from "../../services/FilesPath.routes";
 import { get } from "../../components/tools/SesionSettings";
 import ModalSuccess from "../../components/common/ModalSuccess";
 import SearchSettled from "./../../components/common/SearchSettled/index";
+import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
 // const optionAccountType = ["CUENTA COBRO", "FACTURA PROVEEDOR"];
 
 function AttachFile() {
@@ -297,7 +298,7 @@ function AttachFile() {
                     <form onSubmit={handleSubmitDocumentType}>
                       <div className="md:flex md:flex-wrap">
                         <article className="md:w-1/2">
-                          <InputSelect
+                          <InputSelectOnlyValue
                             type={"text"}
                             title="Tipo de cuenta"
                             placeholder="cuenta de"

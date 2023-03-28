@@ -14,41 +14,10 @@ import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
 import InputSelectStateFile from "../common/InputSelectStateFile";
 import { useModalForm } from "../../Hooks/useModalForm";
 import { SearchWithSettled } from "./../../../../services/SearchFile.routes";
-
-// const listRoutesPDF = [
-//   {
-//     idfiles_path: 4,
-//     idfiles: 183,
-//     files_path:
-//       "https://storage.cloud.google.com/digitalizacion-enviexpress-bucket/radicacion/administrativo/183-MEDELLÍN-2732023T8:55:22AM-1.pdf?authuser=3",
-//     files_path_date: "2023-03-27T13:57:06.000Z",
-//     files_path_observation: "FLUJO 1 GH",
-//   },
-//   {
-//     idfiles_path: 5,
-//     idfiles: 183,
-//     files_path:
-//       "https://storage.cloud.google.com/digitalizacion-enviexpress-bucket/radicacion/administrativo/183-MEDELLÍN-2732023T8:55:22AM-2.pdf?authuser=3",
-//     files_path_date: "2023-03-27T14:34:36.000Z",
-//     files_path_observation: "ARCHIVO 2 ADJUNTADO",
-//   },
-//   {
-//     idfiles_path: 6,
-//     idfiles: 183,
-//     files_path:
-//       "https://storage.cloud.google.com/digitalizacion-enviexpress-bucket/radicacion/administrativo/183-MEDELLÍN-2732023T8:55:22AM-3.pdf?authuser=3",
-//     files_path_date: "2023-03-27T14:35:25.000Z",
-//     files_path_observation: "ARCHIVO 3 ADJUNTADO",
-//   },
-//   {
-//     idfiles_path: 7,
-//     idfiles: 183,
-//     files_path:
-//       "https://storage.cloud.google.com/digitalizacion-enviexpress-bucket/radicacion/administrativo/183-MEDELLÍN-2732023T8:55:22AM-4.pdf?authuser=3",
-//     files_path_date: "2023-03-27T14:35:43.000Z",
-//     files_path_observation: "ARCHIVO 4",
-//   },
-// ];
+import { stateFile } from "../../../../components/tools/SesionSettings";
+import { InputSelectReturnTo } from "../common/InputSelectReturnTo";
+import Return from "../Return";
+import Decline from "../Decline";
 
 export default function ModalInfoFile(props: any) {
   console.log("props completas: ", props);
@@ -90,6 +59,7 @@ export default function ModalInfoFile(props: any) {
     setRedirectTo,
     handleRedirectTo,
     optionsRedirectTo,
+    optionsReturnTo,
     style,
   } = useModalForm();
 
@@ -274,10 +244,11 @@ export default function ModalInfoFile(props: any) {
                   />
                 )}
               </article>
+
               {/* si es Aprobar mostrara */}
-              {(activitySelect == 3 ||
-                activitySelect == 4 ||
-                activitySelect == 5) && (
+              {(activitySelect == stateFile.AprobadoAuditor ||
+                activitySelect == stateFile.AprobadoGerente ||
+                activitySelect == stateFile.AprobadoContabilidad) && (
                 <article className="w-1/2">
                   <InputSelectRedirectTo
                     title="Asignar A"
@@ -291,46 +262,66 @@ export default function ModalInfoFile(props: any) {
                   />
                 </article>
               )}
+              {/* si es devuelto mostrara */}
+              {activitySelect == stateFile.Devuelto && (
+                <article className="w-1/2">
+                  <InputSelectReturnTo
+                    title="Devolver A"
+                    placeholder="A Quien se asignara?"
+                    type={"number"}
+                    required
+                    value={redirectTo}
+                    onChange={handleRedirectTo}
+                    itemDefault="selecciona el Auditor o Gerente"
+                    items={optionsReturnTo}
+                  />
+                </article>
+              )}
             </section>
 
-            {/* auditor aprueba a gerencia */}
-            {(activitySelect == 3 ||
-              activitySelect == 4 ||
-              activitySelect == 5) && (
+            {/* si es Aprobar mostrara */}
+            {(activitySelect == stateFile.AprobadoAuditor ||
+              activitySelect == stateFile.AprobadoGerente ||
+              activitySelect == stateFile.AprobadoContabilidad) && (
               <Approve
                 user={dataUser?.row}
                 newAssigned={redirectTo}
-                idfiles_state={activitySelect}
+                activitySelect={activitySelect}
                 setActivitySelect={setActivitySelect}
                 setRedirectTo={setRedirectTo}
               />
             )}
 
-            {/* {activitySelect == "RECHAZAR" && (</>) } */}
-            {/* {activitySelect == "DEVOLVER" && (</>) } */}
-            {(activitySelect == 9 || activitySelect == 10) && (
-              <PendingTemporaryState
+            {/* si es Rezachazo */}
+            {activitySelect == stateFile.Rechazado && (
+              <Decline
                 user={dataUser?.row}
-                // closeModal={props}
+                activitySelect={activitySelect}
+                setActivitySelect={setActivitySelect}
               />
             )}
-            {/* <section className="flex flex-row w-full">
-              <article className="md:w-1/2">
-                <textarea
-                  name="Comentario"
-                  id="comentary"
-                  placeholder="Es necesario dejar alguna observacion"
-                  className="border-neutral-300 border-2 resize-none w-full my-3 h-24"
-                  required
-                  value={comments}
-                  onChange={handleComments}
-                ></textarea>
-              </article>
-            </section>
-            <h4>Aprobar "putfile idfiles_states + 1 iduser"</h4>
+
+            {/* si es devuelto mostrara */}
+            {activitySelect == stateFile.Devuelto && (
+              <Return
+                user={dataUser?.row}
+                redirectTo={redirectTo}
+                activitySelect={activitySelect}
+              />
+            )}
+
+            {/* si es pendiente o Temporal */}
+            {(activitySelect == stateFile.Pendiente ||
+              activitySelect == stateFile.Temporal) && (
+              <PendingTemporaryState
+                user={dataUser?.row}
+                activitySelect={activitySelect}
+                setActivitySelect={setActivitySelect}
+              />
+            )}
+            {/*
             <h4>Rechazar "estado rechazado"</h4>
-            <h4>Devolver "enviar cualquier auditor o gerente"</h4>
-            <h4>Pendiente "estado pendiente"</h4> */}
+            <h4>Devolver "enviar cualquier auditor o gerente"</h4> */}
           </div>
         </Box>
       </Modal>

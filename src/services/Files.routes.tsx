@@ -62,7 +62,7 @@ export const addFile = async (
 export const editFile = async (
   idfiles: number,
   idproviders: number,
-  idusers: number,
+  idusers: number | null,
   idfiles_states: number,
   files_type: string,
   files_registered: string,

@@ -5,6 +5,7 @@ import { editFile } from "../../../../services/Files.routes";
 import InputsSelectCenterCost from "../common/InputsSelectCenterCost";
 import { useNavigate } from "react-router-dom";
 import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
+import { showTablePending } from "./../../../../services/showTable.routes";
 
 function Approve(user: any) {
   console.log("user: ", user);
@@ -14,8 +15,14 @@ function Approve(user: any) {
   const [centerCost, setCenterCost] = useState("");
   const [comments, setComments] = useState("");
 
-  const { setPreLoad, handleOpenModalAuth, handleCloseModalAuth } =
-    useContext(GeneralValuesContext);
+  const {
+    setPreLoad,
+    handleOpenModalAuth,
+    handleCloseModalAuth,
+    rows,
+    setRows,
+    handleUpdateRows,
+  } = useContext(GeneralValuesContext);
 
   const handleState = (e: any) => setState(e.target.value);
   const handleArea = (e: any) => {
@@ -47,7 +54,7 @@ function Approve(user: any) {
         user.user.idfiles,
         user.user.idproviders,
         user.newAssigned,
-        user.idfiles_state,
+        user.activitySelect,
         user.user.files_type,
         user.user.files_registered,
         user.user.files_cost_center == null
@@ -62,6 +69,7 @@ function Approve(user: any) {
       );
       if (response?.status == 200) {
         handleClear();
+        handleUpdateRows();
       }
     } catch (error) {
       console.log("error: ", error);

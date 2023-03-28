@@ -1,5 +1,6 @@
 import { createContext, FC, useContext, useState } from "react";
 import { GeneralValuesType } from "../interfaces/GeneralValues";
+import { showTablePending } from "../services/showTable.routes";
 
 export const GeneralValuesContext = createContext<GeneralValuesType>({
   preLoad: false,
@@ -29,6 +30,9 @@ export const GeneralValuesContext = createContext<GeneralValuesType>({
   handleCloseModalAuth: () => {},
   dataUser: [],
   setDataUser: () => {},
+  rows: [],
+  setRows: () => {},
+  handleUpdateRows: () => {},
 });
 
 const GeneralValuesProvider: FC = ({ children }: any) => {
@@ -38,9 +42,22 @@ const GeneralValuesProvider: FC = ({ children }: any) => {
   const [user, setUser] = useState({});
   const [openModalAuth, setOpenModalAuth] = useState(false);
   const [dataUser, setDataUser] = useState();
+  const [rows, setRows] = useState([]);
 
   const handleOpenModalAuth = () => setOpenModalAuth(!openModalAuth);
   const handleCloseModalAuth = () => setOpenModalAuth(false);
+  const handleUpdateRows = async () => {
+    try {
+      setPreLoad(true);
+      const table = await showTablePending();
+      const rowsData = await table?.data.dataInfo;
+      setRows(rowsData ? rowsData : []);
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
+      setPreLoad(false);
+    }
+  };
 
   return (
     <GeneralValuesContext.Provider
@@ -60,6 +77,9 @@ const GeneralValuesProvider: FC = ({ children }: any) => {
         handleCloseModalAuth,
         dataUser,
         setDataUser,
+        rows,
+        setRows,
+        handleUpdateRows,
       }}
     >
       {children}

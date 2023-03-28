@@ -1,32 +1,26 @@
-import { Button, SelectChangeEvent } from "@mui/material";
+import { Button } from "@mui/material";
 import { useContext, useState } from "react";
-import InputsSelectCenterCost from "../InputsSelectCenterCost";
-import InputSelectState from "../../../../../components/common/InputSelectState";
-import { optionsCostCenter } from "../../../../../components/tools/OptionsValuesSelects";
-import { get } from "../../../../../components/tools/SesionSettings";
-import { editFile } from "../../../../../services/Files.routes";
-import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
+import { get } from "../../../../components/tools/SesionSettings";
+import { editFile } from "../../../../services/Files.routes";
+import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
 
-function PendingTemporaryState(user: any) {
-  console.log("user: ", user);
+function Decline(user: any) {
   const [comments, setComments] = useState("");
   const { handleOpenModalAuth, handleUpdateRows } =
     useContext(GeneralValuesContext);
-
-  const handleComments = (e: any) => setComments(e.target.value);
 
   const handleClear = () => {
     user.setActivitySelect("");
     setComments("");
     handleOpenModalAuth();
   };
-
+  const handleComments = (e: any) => setComments(e.target.value);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const response = await editFile(
       user.user.idfiles,
       user.user.idproviders,
-      Number(get("idusers")),
+      null,
       user.activitySelect,
       user.user.files_type,
       user.user.files_registered,
@@ -67,7 +61,7 @@ function PendingTemporaryState(user: any) {
             color="success"
             sx={{ mx: 2, my: 1 }}
           >
-            Cambiar
+            Rechazar
           </Button>
         </div>
       </form>
@@ -75,4 +69,4 @@ function PendingTemporaryState(user: any) {
   );
 }
 
-export default PendingTemporaryState;
+export default Decline;

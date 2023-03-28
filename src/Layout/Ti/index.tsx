@@ -30,6 +30,7 @@ import LoadingMUI from "../../components/common/LoadingMUI";
 import { createUser } from "../../services/Users.routes";
 import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
 import ModalSuccess from "../../components/common/ModalSuccess";
+import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
 
 function TI() {
   const [showValue, setShowValue] = useState(0);
@@ -370,7 +371,7 @@ function TI() {
                   </div>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
-                      <InputSelect
+                      <InputSelectOnlyValue
                         type={"text"}
                         title="Tipo de Cedi"
                         placeholder="Propio - Nacional"

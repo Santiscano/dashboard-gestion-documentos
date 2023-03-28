@@ -14,6 +14,20 @@ export const roles:Roles = Object.freeze({
   Eliminar    : 10,
 });
 
+export const stateFile = Object.freeze({
+  Asignado : 1,
+  Cargado: 2,
+  AprobadoAuditor: 3,
+  AprobadoGerente: 4,
+  AprobadoContabilidad: 5,
+  Finalizado: 6,
+  Rechazado: 7,
+  Devuelto: 8,
+  Pendiente: 9,
+  Temporal: 10,
+  Anulado: 11,
+});
+
 const roleDisplay:DisplayRoles = {
   1:"Proveedor",
   2:"Radicacion",
@@ -52,28 +66,6 @@ export function viewDisplayRol(role: number): string {
   // @ts-ignore
   return roleDisplay[role] || "role desconocido"
 }
-
-// export function navigationLiks() {
-//   if (!session()) {
-//     return RoutesListNavigation.offline
-//   } else {
-//     const jwt = getJWT();
-
-//     return jwt.data.idroles === 1
-//       ? RoutesListNavigation.online.provider
-//       : jwt.data.idroles === 2
-//       ? RoutesListNavigation.online.settling
-//       : jwt.data.idroles === 3
-//       ? RoutesListNavigation.online.manager
-//       : jwt.data.idroles === 4
-//       ? RoutesListNavigation.online.accounting
-//       : jwt.data.idroles === 5
-//       ? RoutesListNavigation.online.treasury
-//       : jwt.data.idroles === 6
-//       ? RoutesListNavigation.online.ti
-//       : [];
-//   }
-// }
 
 /**
  * headers para objetos

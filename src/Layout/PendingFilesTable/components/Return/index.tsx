@@ -1,32 +1,19 @@
-import { Button, SelectChangeEvent } from "@mui/material";
-import { useContext, useState } from "react";
-import InputsSelectCenterCost from "../InputsSelectCenterCost";
-import InputSelectState from "../../../../../components/common/InputSelectState";
-import { optionsCostCenter } from "../../../../../components/tools/OptionsValuesSelects";
-import { get } from "../../../../../components/tools/SesionSettings";
-import { editFile } from "../../../../../services/Files.routes";
-import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
+import { Button } from "@mui/material";
+import { useState } from "react";
+import { editFile } from "../../../../services/Files.routes";
 
-function PendingTemporaryState(user: any) {
+function Return(user: any) {
   console.log("user: ", user);
   const [comments, setComments] = useState("");
-  const { handleOpenModalAuth, handleUpdateRows } =
-    useContext(GeneralValuesContext);
 
   const handleComments = (e: any) => setComments(e.target.value);
-
-  const handleClear = () => {
-    user.setActivitySelect("");
-    setComments("");
-    handleOpenModalAuth();
-  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const response = await editFile(
       user.user.idfiles,
       user.user.idproviders,
-      Number(get("idusers")),
+      user.redirectTo,
       user.activitySelect,
       user.user.files_type,
       user.user.files_registered,
@@ -38,13 +25,8 @@ function PendingTemporaryState(user: any) {
       user.user.files_account_type_number,
       comments
     );
-    console.log(response);
-    if (response?.status == 200) {
-      handleClear();
-      handleUpdateRows();
-    }
+    console.log("response: ", response);
   };
-
   return (
     <section className="flex flex-wrap w-full items-center justify-between ">
       <form className="w-full my-0" onSubmit={handleSubmit}>
@@ -67,7 +49,7 @@ function PendingTemporaryState(user: any) {
             color="success"
             sx={{ mx: 2, my: 1 }}
           >
-            Cambiar
+            Re-Asignar
           </Button>
         </div>
       </form>
@@ -75,4 +57,4 @@ function PendingTemporaryState(user: any) {
   );
 }
 
-export default PendingTemporaryState;
+export default Return;

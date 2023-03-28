@@ -12,6 +12,7 @@ function ButtonModalEdit(cellValues: any) {
   const handleClick = () => {
     console.log("result en onclick: ", cellValues);
     setDataUser(cellValues);
+
     handleOpenModalAuth();
   };
 

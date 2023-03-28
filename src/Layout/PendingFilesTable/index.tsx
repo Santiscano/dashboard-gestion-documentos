@@ -2,7 +2,7 @@ import DataTablePending from "./components/common/DataTablePending";
 import { usePending } from "./Hooks/usePending";
 
 function PendingFilesTable() {
-  const { row } = usePending();
+  const { rows } = usePending();
 
   return (
     <div className="layout">
@@ -16,7 +16,7 @@ function PendingFilesTable() {
           </h3>
           <div className="filing">
             <section className="viewTableEdit">
-              <DataTablePending row={row} />
+              <DataTablePending row={rows} />
             </section>
           </div>
         </div>
