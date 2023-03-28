@@ -18,6 +18,7 @@ import { stateFile } from "../../../../components/tools/SesionSettings";
 import { InputSelectReturnTo } from "../common/InputSelectReturnTo";
 import Return from "../Return";
 import Decline from "../Decline";
+import Finally from "../Finally";
 
 export default function ModalInfoFile(props: any) {
   console.log("props completas: ", props);
@@ -244,7 +245,6 @@ export default function ModalInfoFile(props: any) {
                   />
                 )}
               </article>
-
               {/* si es Aprobar mostrara */}
               {(activitySelect == stateFile.AprobadoAuditor ||
                 activitySelect == stateFile.AprobadoGerente ||
@@ -286,13 +286,16 @@ export default function ModalInfoFile(props: any) {
               <Approve
                 user={dataUser?.row}
                 newAssigned={redirectTo}
+                setRedirectTo={setRedirectTo}
                 activitySelect={activitySelect}
                 setActivitySelect={setActivitySelect}
-                setRedirectTo={setRedirectTo}
               />
             )}
 
-            {/* si es Rezachazo */}
+            {/* finalizar flujo con tesoreria */}
+            {activitySelect == stateFile.Finalizado && <Finally />}
+
+            {/* si es Rezachazo "falta la logica de los correos"*/}
             {activitySelect == stateFile.Rechazado && (
               <Decline
                 user={dataUser?.row}
@@ -306,7 +309,9 @@ export default function ModalInfoFile(props: any) {
               <Return
                 user={dataUser?.row}
                 redirectTo={redirectTo}
+                setRedirectTo={setRedirectTo}
                 activitySelect={activitySelect}
+                setActivitySelect={setActivitySelect}
               />
             )}
 

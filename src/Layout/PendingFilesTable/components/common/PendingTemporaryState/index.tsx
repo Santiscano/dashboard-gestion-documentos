@@ -64,7 +64,7 @@ function PendingTemporaryState(user: any) {
           <Button
             type="submit"
             variant="contained"
-            color="success"
+            color="warning"
             sx={{ mx: 2, my: 1 }}
           >
             Cambiar

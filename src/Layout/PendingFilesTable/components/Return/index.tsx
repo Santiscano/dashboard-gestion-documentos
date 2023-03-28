@@ -1,31 +1,44 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { editFile } from "../../../../services/Files.routes";
+import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
 
 function Return(user: any) {
-  console.log("user: ", user);
   const [comments, setComments] = useState("");
+  const { handleUpdateRows } = useContext(GeneralValuesContext);
 
   const handleComments = (e: any) => setComments(e.target.value);
-
+  const handleClear = () => {
+    user.setActivitySelect("");
+    user.setRedirectTo("");
+    setComments("");
+  };
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const response = await editFile(
-      user.user.idfiles,
-      user.user.idproviders,
-      user.redirectTo,
-      user.activitySelect,
-      user.user.files_type,
-      user.user.files_registered,
-      user.user.files_cost_center,
-      user.user.files_code_accounting,
-      user.user.files_code_treasury,
-      user.user.files_price,
-      user.user.files_account_type,
-      user.user.files_account_type_number,
-      comments
-    );
-    console.log("response: ", response);
+    try {
+      e.preventDefault();
+      const response = await editFile(
+        user.user.idfiles,
+        user.user.idproviders,
+        user.redirectTo,
+        user.activitySelect,
+        user.user.files_type,
+        user.user.files_registered,
+        user.user.files_cost_center,
+        user.user.files_code_accounting,
+        user.user.files_code_treasury,
+        user.user.files_price,
+        user.user.files_account_type,
+        user.user.files_account_type_number,
+        comments
+      );
+      if (response?.status == 200) {
+        handleClear();
+        handleUpdateRows();
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    } finally {
+    }
   };
   return (
     <section className="flex flex-wrap w-full items-center justify-between ">
@@ -46,7 +59,7 @@ function Return(user: any) {
           <Button
             type="submit"
             variant="contained"
-            color="success"
+            color="secondary"
             sx={{ mx: 2, my: 1 }}
           >
             Re-Asignar

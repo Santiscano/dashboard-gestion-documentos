@@ -65,6 +65,8 @@ export const useModalForm = () => {
         return isContaduria(states, getAllUsers);
       } else if (Number(get("idroles")) == roles.Tesoreria) {
         return isTesoreria(states, getAllUsers);
+      } else if (Number(get("idroles")) == roles.AuditorTI) {
+        return isTecnologia(states, getAllUsers);
       }
     }
   };
@@ -179,6 +181,25 @@ export const useModalForm = () => {
     const nextAuditor = auditors?.filter(
       (user: { idroles: number; idusers: number }) =>
         user.idroles == roles.Eliminar
+    );
+    setOptionsRedirectTo(nextAuditor);
+  };
+
+  const isTecnologia = (stateList: any, auditors: any) => {
+    const view = stateList.filter(
+      (state: { idfiles_states: number }) =>
+        state.idfiles_states == stateFile.AprobadoAuditor ||
+        state.idfiles_states == stateFile.Rechazado ||
+        state.idfiles_states == stateFile.Devuelto ||
+        state.idfiles_states == stateFile.Pendiente ||
+        state.idfiles_states == stateFile.Temporal ||
+        state.idfiles_states == stateFile.Anulado
+    );
+    setOptionsActivity(view);
+
+    const nextAuditor = auditors?.filter(
+      (user: { idroles: number; idusers: number }) =>
+        user.idroles == roles.Gerencia
     );
     setOptionsRedirectTo(nextAuditor);
   };

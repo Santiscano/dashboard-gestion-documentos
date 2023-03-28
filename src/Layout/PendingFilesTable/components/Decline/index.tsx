@@ -58,7 +58,7 @@ function Decline(user: any) {
           <Button
             type="submit"
             variant="contained"
-            color="success"
+            color="error"
             sx={{ mx: 2, my: 1 }}
           >
             Rechazar

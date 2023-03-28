@@ -106,6 +106,7 @@ export default function DataTablePending({ row }: any) {
                 files_code_treasury: false,
                 files_type: false,
                 idfiles: false,
+                idfiles_states: false,
                 idproviders: false,
                 idroles: false,
                 idsedes: false,
