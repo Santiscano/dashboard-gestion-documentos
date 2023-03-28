@@ -27,7 +27,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "files_code_accounting",
-    headerName: "Nombre",
+    headerName: "Codigo Contabilidad",
     width: 70,
   },
   {
@@ -42,7 +42,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "files_code_treasury",
-    headerName: "nombre",
+    headerName: "Codigo Tesoreria",
     width: 70,
   },
   {
@@ -53,17 +53,17 @@ const columns: GridColDef[] = [
   },
   {
     field: "files_type",
-    headerName: "nombre",
-    width: 70,
+    headerName: "Tipo de Radicado",
+    width: 150,
   },
   {
     field: "idfiles",
-    headerName: "nombre",
-    width: 70,
+    headerName: "ID Radicado",
+    width: 100,
   },
   {
     field: "idfiles_states",
-    headerName: "Estado Archivo",
+    headerName: "ID Estado Archivo",
     width: 105,
   },
   {
@@ -73,99 +73,98 @@ const columns: GridColDef[] = [
   },
   {
     field: "idproviders",
-    headerName: "nombre",
+    headerName: "ID Proveedor",
     width: 70,
   },
   {
     field: "idroles",
-    headerName: "nombre",
+    headerName: "ID Role",
     width: 70,
   },
   {
     field: "idsedes",
-    headerName: "nombre",
+    headerName: "ID Cedi",
     width: 70,
   },
   {
     field: "idusers",
-    headerName: "nombre",
+    headerName: "ID Usuario",
     width: 70,
   },
   {
     field: "sedes_address",
-    headerName: "nombre",
+    headerName: "Direccion",
     width: 70,
   },
   {
     field: "sedes_city",
-    headerName: "nombre",
+    headerName: "Ciudad Cedi",
     width: 70,
   },
   {
     field: "sedes_country",
-    headerName: "nombre",
+    headerName: "Pais Cedi",
     width: 70,
   },
   {
     field: "sedes_name",
-    headerName: "nombre",
+    headerName: "Nombre Cedi",
     width: 70,
   },
   {
     field: "sedes_type",
-    headerName: "nombre",
+    headerName: "Tipo de Cedi",
     width: 70,
   },
   {
     field: "users_address",
-    headerName: "nombre",
+    headerName: "Direccion Usuario",
     width: 70,
   },
   {
     field: "users_email",
-    headerName: "nombre",
-    width: 70,
+    headerName: "Email",
+    width: 150,
   },
   {
     field: "users_identification",
-    headerName: "nombre",
+    headerName: "Numero Identificacion",
     width: 70,
   },
   {
     field: "users_identification_digital_check",
-    headerName: "nombre",
+    headerName: "Digital Check",
     width: 70,
   },
   {
     field: "users_identification_type",
-    headerName: "nombre",
+    headerName: "Tipo identificacion",
     width: 70,
   },
   {
     field: "users_lastname",
-    headerName: "nombre",
+    headerName: "Apellido",
     width: 70,
   },
   {
     field: "users_phone",
-    headerName: "nombre",
+    headerName: "Celular",
     width: 70,
   },
   {
     field: "users_providers_expiration_date",
-    headerName: "nombre",
+    headerName: "Expiracion usuario",
     width: 70,
   },
   {
     field: "users_providers_paydays",
-    headerName: "nombre",
+    headerName: "paydays users",
     width: 70,
   },
   {
     field: "users_status",
     headerName: "Estado del Usuario",
     width: 70,
-    filterable: true,
   },
   {
     field: "action",

@@ -1,5 +1,4 @@
-import { Roles, DisplayRoles } from '../../interfaces/Roles';
-import { validateUserFirebase } from './../../services/Firebase.routes';
+import { DisplayRoles, Roles } from '../../interfaces/Roles';
 
 export const roles:Roles = Object.freeze({
   Proveedor   : 1,
@@ -11,7 +10,7 @@ export const roles:Roles = Object.freeze({
   Contaduria  : 7,
   Tesoreria   : 8,
   AuditorTI   : 9,
-  Eliminar    : 10,
+  Administrador: 10,
 });
 
 export const stateFile = Object.freeze({

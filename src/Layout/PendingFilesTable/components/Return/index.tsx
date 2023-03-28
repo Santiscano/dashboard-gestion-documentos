@@ -3,32 +3,38 @@ import { useContext, useState } from "react";
 import { editFile } from "../../../../services/Files.routes";
 import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
 
-function Return(user: any) {
+function Return({
+  user,
+  redirectTo,
+  setRedirectTo,
+  activitySelect,
+  setActivitySelect,
+}: any) {
   const [comments, setComments] = useState("");
   const { handleUpdateRows } = useContext(GeneralValuesContext);
 
   const handleComments = (e: any) => setComments(e.target.value);
   const handleClear = () => {
-    user.setActivitySelect("");
-    user.setRedirectTo("");
+    setActivitySelect("");
+    setRedirectTo("");
     setComments("");
   };
   const handleSubmit = async (e: any) => {
     try {
       e.preventDefault();
       const response = await editFile(
-        user.user.idfiles,
-        user.user.idproviders,
-        user.redirectTo,
-        user.activitySelect,
-        user.user.files_type,
-        user.user.files_registered,
-        user.user.files_cost_center,
-        user.user.files_code_accounting,
-        user.user.files_code_treasury,
-        user.user.files_price,
-        user.user.files_account_type,
-        user.user.files_account_type_number,
+        user.idfiles,
+        user.idproviders,
+        redirectTo,
+        activitySelect,
+        user.files_type,
+        user.files_registered,
+        user.files_cost_center,
+        user.files_code_accounting,
+        user.files_code_treasury,
+        user.files_price,
+        user.files_account_type,
+        user.files_account_type_number,
         comments
       );
       if (response?.status == 200) {

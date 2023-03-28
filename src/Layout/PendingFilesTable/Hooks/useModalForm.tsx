@@ -180,7 +180,7 @@ export const useModalForm = () => {
 
     const nextAuditor = auditors?.filter(
       (user: { idroles: number; idusers: number }) =>
-        user.idroles == roles.Eliminar
+        user.idroles == roles.Administrador
     );
     setOptionsRedirectTo(nextAuditor);
   };

@@ -8,7 +8,7 @@ export interface Roles {
   Contaduria  : number;
   Tesoreria   : number;
   AuditorTI   : number;
-  Eliminar    : number;
+  Administrador: number;
 }
 
 export interface DisplayRoles {

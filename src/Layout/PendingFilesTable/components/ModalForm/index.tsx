@@ -49,6 +49,9 @@ export default function ModalInfoFile(props: any) {
     sedes_type,
     sedes_name,
     idfiles_states,
+    UserAssignedName,
+    UserAssignedLastname,
+    UserAssignedRoles,
   } = dataUser?.row;
 
   const {
@@ -207,7 +210,11 @@ export default function ModalInfoFile(props: any) {
                 <p className="font-bold inline-block mr-4 w-1/2">
                   Asignacion Actual:
                   <span className="text-slate-600 font-normal">
-                    {` ${capitalizeFirstLatterUppercase("gerencia")}`}
+                    {` ${capitalizeFirstLatterUppercase(
+                      UserAssignedName
+                    )} ${capitalizeFirstLatterUppercase(
+                      UserAssignedLastname
+                    )} / ${capitalizeFirstLatterUppercase(UserAssignedRoles)}`}
                   </span>
                 </p>
               </div>
@@ -262,6 +269,10 @@ export default function ModalInfoFile(props: any) {
                   />
                 </article>
               )}
+              {/* si es finalizar */}
+              {activitySelect == stateFile.Finalizado && (
+                <article className="w-1/2"></article>
+              )}
               {/* si es devuelto mostrara */}
               {activitySelect == stateFile.Devuelto && (
                 <article className="w-1/2">
@@ -293,7 +304,13 @@ export default function ModalInfoFile(props: any) {
             )}
 
             {/* finalizar flujo con tesoreria */}
-            {activitySelect == stateFile.Finalizado && <Finally />}
+            {activitySelect == stateFile.Finalizado && (
+              <Finally
+                user={dataUser?.row}
+                endCicle={redirectTo}
+                endActivitySelect={activitySelect}
+              />
+            )}
 
             {/* si es Rezachazo "falta la logica de los correos"*/}
             {activitySelect == stateFile.Rechazado && (

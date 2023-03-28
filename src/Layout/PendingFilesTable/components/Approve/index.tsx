@@ -1,13 +1,16 @@
 import { Button } from "@mui/material";
 import { useContext, useState } from "react";
-import { get } from "../../../../components/tools/SesionSettings";
 import { editFile } from "../../../../services/Files.routes";
 import InputsSelectCenterCost from "../common/InputsSelectCenterCost";
-import { useNavigate } from "react-router-dom";
 import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
-import { showTablePending } from "./../../../../services/showTable.routes";
 
-function Approve(user: any) {
+function Approve({
+  user,
+  newAssigned,
+  setRedirectTo,
+  activitySelect,
+  setActivitySelect,
+}: any) {
   console.log("user: ", user);
   const [state, setState] = useState<any>();
   const [area, setArea] = useState<any>();
@@ -38,8 +41,8 @@ function Approve(user: any) {
   const handleComments = (e: any) => setComments(e.target.value);
 
   const handleClear = () => {
-    user.setActivitySelect("");
-    user.setRedirectTo("");
+    setActivitySelect("");
+    setRedirectTo("");
     setArea("");
     setComments("");
     setPreLoad(false);
@@ -51,20 +54,20 @@ function Approve(user: any) {
       setPreLoad(true);
       e.preventDefault();
       const response = await editFile(
-        user.user.idfiles,
-        user.user.idproviders,
-        user.newAssigned,
-        user.activitySelect,
-        user.user.files_type,
-        user.user.files_registered,
-        user.user.files_cost_center == null
+        user.idfiles,
+        user.idproviders,
+        newAssigned,
+        activitySelect,
+        user.files_type,
+        user.files_registered,
+        user.files_cost_center == null
           ? `${area}${subArea}${centerCost}`
-          : user.user.files_cost_center,
-        user.user.files_code_accounting,
-        user.user.files_code_treasury,
-        user.user.files_price,
-        user.user.files_account_type,
-        user.user.files_account_type_number,
+          : user.files_cost_center,
+        user.files_code_accounting,
+        user.files_code_treasury,
+        user.files_price,
+        user.files_account_type,
+        user.files_account_type_number,
         comments
       );
       if (response?.status == 200) {
@@ -80,7 +83,7 @@ function Approve(user: any) {
   return (
     <section className="flex flex-wrap w-full items-center justify-between ">
       <form className="w-full my-0" onSubmit={handleSubmit}>
-        {user.user.files_cost_center == null && (
+        {user.files_cost_center == null && (
           <InputsSelectCenterCost
             valueArea={area}
             onChangeArea={handleArea}
