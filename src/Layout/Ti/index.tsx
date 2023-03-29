@@ -10,8 +10,8 @@ import {
   handleSubmitCreateRol,
   // handleSubmitCreateCedi,
   // handleSubmitCreateUser,
-  handleSubmitCreateArea,
-  handleSubmitCreateSubArea,
+  // handleSubmitCreateArea,
+  // handleSubmitCreateSubArea,
   handleSubmitCreateCostCenter,
 } from "./Submits";
 import InputSelect from "./../../components/common/InputSelect/index";
@@ -33,227 +33,69 @@ import ModalSuccess from "../../components/common/ModalSuccess";
 import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
 import { get, roles } from "../../components/tools/SesionSettings";
 import { Alert, Snackbar } from "@mui/material";
+import useSubmit from "./Hooks/useSubmit";
+import SelectArea from "./components/common/SelectArea";
 
 function TI() {
-  const [showValue, setShowValue] = useState(0);
-  // create rol
-  const [rolName, setRolName] = useState("");
-  const [rolDescription, setRolDescription] = useState("");
-  // create cedi
-  const [department, setDepartment] = useState("");
-  const [listDepartment, setListDepartment] = useState<string[]>([]);
-  const [city, setCity] = useState("");
-  const [listCitys, setListCitys] = useState<any>("");
-  const [allCitys, setAllCitys] = useState<any>("");
-  const [address, setAddress] = useState("");
-  const [cediName, setCediName] = useState("");
-  const [type, setType] = useState("");
-  // create user
-  const [assignRole, setAssignRole] = useState<any>();
-  const [optionsRol, setOptionsRol] = useState<any>([]);
-  const [cedi, setCedi] = useState<any>();
-  const [optionsCedisIdName, setOptionsCedisIdName] = useState<any>([]);
-  const [identificationType, setIdentificationType] = useState("");
-  const [identificationNumber, setIdentificationNumber] = useState("");
-  const [firstName, setFirstname] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [addressUser, setAddressUser] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // create Area Cost
-  const [areaNumber, setAreaNumber] = useState<number>(NaN);
-  const [areaName, setAreaName] = useState("");
-
-  // create subArea
-  const [idcostCenterArea, setIdcostCenterArea] = useState("");
-  const [costCenterSubarea, setCostCenterSubarea] = useState("");
-  const [costCenterSubareaName, setCostCenterSubareaName] = useState("");
-  // create Center Cost
-  const [idCostCenterSubarea, setIdCostCenterSubarea] = useState("");
-  const [costCenter, setCostCenter] = useState("");
-  const [costCenterName, setCostCenterName] = useState("");
-  // success
-  const [modalSuccess, setModalSuccess] = useState(false); // status 200 filePath para mostrar hijo modal
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [messageSnackbar, setMessageSnackbar] = useState("");
-  const [severitySnackbar, setSeveritySnackbar] = useState("");
-  // --------------------------context-------------------------------//
-
-  const { setPreLoad } = useContext(GeneralValuesContext);
-
-  // --------------------------handles-------------------------------//
-  /**
-   * metodo para pasar entre crear rol, cedi.... etc
-   * @param e
-   * @param newValue
-   */
-  const handleChange = (e: SyntheticEvent, newValue: number) => {
-    setShowValue(newValue);
-  };
-
-  /**
-   * traigo los departamentos, ciudades, cedis,
-   * y almaceno en variables
-   */
-  const handleGetCitys = async () => {
-    const departmentsResponse: any = await getCitys();
-    console.log("departmentsResponse: ", departmentsResponse);
-    setListDepartment(departmentsResponse?.Department);
-
-    setListCitys(departmentsResponse?.DepartamentCity);
-    setAllCitys(departmentsResponse?.DepartamentCity);
-
-    const allCedis: AllCedis[] = await getCedis();
-    console.log("allCedis: ", allCedis);
-    setOptionsCedisIdName(allCedis);
-
-    const allRoles = await getRoles();
-    console.log("allRoles: ", allRoles);
-    setOptionsRol(allRoles);
-  };
-  const handleDepartment = (e: SelectChangeEvent) => {
-    setCity("");
-    setDepartment(e.target.value);
-
-    // @ts-ignore
-    const filterCity = allCitys.filter(
-      (location: any) => location.departamento === e.target.value
-    );
-    // @ts-ignore
-    setListCitys(filterCity);
-  };
-  const handleCity = (e: SelectChangeEvent) => setCity(e.target.value);
-  const handleCediType = (e: SelectChangeEvent) => setType(e.target.value);
-
-  const handleRol = (e: SelectChangeEvent) => {
-    setAssignRole(e.target.value);
-    console.log(e.target.value);
-  };
-  const handleCedi = (e: SelectChangeEvent) => {
-    const cedi = e.target.value;
-    console.log(e.target.value);
-    // @ts-ignore
-    setCedi(cedi.idsedes);
-  };
-  const handleCedity = (e: SelectChangeEvent) => {
-    setIdentificationType(e.target.value);
-  };
-  const handleCloseSnackbar = (
-    event?: SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackbar(false);
-  };
-
-  const handleSubmitCreateUser = async (
-    e: any,
-    idroles: number,
-    setIdroles: any,
-    idsedes: number,
-    setIdsedes: any,
-    identification_type: string,
-    setIdentification_type: any,
-    identification_number: string,
-    setIdentification_number: any,
-    firstname: string,
-    setFirstname: any,
-    lastname: string,
-    setLastname: any,
-    address: string,
-    setAddress: any,
-    phone: string,
-    setPhone: any,
-    email: string,
-    setEmail: any,
-    password: string,
-    setPassword: any
-  ) => {
-    try {
-      setPreLoad(true);
-      e.preventDefault();
-      console.log(
-        idroles,
-        idsedes,
-        identification_type,
-        identification_number,
-        firstname,
-        lastname,
-        address,
-        phone,
-        email,
-        password
-      );
-      const res = await createUser(
-        idroles,
-        idsedes,
-        identification_type,
-        identification_number,
-        firstname,
-        lastname,
-        address,
-        phone,
-        email,
-        password
-      );
-      console.log("res createUser: ", res);
-      if (res?.status == 200 && res.statusText == "OK") {
-        setIdroles("");
-        setIdsedes("");
-        setIdentification_type("");
-        setIdentification_number("");
-        setFirstname("");
-        setLastname("");
-        setAddress("");
-        setPhone("");
-        setEmail("");
-        setPassword("");
-        setModalSuccess(true);
-      }
-    } catch (error) {
-      console.log("error: ", error);
-    } finally {
-      setPreLoad(false);
-    }
-  };
-  const handleSubmitCreateCedi = async (e: any) => {
-    try {
-      setPreLoad(true);
-      e.preventDefault();
-      const res = await createCedi(
-        city,
-        "COLOMBIA",
-        address,
-        cediName,
-        type,
-        department
-      );
-      console.log("res: ", res);
-      setCity("");
-      setAddress("");
-      setCediName("");
-      setType("");
-      if (res?.status == 200) {
-        setMessageSnackbar("Cedi Creada Con Exito");
-        setSeveritySnackbar("success");
-        setPreLoad(false);
-        setOpenSnackbar(true);
-      }
-    } catch (error) {
-      console.log("error: ", error);
-      setMessageSnackbar("Ocurrio Un Error Intenta De Nuevo");
-      setSeveritySnackbar("error");
-    }
-  };
-  const handleCloseModalChild = () => setModalSuccess(false);
-
-  // --------------------------handles-------------------------------//
-  useEffect(() => {
-    handleGetCitys();
-  }, []);
+  const {
+    showValue,
+    handleChange,
+    handleSubmitCreateCedi,
+    listDepartment,
+    department,
+    handleDepartment,
+    city,
+    handleCity,
+    listCitys,
+    address,
+    setAddress,
+    cediName,
+    setCediName,
+    type,
+    handleCediType,
+    openSnackbar,
+    handleCloseSnackbar,
+    TransitionLeft,
+    severitySnackbar,
+    messageSnackbar,
+    handleSubmitCreateUser,
+    assignRole,
+    handleRol,
+    optionsRol,
+    cedi,
+    handleCedi,
+    optionsCedisIdName,
+    identificationType,
+    handleCedity,
+    identificationNumber,
+    setIdentificationNumber,
+    firstName,
+    setFirstname,
+    lastName,
+    setLastName,
+    addressUser,
+    setAddressUser,
+    phone,
+    setPhone,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    handleSubmitCreateArea,
+    areaNumber,
+    setAreaNumber,
+    areaName,
+    setAreaName,
+    handleSubmitCreateSubArea,
+    subAreaNumber,
+    setSubAreaNumber,
+    subAreaName,
+    setSubAreaName,
+    connectionArea,
+    handleConnectionArea,
+    connectionSubArea,
+    handleConnectionSubArea,
+  } = useSubmit();
 
   return (
     <div className="layout">
@@ -346,7 +188,6 @@ function TI() {
                         value={cediName}
                         setValue={setCediName}
                         required
-                        // iconEnd={}
                       />
                     </article>
                   </div>
@@ -368,6 +209,7 @@ function TI() {
                   <Snackbar
                     open={openSnackbar}
                     autoHideDuration={6000}
+                    TransitionComponent={TransitionLeft}
                     onClose={handleCloseSnackbar}
                   >
                     <Alert
@@ -383,33 +225,7 @@ function TI() {
                 </form>
               </TabPanel>
               <TabPanel value={showValue} index={2}>
-                <form
-                  onSubmit={() =>
-                    handleSubmitCreateUser(
-                      event,
-                      assignRole,
-                      setAssignRole,
-                      cedi,
-                      setCedi,
-                      identificationType,
-                      setIdentificationType,
-                      identificationNumber,
-                      setIdentificationNumber,
-                      firstName,
-                      setFirstname,
-                      lastName,
-                      setLastName,
-                      addressUser,
-                      setAddressUser,
-                      phone,
-                      setPhone,
-                      email,
-                      setEmail,
-                      password,
-                      setPassword
-                    )
-                  }
-                >
+                <form onSubmit={(event) => handleSubmitCreateUser(event)}>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <InputSelectRol
@@ -461,7 +277,6 @@ function TI() {
                         value={identificationNumber}
                         setValue={setIdentificationNumber}
                         required
-                        // iconEnd={}
                       />
                     </article>
                   </div>
@@ -476,7 +291,6 @@ function TI() {
                         value={firstName}
                         setValue={setFirstname}
                         required
-                        // iconEnd={}
                       />
                     </article>
                     <article className="md:w-1/2">
@@ -489,7 +303,6 @@ function TI() {
                         value={lastName}
                         setValue={setLastName}
                         required
-                        // iconEnd={}
                       />
                     </article>
                   </div>
@@ -504,7 +317,6 @@ function TI() {
                         value={addressUser}
                         setValue={setAddressUser}
                         required
-                        // iconEnd={}
                       />
                     </article>
                     <article className="md:w-1/2">
@@ -517,7 +329,6 @@ function TI() {
                         value={phone}
                         setValue={setPhone}
                         required
-                        // iconEnd={}
                       />
                     </article>
                   </div>
@@ -532,7 +343,6 @@ function TI() {
                         value={email}
                         setValue={setEmail}
                         required
-                        // iconEnd={}
                       />
                     </article>
                     <article className="md:w-1/2">
@@ -545,32 +355,30 @@ function TI() {
                         value={password}
                         setValue={setPassword}
                         required
-                        // iconEnd={}
                       />
                     </article>
                   </div>
                   <Button name="Crear Usuario" />
+                  <Snackbar
+                    open={openSnackbar}
+                    autoHideDuration={6000}
+                    TransitionComponent={TransitionLeft}
+                    onClose={handleCloseSnackbar}
+                  >
+                    <Alert
+                      // @ts-ignore
+                      onClose={handleCloseSnackbar}
+                      // @ts-ignore
+                      severity={severitySnackbar}
+                      sx={{ width: "100%", fontSize: "18px" }}
+                    >
+                      {messageSnackbar}
+                    </Alert>
+                  </Snackbar>
                 </form>
-                <ModalSuccess
-                  open={modalSuccess}
-                  close={handleCloseModalChild}
-                  setModalSuccess={setModalSuccess}
-                  type={"Usuario"}
-                  identification={firstName}
-                />
               </TabPanel>
               <TabPanel value={showValue} index={3}>
-                <form
-                  onSubmit={(e) =>
-                    handleSubmitCreateArea(
-                      e,
-                      areaNumber,
-                      setAreaNumber,
-                      areaName,
-                      setAreaName
-                    )
-                  }
-                >
+                <form onSubmit={(event) => handleSubmitCreateArea(event)}>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
@@ -578,7 +386,7 @@ function TI() {
                       </label>
                       <TextFieldOutlined
                         type={"number"}
-                        label={"numero"}
+                        label={"Numero"}
                         value={areaNumber}
                         setValue={setAreaNumber}
                         required
@@ -594,14 +402,13 @@ function TI() {
                         value={areaName}
                         setValue={setAreaName}
                         required
-                        // iconEnd={}
                       />
                     </article>
                   </div>
-                  <Button name="Crear Centro De Costos" />
+                  <Button name="Crear Area" />
                 </form>
 
-                <form onSubmit={() => handleSubmitCreateSubArea()}>
+                <form onSubmit={(event) => handleSubmitCreateSubArea(event)}>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
@@ -609,11 +416,10 @@ function TI() {
                       </label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"Area"}
-                        value={idcostCenterArea}
-                        setValue={setIdcostCenterArea}
+                        label={"Numero"}
+                        value={subAreaNumber}
+                        setValue={setSubAreaNumber}
                         required
-                        // iconEnd={}
                       />
                     </article>
                     <article className="md:w-1/2">
@@ -622,32 +428,26 @@ function TI() {
                       </label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"SubArea"}
-                        value={costCenterSubarea}
-                        setValue={setCostCenterSubarea}
+                        label={"Nombre"}
+                        value={subAreaName}
+                        setValue={setSubAreaName}
                         required
                       />
                     </article>
                   </div>
                   <div className="md:flex md:flex-wrap">
-                    <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Relacion Area
-                      </label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"Nombre"}
-                        value={costCenterSubareaName}
-                        setValue={setCostCenterSubareaName}
-                        required
-                        // iconEnd={}
-                      />
-                    </article>
+                    <SelectArea
+                      isArea
+                      valueArea={connectionArea}
+                      onChangeArea={handleConnectionArea}
+                      valueSubArea={connectionSubArea}
+                      onChangeSubArea={handleConnectionSubArea}
+                    />
                   </div>
+                  <Button name="Crear SubArea" />
                 </form>
-                <Button name="Crear SubArea" />
 
-                <form onSubmit={() => handleSubmitCreateCostCenter()}>
+                {/* <form onSubmit={() => handleSubmitCreateCostCenter()}>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
@@ -675,6 +475,11 @@ function TI() {
                     </article>
                   </div>
                   <div className="md:flex md:flex-wrap">
+                    <SelectArea
+                      isSubArea
+                      valueSubArea={connectionSubArea}
+                      onChangeSubArea={handleConnectionSubArea}
+                    />
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
                         Relacion Sub-Area
@@ -689,8 +494,24 @@ function TI() {
                       />
                     </article>
                   </div>
-                </form>
                 <Button name="Crear Usuario" />
+                </form> */}
+                <Snackbar
+                  open={openSnackbar}
+                  autoHideDuration={6000}
+                  TransitionComponent={TransitionLeft}
+                  onClose={handleCloseSnackbar}
+                >
+                  <Alert
+                    // @ts-ignore
+                    onClose={handleCloseSnackbar}
+                    // @ts-ignore
+                    severity={severitySnackbar}
+                    sx={{ width: "100%", fontSize: "18px" }}
+                  >
+                    {messageSnackbar}
+                  </Alert>
+                </Snackbar>
               </TabPanel>
             </Box>
           </article>

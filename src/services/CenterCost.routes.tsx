@@ -55,7 +55,7 @@ export const deleteArea = async () => {
 /**
  * SUBAREA
  */
-export const getCostSubArea = async () => {
+export const getAllSubAreas = async () => {
   try {
     const response = await axios.post(
       Routes.api.centerCost.subArea.getCostSubArea,
@@ -68,7 +68,7 @@ export const getCostSubArea = async () => {
     console.log("error: ", error);
   }
 };
-export const getCostSubAreaById = async (id: any) => {
+export const getSubAreaById = async (id: any) => {
   try {
     const response = await axios.post(
       Routes.api.centerCost.subArea.getCostSubAreaById,
@@ -84,10 +84,19 @@ export const getCostSubAreaById = async (id: any) => {
     console.log("error: ", error);
   }
 };
-export const createCostSubArea = async () => {
+export const createSubArea = async (
+  idcost_center_area: any,
+  cost_center_subarea: any,
+  cost_center_subarea_name: any
+) => {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       Routes.api.centerCost.subArea.createCostSubArea,
+      {
+        idcost_center_area,
+        cost_center_subarea,
+        cost_center_subarea_name,
+      },
       getHeader()
     );
     console.log("response:", response);
@@ -96,9 +105,9 @@ export const createCostSubArea = async () => {
     console.log("error: ", error);
   }
 };
-export const deleteCostSubArea = async () => {
+export const deleteSubArea = async () => {
   try {
-    const response = await axios.get(
+    const response = await axios.delete(
       Routes.api.centerCost.subArea.deleteCostSubArea,
       getHeader()
     );

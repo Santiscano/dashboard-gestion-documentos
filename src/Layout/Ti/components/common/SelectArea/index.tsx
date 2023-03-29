@@ -6,8 +6,7 @@ import Select from "@mui/material/Select";
 import { alpha, styled } from "@mui/material/styles";
 import {
   getArea,
-  getSubAreaById,
-  getCostCenterById,
+  getAllSubAreas,
 } from "../../../../../services/CenterCost.routes";
 
 const Selecting = styled(FormControl)({
@@ -17,27 +16,30 @@ const Selecting = styled(FormControl)({
     },
   },
 });
-export default function InputSelect(props: any) {
+
+function SelectArea({
+  isArea,
+  isSubArea,
+  valueArea,
+  onChangeArea,
+  valueSubArea,
+  onChangeSubArea,
+}: any) {
   const [area, setArea] = useState<any>();
   const [subArea, setSubArea] = useState<any>();
-  const [costCenter, setCostCenter] = useState<any>();
 
-  const handleList = async () => {
+  const handleList = () => {
+    handleArea();
+    handleSubArea();
+  };
+  const handleArea = async () => {
     const area = await getArea();
     setArea(area?.data.data);
   };
-
   const handleSubArea = async () => {
-    const subArea = await getSubAreaById(props.valueArea);
+    const subArea = await getAllSubAreas();
     setSubArea(subArea?.data.data);
   };
-
-  const handleCostCenter = async () => {
-    const centerCost = await getCostCenterById(props.valueSubArea);
-    console.log("centerCost: ", centerCost);
-    setCostCenter(centerCost?.data.data);
-  };
-
   const List = ({
     children,
     title,
@@ -77,7 +79,7 @@ export default function InputSelect(props: any) {
             </MenuItem>
             {Array.isArray(listItems) &&
               listItems.map((item: any, index: any) => (
-                <MenuItem key={index} value={item.number}>
+                <MenuItem key={index} value={item.id}>
                   {item.name} - {item.number}
                 </MenuItem>
               ))}
@@ -88,54 +90,39 @@ export default function InputSelect(props: any) {
   };
 
   useEffect(() => {
-    handleSubArea();
-  }, [props.valueArea]);
-
-  useEffect(() => {
-    handleCostCenter();
-  }, [props.valueSubArea]);
-
-  useEffect(() => {
     handleList();
   }, []);
 
   return (
     <>
-      <div className="inline-block w-1/2">
-        <List
-          title="Agregar Area "
-          placeholder="Selecciona centro de costos"
-          value={props.valueArea}
-          onChange={props.onChangeArea}
-          required
-          itemDefault="Asigna un Centro de Costos"
-          listItems={area}
-        />
-      </div>
-      <div className="inline-block w-1/2">
-        <List
-          title="Agregar SubArea"
-          placeholder="Selecciona centro de costos"
-          value={props.valueSubArea}
-          onChange={props.onChangeSubArea}
-          required
-          disabled={!props.valueArea}
-          itemDefault="Asigna un Centro de Costos"
-          listItems={subArea}
-        />
-      </div>
-      <div className="inline-block w-1/2">
-        <List
-          title="Agregar Centro de Costos"
-          placeholder="Selecciona centro de costos"
-          value={props.valueCostCenter}
-          onChange={props.onChangeCostCenter}
-          required
-          disabled={!props.valueSubArea}
-          itemDefault="Asigna un Centro de Costos"
-          listItems={costCenter}
-        />
-      </div>
+      {isArea && (
+        <div className="inline-block w-1/2">
+          <List
+            title="Conectar Con Area "
+            placeholder="Selecciona Area A Conectar"
+            value={valueArea}
+            onChange={onChangeArea}
+            required
+            itemDefault="Asigna Un Area"
+            listItems={area}
+          />
+        </div>
+      )}
+      {isSubArea && (
+        <div className="inline-block w-1/2">
+          <List
+            title="Conectar Con Sub-Area"
+            placeholder="Selecciona Una Sub-Area A Conectar"
+            value={valueSubArea}
+            onChange={onChangeSubArea}
+            required
+            itemDefault="Asigna Sub-Area"
+            listItems={subArea}
+          />
+        </div>
+      )}
     </>
   );
 }
+
+export default SelectArea;
