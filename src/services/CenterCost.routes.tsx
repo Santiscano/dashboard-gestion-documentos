@@ -153,13 +153,22 @@ export const getCostCenterById = async (id: any) => {
   } finally {
   }
 };
-export const createCostCenter = async () => {
+export const createCostCenter = async (
+  idcost_center_subarea: any,
+  cost_center: any,
+  cost_center_name: any
+) => {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       Routes.api.centerCost.CenterCost.createCostCenter,
+      {
+        idcost_center_subarea,
+        cost_center,
+        cost_center_name,
+      },
       getHeader()
     );
-    console.log("response:", response);
+    // console.log("response:", response);
     return response;
   } catch (error) {
     console.log("error: ", error);

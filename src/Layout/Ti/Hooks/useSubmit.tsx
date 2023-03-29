@@ -7,7 +7,11 @@ import { createUser } from "../../../services/Users.routes";
 import { getCitys } from "../../../services/getCitysColombia";
 import { getRoles } from "../../../services/Roles.routes";
 import { GeneralValuesContext } from "./../../../Context/GeneralValuesContext";
-import { createArea, createSubArea } from "../../../services/CenterCost.routes";
+import {
+  createArea,
+  createCostCenter,
+  createSubArea,
+} from "../../../services/CenterCost.routes";
 import { numberToStringWithTwoDigitNumber as numberToString } from "../../../Utilities/formatted.utility";
 
 function useSubmit() {
@@ -308,11 +312,51 @@ function useSubmit() {
   };
   const handleSubmitCreateCostCenter = async (e: any) => {
     try {
+      console.log(
+        "values: ",
+        connectionSubArea,
+        costCenterNumber,
+        costCenterName
+      );
       setPreLoad(true);
       e.preventDefault();
+      const res = await createCostCenter(
+        connectionSubArea,
+        costCenterNumber,
+        costCenterName
+      );
+      console.log("res: ", res);
+      if (res?.status == 200) {
+        setMessageSnackbar(
+          `Centro De Costos: ${costCenterName} Conectado al SubArea con ID ${connectionSubArea} Exitoso`
+        );
+        setSeveritySnackbar("success");
+        setPreLoad(false);
+        setOpenSnackbar(true);
+        setConnectionSubArea("");
+        setCostCenterNumber("");
+        setCostCenterName("");
+      }
+      if (res?.status !== 200) {
+        setMessageSnackbar(
+          `Centro De Costos ${costCenterName}: ${
+            res?.data.message
+              ? res?.data.message
+              : "No Fue Creado Ocurrio Un Error"
+          }`
+        );
+        setSeveritySnackbar("error");
+        setPreLoad(false);
+        setOpenSnackbar(true);
+      }
     } catch (error) {
       console.log("error: ", error);
+      setMessageSnackbar("Ocurrio Un Error En El Servidor Intenta De Nuevo");
+      setSeveritySnackbar("error");
+      setOpenSnackbar(true);
     } finally {
+      setPreLoad(false);
+      setOpenSnackbar(true);
     }
   };
 
@@ -365,11 +409,13 @@ function useSubmit() {
     setEmail,
     password,
     setPassword,
+    // create Area
     handleSubmitCreateArea,
     areaNumber,
     setAreaNumber,
     areaName,
     setAreaName,
+    // crear sub Area
     handleSubmitCreateSubArea,
     subAreaNumber,
     setSubAreaNumber,
@@ -377,6 +423,12 @@ function useSubmit() {
     setSubAreaName,
     connectionArea,
     handleConnectionArea,
+    //
+    handleSubmitCreateCostCenter,
+    costCenterNumber,
+    setCostCenterNumber,
+    costCenterName,
+    setCostCenterName,
     connectionSubArea,
     handleConnectionSubArea,
   };

@@ -81,11 +81,13 @@ function TI() {
     setEmail,
     password,
     setPassword,
+    // create Area
     handleSubmitCreateArea,
     areaNumber,
     setAreaNumber,
     areaName,
     setAreaName,
+    // crear sub Area
     handleSubmitCreateSubArea,
     subAreaNumber,
     setSubAreaNumber,
@@ -93,6 +95,12 @@ function TI() {
     setSubAreaName,
     connectionArea,
     handleConnectionArea,
+    //
+    handleSubmitCreateCostCenter,
+    costCenterNumber,
+    setCostCenterNumber,
+    costCenterName,
+    setCostCenterName,
     connectionSubArea,
     handleConnectionSubArea,
   } = useSubmit();
@@ -447,7 +455,7 @@ function TI() {
                   <Button name="Crear SubArea" />
                 </form>
 
-                {/* <form onSubmit={() => handleSubmitCreateCostCenter()}>
+                <form onSubmit={(event) => handleSubmitCreateCostCenter(event)}>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
@@ -455,9 +463,9 @@ function TI() {
                       </label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"ID"}
-                        value={idCostCenterSubarea}
-                        setValue={setIdCostCenterSubarea}
+                        label={"Numero"}
+                        value={costCenterNumber}
+                        setValue={setCostCenterNumber}
                         required
                       />
                     </article>
@@ -467,9 +475,9 @@ function TI() {
                       </label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"centro de costos"}
-                        value={costCenter}
-                        setValue={setCostCenter}
+                        label={"Nombre"}
+                        value={costCenterName}
+                        setValue={setCostCenterName}
                         required
                       />
                     </article>
@@ -480,22 +488,9 @@ function TI() {
                       valueSubArea={connectionSubArea}
                       onChangeSubArea={handleConnectionSubArea}
                     />
-                    <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Relacion Sub-Area
-                      </label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"Nombre"}
-                        value={costCenterName}
-                        setValue={setCostCenterName}
-                        required
-                        // iconEnd={}
-                      />
-                    </article>
                   </div>
-                <Button name="Crear Usuario" />
-                </form> */}
+                  <Button name="Crear Centro De Costos" />
+                </form>
                 <Snackbar
                   open={openSnackbar}
                   autoHideDuration={6000}
@@ -507,7 +502,7 @@ function TI() {
                     onClose={handleCloseSnackbar}
                     // @ts-ignore
                     severity={severitySnackbar}
-                    sx={{ width: "100%", fontSize: "18px" }}
+                    sx={{ width: "100%", height: "40px", fontSize: "18px" }}
                   >
                     {messageSnackbar}
                   </Alert>
