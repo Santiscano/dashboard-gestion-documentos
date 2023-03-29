@@ -269,10 +269,6 @@ export default function ModalInfoFile(props: any) {
                   />
                 </article>
               )}
-              {/* si es finalizar */}
-              {activitySelect == stateFile.Finalizado && (
-                <article className="w-1/2"></article>
-              )}
               {/* si es devuelto mostrara */}
               {activitySelect == stateFile.Devuelto && (
                 <article className="w-1/2">

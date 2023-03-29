@@ -31,6 +31,7 @@ import { createUser } from "../../services/Users.routes";
 import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
 import ModalSuccess from "../../components/common/ModalSuccess";
 import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
+import { get, roles } from "../../components/tools/SesionSettings";
 
 function TI() {
   const [showValue, setShowValue] = useState(0);
@@ -94,13 +95,14 @@ function TI() {
    */
   const handleGetCitys = async () => {
     const departmentsResponse: any = await getCitys();
+    console.log("departmentsResponse: ", departmentsResponse);
     setListDepartment(departmentsResponse?.Department);
 
     setListCitys(departmentsResponse?.DepartamentCity);
     setAllCitys(departmentsResponse?.DepartamentCity);
 
     const allCedis: AllCedis[] = await getCedis();
-    // console.log("allCedis: ", allCedis);
+    console.log("allCedis: ", allCedis);
     setOptionsCedisIdName(allCedis);
 
     const allRoles = await getRoles();
@@ -219,7 +221,7 @@ function TI() {
         <div className="layout-left">
           <div className="container__createFiling">
             <h3 className="createFiling">
-              Administracion & Gestion de Plataforma TI
+              Administracion & Gestion de Plataforma Web
             </h3>
             <h3 className="createFiling">
               falta hacer funcional crear centro de costos
@@ -234,54 +236,16 @@ function TI() {
                   aria-label="Area TI"
                   variant="scrollable"
                 >
-                  <Tab label="Crear Rol" {...a11yProps(0)} />
+                  <Tab label="Inicio" {...a11yProps(0)} />
                   <Tab label="Crear Cedi" {...a11yProps(1)} />
                   <Tab label="Crear Usuario" {...a11yProps(2)} />
                   <Tab label="Crear Centro de Costos" {...a11yProps(3)} />
                 </Tabs>
               </Box>
               <TabPanel value={showValue} index={0}>
-                <form
-                  onSubmit={() =>
-                    handleSubmitCreateRol(
-                      event,
-                      rolName,
-                      setRolName,
-                      rolDescription,
-                      setRolDescription
-                    )
-                  }
-                >
-                  <div className="md:flex md:flex-wrap">
-                    <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Nombre del Rol
-                      </label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"Nombre Rol"}
-                        value={rolName}
-                        setValue={setRolName}
-                        required
-                        // iconEnd={}
-                      />
-                    </article>
-                    <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Descripcion del rol
-                      </label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"Descripcion del Rol"}
-                        value={rolDescription}
-                        setValue={setRolDescription}
-                        required
-                        // iconEnd={}
-                      />
-                    </article>
-                  </div>
-                  <Button name="Crear Rol" />
-                </form>
+                <h3 className="font-bold text-2xl">
+                  Panel Administrativo de Creacion
+                </h3>
               </TabPanel>
               <TabPanel value={showValue} index={1}>
                 <form
@@ -302,44 +266,37 @@ function TI() {
                   }
                 >
                   <div className="md:flex md:flex-wrap">
-                    <article className="md:w-1/2">
-                      <InputSelect
-                        type={"text"}
-                        name="departament"
-                        title="Departamento"
-                        placeholder="Seleccione el Departamento"
-                        required
-                        value={department}
-                        onChange={handleDepartment}
-                        itemDefault="Selecciona el Departamento"
-                        items={listDepartment}
-                      />
-                    </article>
-                    <article className="md:w-1/2">
-                      <InputSelectCity
-                        type={"text"}
-                        name="city"
-                        title="Ciudad"
-                        placeholder="Seleccione la Ciudad"
-                        required
-                        disabled={!department}
-                        value={city}
-                        onChange={handleCity}
-                        itemDefault="Selecciona el Departamento"
-                        items={listCitys}
-                      />
-                      {/* <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Ciudad
-                      </label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"Nombre Pais"}
-                        value={city}
-                        setValue={setCity}
-                        required
-                        // iconEnd={}
-                      /> */}
-                    </article>
+                    {listDepartment && (
+                      <article className="md:w-1/2">
+                        <InputSelectOnlyValue
+                          type={"text"}
+                          name="departament"
+                          title="Departamento"
+                          placeholder="Seleccione el Departamento"
+                          required
+                          value={department}
+                          onChange={handleDepartment}
+                          itemDefault="Selecciona el Departamento"
+                          items={listDepartment}
+                        />
+                      </article>
+                    )}
+                    {listDepartment && (
+                      <article className="md:w-1/2">
+                        <InputSelectCity
+                          type={"text"}
+                          name="city"
+                          title="Ciudad"
+                          placeholder="Seleccione la Ciudad"
+                          required
+                          disabled={!department}
+                          value={city}
+                          onChange={handleCity}
+                          itemDefault="Selecciona el Departamento"
+                          items={listCitys}
+                        />
+                      </article>
+                    )}
                   </div>
                   <div className="md:flex md:flex-wrap">
                     <article className="md:w-1/2">
@@ -352,7 +309,6 @@ function TI() {
                         value={address}
                         setValue={setAddress}
                         required
-                        // iconEnd={}
                       />
                     </article>
                     <article className="md:w-1/2">

@@ -18,12 +18,12 @@ const columns: GridColDef[] = [
   {
     field: "files_account_type",
     headerName: "Tipo de Factura",
-    width: 150,
+    width: 130,
   },
   {
     field: "files_account_type_number",
     headerName: "Numero de Factura",
-    width: 130,
+    width: 140,
   },
   {
     field: "files_code_accounting",
@@ -69,7 +69,12 @@ const columns: GridColDef[] = [
   {
     field: "files_states",
     headerName: "Estado Archivo",
-    width: 190,
+    width: 160,
+  },
+  {
+    field: "UserAssignedName",
+    headerName: "Responsable Actual",
+    width: 140,
   },
   {
     field: "idproviders",
