@@ -46,11 +46,6 @@ export default {
     ti: [
       {
         name: "Administracion Web",
-        url: "/dashboard/ti",
-        icon: <LogoDevIcon sx={{ color: "#293184" }} />,
-      },
-      {
-        name: "Administracion Web",
         url: "/dashboard/admin",
         icon: <LogoDevIcon sx={{ color: "#293184" }} />,
       },

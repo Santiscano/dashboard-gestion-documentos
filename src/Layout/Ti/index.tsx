@@ -411,20 +411,6 @@ function TI() {
                         itemDefault="selecciona un tipo"
                       />
                     </article>
-
-                    {/* <article className="md:w-1/2">
-                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Tipo de Documento
-                      </label>
-                      <TextFieldOutlined
-                        type={"text"}
-                        label={"C.C, NIT ..."}
-                        value={identificationType}
-                        setValue={setIdentificationType}
-                        required
-                        // iconEnd={}
-                      />
-                    </article> */}
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
                         Numero de documento

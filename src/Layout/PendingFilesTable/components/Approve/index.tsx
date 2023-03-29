@@ -1,5 +1,7 @@
 import { Button } from "@mui/material";
 import { useContext, useState } from "react";
+import TextFieldOutlined from "../../../../components/common/TextFieldOutline";
+import { get, roles } from "../../../../components/tools/SesionSettings";
 import { editFile } from "../../../../services/Files.routes";
 import InputsSelectCenterCost from "../common/InputsSelectCenterCost";
 import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
@@ -16,6 +18,7 @@ function Approve({
   const [area, setArea] = useState<any>();
   const [subArea, setSubArea] = useState<any>();
   const [centerCost, setCenterCost] = useState("");
+  const [codeAccounting, setCodeAccounting] = useState("");
   const [comments, setComments] = useState("");
 
   const {
@@ -63,7 +66,10 @@ function Approve({
         user.files_cost_center == null
           ? `${area}${subArea}${centerCost}`
           : user.files_cost_center,
-        user.files_code_accounting,
+        user.files_code_accounting == null &&
+          Number(get("idroles")) == roles.Contaduria
+          ? codeAccounting
+          : user.files_code_accounting,
         user.files_code_treasury,
         user.files_price,
         user.files_account_type,
@@ -93,6 +99,21 @@ function Approve({
             onChangeCostCenter={handleCenter}
           />
         )}
+        {user.files_code_accounting == null &&
+          Number(get("idroles")) == roles.Contaduria && (
+            <article className="md:w-1/2">
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                Codigo Contabilidad
+              </label>
+              <TextFieldOutlined
+                type={"text"}
+                label={"Codigo Contabilidad"}
+                value={codeAccounting}
+                setValue={setCodeAccounting}
+                required
+              />
+            </article>
+          )}
         <div className="flex mt-4 w-full">
           <textarea
             name="Comentario"

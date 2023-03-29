@@ -154,7 +154,7 @@ function index(props: any) {
             </ListItem>
           ))}
         </List>
-        <Divider />
+        {/* <Divider /> */}
       </WithRoleAllowedRoutes>
 
       <WithRoleAllowedRoutes allowedRolesList={optionsViewsTI}>

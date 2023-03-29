@@ -90,8 +90,7 @@ function App() {
                   <WithRoleAllowedComponent allowedRolesList={optionsViewsTI} />
                 }
               >
-                <Route path="ti" element={<Ti />} />
-                <Route path="admin" element={<Administracion />} />
+                <Route path="admin" element={<Ti />} />
               </Route>
 
               <Route
