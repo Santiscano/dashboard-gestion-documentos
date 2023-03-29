@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import "./TI.css";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -8,7 +8,7 @@ import TextFieldOutlined from "../../components/common/TextFieldOutline";
 import Button from "../../components/common/Button";
 import {
   handleSubmitCreateRol,
-  handleSubmitCreateCedi,
+  // handleSubmitCreateCedi,
   // handleSubmitCreateUser,
   handleSubmitCreateArea,
   handleSubmitCreateSubArea,
@@ -21,7 +21,7 @@ import InputSelectCity from "../../components/common/InputSelectCity";
 import InputSelectCedi from "../../components/common/InputSelectCedi";
 import InputSelectDocType from "../../components/common/InputSelectDocType";
 import { AllCedis } from "../../interfaces/Cedis";
-import { getCedis } from "../../services/Cedis.routes";
+import { createCedi, getCedis } from "../../services/Cedis.routes";
 import { getRoles } from "../../services/Roles.routes";
 import InputSelectRol from "../../components/common/InputSelectRol";
 import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
@@ -32,6 +32,7 @@ import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
 import ModalSuccess from "../../components/common/ModalSuccess";
 import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
 import { get, roles } from "../../components/tools/SesionSettings";
+import { Alert, Snackbar } from "@mui/material";
 
 function TI() {
   const [showValue, setShowValue] = useState(0);
@@ -74,7 +75,9 @@ function TI() {
   const [costCenterName, setCostCenterName] = useState("");
   // success
   const [modalSuccess, setModalSuccess] = useState(false); // status 200 filePath para mostrar hijo modal
-
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState("");
+  const [severitySnackbar, setSeveritySnackbar] = useState("");
   // --------------------------context-------------------------------//
 
   const { setPreLoad } = useContext(GeneralValuesContext);
@@ -85,7 +88,7 @@ function TI() {
    * @param e
    * @param newValue
    */
-  const handleChange = (e: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (e: SyntheticEvent, newValue: number) => {
     setShowValue(newValue);
   };
 
@@ -135,6 +138,15 @@ function TI() {
   };
   const handleCedity = (e: SelectChangeEvent) => {
     setIdentificationType(e.target.value);
+  };
+  const handleCloseSnackbar = (
+    event?: SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
   };
 
   const handleSubmitCreateUser = async (
@@ -207,6 +219,35 @@ function TI() {
       setPreLoad(false);
     }
   };
+  const handleSubmitCreateCedi = async (e: any) => {
+    try {
+      setPreLoad(true);
+      e.preventDefault();
+      const res = await createCedi(
+        city,
+        "COLOMBIA",
+        address,
+        cediName,
+        type,
+        department
+      );
+      console.log("res: ", res);
+      setCity("");
+      setAddress("");
+      setCediName("");
+      setType("");
+      if (res?.status == 200) {
+        setMessageSnackbar("Cedi Creada Con Exito");
+        setSeveritySnackbar("success");
+        setPreLoad(false);
+        setOpenSnackbar(true);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+      setMessageSnackbar("Ocurrio Un Error Intenta De Nuevo");
+      setSeveritySnackbar("error");
+    }
+  };
   const handleCloseModalChild = () => setModalSuccess(false);
 
   // --------------------------handles-------------------------------//
@@ -248,23 +289,7 @@ function TI() {
                 </h3>
               </TabPanel>
               <TabPanel value={showValue} index={1}>
-                <form
-                  onSubmit={() =>
-                    handleSubmitCreateCedi(
-                      event,
-                      department,
-                      setDepartment,
-                      city,
-                      setCity,
-                      address,
-                      setAddress,
-                      cediName,
-                      setCediName,
-                      type,
-                      setType
-                    )
-                  }
-                >
+                <form onSubmit={() => handleSubmitCreateCedi(event)}>
                   <div className="md:flex md:flex-wrap">
                     {listDepartment && (
                       <article className="md:w-1/2">
@@ -340,6 +365,21 @@ function TI() {
                     </article>
                   </div>
                   <Button name="Crear Cedi" />
+                  <Snackbar
+                    open={openSnackbar}
+                    autoHideDuration={6000}
+                    onClose={handleCloseSnackbar}
+                  >
+                    <Alert
+                      // @ts-ignore
+                      onClose={handleCloseSnackbar}
+                      // @ts-ignore
+                      severity={severitySnackbar}
+                      sx={{ width: "100%" }}
+                    >
+                      {messageSnackbar}
+                    </Alert>
+                  </Snackbar>
                 </form>
               </TabPanel>
               <TabPanel value={showValue} index={2}>
