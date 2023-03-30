@@ -110,10 +110,12 @@ export default function ModalInfoFile(props: any) {
           <div className="flex flex-col items-center w-auto mt-2">
             <section className="flex flex-wrap w-full items-center justify-between ">
               <div className="flex justify-between flex-wrap">
-                <div className="text-2xl font-bold mr-8">
-                  {capitalizeFirstLatterUppercase(users_name)}{" "}
-                  {capitalizeFirstLatterUppercase(users_lastname)}
-                </div>
+                {users_name && (
+                  <div className="text-2xl font-bold mr-8">
+                    {capitalizeFirstLatterUppercase(users_name)}{" "}
+                    {capitalizeFirstLatterUppercase(users_lastname)}
+                  </div>
+                )}
               </div>
 
               <div className="flex mt-4 w-full">

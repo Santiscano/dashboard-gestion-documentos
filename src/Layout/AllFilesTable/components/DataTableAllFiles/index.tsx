@@ -6,10 +6,10 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import NotFound from "../../../assets/images/notFile.jpg";
-import pdf from "../../../assets/Requerimientos.pdf";
-import LoadingMUI from "../../../components/common/LoadingMUI";
-import { columnsAllFiles } from "../../../interfaces/GridColumns";
+import NotFound from "../../../../assets/images/notFile.jpg";
+import pdf from "../../../../assets/Requerimientos.pdf";
+import LoadingMUI from "../../../../components/common/LoadingMUI";
+import { columnsAllFiles } from "../../../../interfaces/GridColumns";
 
 let open: boolean = false;
 const openModalPDF = (params: any) => {

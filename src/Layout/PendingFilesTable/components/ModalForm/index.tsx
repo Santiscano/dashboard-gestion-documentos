@@ -19,6 +19,7 @@ import { InputSelectReturnTo } from "../common/InputSelectReturnTo";
 import Return from "../Return";
 import Decline from "../Decline";
 import Finally from "../Finally";
+import Cancel from "../Cancel";
 
 export default function ModalInfoFile(props: any) {
   console.log("props completas: ", props);
@@ -332,6 +333,15 @@ export default function ModalInfoFile(props: any) {
             {(activitySelect == stateFile.Pendiente ||
               activitySelect == stateFile.Temporal) && (
               <PendingTemporaryState
+                user={dataUser?.row}
+                activitySelect={activitySelect}
+                setActivitySelect={setActivitySelect}
+              />
+            )}
+
+            {/* si es Anular */}
+            {activitySelect == stateFile.Anulado && (
+              <Cancel
                 user={dataUser?.row}
                 activitySelect={activitySelect}
                 setActivitySelect={setActivitySelect}

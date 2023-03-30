@@ -1,4 +1,4 @@
-import DataTableAllFiles from "../../components/common/DataTableAllFiles";
+import DataTableAllFiles from "./components/DataTableAllFiles";
 import { useEffect, useState, useContext } from "react";
 import { showTableAllFiles } from "../../services/showTable.routes";
 import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
