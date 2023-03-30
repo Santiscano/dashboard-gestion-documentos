@@ -34,7 +34,7 @@ import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
 import { get, roles } from "../../components/tools/SesionSettings";
 import { Alert, Snackbar } from "@mui/material";
 import useSubmit from "./Hooks/useSubmit";
-import SelectArea from "./components/common/SelectArea";
+import SelectArea from "./components/SelectArea";
 
 function TI() {
   const {
@@ -423,7 +423,7 @@ function TI() {
                         Numero Sub-Area
                       </label>
                       <TextFieldOutlined
-                        type={"text"}
+                        type={"number"}
                         label={"Numero"}
                         value={subAreaNumber}
                         setValue={setSubAreaNumber}
@@ -462,7 +462,7 @@ function TI() {
                         Numero Centro de Costos
                       </label>
                       <TextFieldOutlined
-                        type={"text"}
+                        type={"number"}
                         label={"Numero"}
                         value={costCenterNumber}
                         setValue={setCostCenterNumber}

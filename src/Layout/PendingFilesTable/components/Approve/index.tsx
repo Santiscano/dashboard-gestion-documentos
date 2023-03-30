@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button } from "@mui/material";
 import { useContext, useState } from "react";
 import TextFieldOutlined from "../../../../components/common/TextFieldOutline";
@@ -15,9 +16,23 @@ function Approve({
 }: any) {
   console.log("user: ", user);
   const [state, setState] = useState<any>();
-  const [area, setArea] = useState<any>();
-  const [subArea, setSubArea] = useState<any>();
-  const [centerCost, setCenterCost] = useState("");
+  const [area, setArea] = useState<any>({
+    id: 0,
+    number: "",
+    name: "",
+  });
+  const [subArea, setSubArea] = useState<any>({
+    id: 0,
+    fk: 0,
+    number: "",
+    name: "",
+  });
+  const [centerCost, setCenterCost] = useState({
+    id: 0,
+    fk: 0,
+    number: "",
+    name: "",
+  });
   const [codeAccounting, setCodeAccounting] = useState("");
   const [comments, setComments] = useState("");
 
@@ -64,7 +79,7 @@ function Approve({
         user.files_type,
         user.files_registered,
         user.files_cost_center == null
-          ? `${area}${subArea}${centerCost}`
+          ? `${area?.number}${subArea?.number}${centerCost?.number}`
           : user.files_cost_center,
         user.files_code_accounting == null &&
           Number(get("idroles")) == roles.Contaduria
@@ -83,6 +98,7 @@ function Approve({
     } catch (error) {
       console.log("error: ", error);
     } finally {
+      setPreLoad(true);
     }
   };
 
