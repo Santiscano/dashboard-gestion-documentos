@@ -1,15 +1,15 @@
+import { styled } from "@mui/material";
 import Box from "@mui/material/Box";
 import {
   DataGrid,
-  GridToolbarFilterButton,
   GridToolbarColumnsButton,
   GridToolbarExport,
+  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import pdf from "../../../assets/Requerimientos.pdf";
-import columns from "../../../interfaces/GridColumns";
-import LoadingMUI from "../LoadingMUI";
 import NotFound from "../../../assets/images/notFile.jpg";
-import { styled } from "@mui/material";
+import pdf from "../../../assets/Requerimientos.pdf";
+import LoadingMUI from "../../../components/common/LoadingMUI";
+import { columnsAllFiles } from "../../../interfaces/GridColumns";
 
 let open: boolean = false;
 const openModalPDF = (params: any) => {
@@ -74,17 +74,17 @@ function getRowId(row: any) {
 export default function DataTableAllFiles({ row }: any) {
   return (
     <>
+      <LoadingMUI />
       <div className="flex flex-row justify-between">
         <label className="block mb-2 ml-4 text-base font-semibold dark:text-white">
           Todos Los Radicados
         </label>
       </div>
       <Box sx={{ height: "90%", width: "100%" }}>
-        {/* <LoadingMUI/> */}
         <DataGrid
           rows={row}
           getRowId={getRowId}
-          columns={columns}
+          columns={columnsAllFiles}
           pageSize={7}
           rowsPerPageOptions={[7]}
           disableSelectionOnClick
@@ -101,6 +101,7 @@ export default function DataTableAllFiles({ row }: any) {
                 files_code_treasury: false,
                 files_type: false,
                 idfiles: false,
+                idfiles_states: false,
                 idproviders: false,
                 idroles: false,
                 idsedes: false,

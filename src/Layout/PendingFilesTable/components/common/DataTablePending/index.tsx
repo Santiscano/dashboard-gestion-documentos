@@ -1,16 +1,15 @@
+import { styled } from "@mui/material";
 import Box from "@mui/material/Box";
 import {
   DataGrid,
-  GridColDef,
-  GridToolbarFilterButton,
   GridToolbarColumnsButton,
   GridToolbarExport,
+  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import pdf from "../../../../../assets/Requerimientos.pdf";
 import NotFound from "../../../../../assets/images/notFile.jpg";
-import columns from "../../../../../interfaces/GridColumns";
+import pdf from "../../../../../assets/Requerimientos.pdf";
 import LoadingMUI from "../../../../../components/common/LoadingMUI";
-import { styled } from "@mui/material";
+import { columnsEdit } from "../../../../../interfaces/GridColumns";
 
 let open: boolean = false;
 
@@ -85,11 +84,10 @@ export default function DataTablePending({ row }: any) {
         </label>
       </div>
       <Box sx={{ height: "90%", width: "100%" }}>
-        {/* <LoadingMUI/> */}
         <DataGrid
           rows={row}
           getRowId={(row) => row.idfiles}
-          columns={columns}
+          columns={columnsEdit}
           pageSize={7}
           rowsPerPageOptions={[7]}
           disableSelectionOnClick
