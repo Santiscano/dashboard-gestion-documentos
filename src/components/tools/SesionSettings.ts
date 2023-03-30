@@ -1,5 +1,4 @@
-import { Roles, DisplayRoles } from '../../interfaces/Roles';
-import { validateUserFirebase } from './../../services/Firebase.routes';
+import { DisplayRoles, Roles } from '../../interfaces/Roles';
 
 export const roles:Roles = Object.freeze({
   Proveedor   : 1,
@@ -11,21 +10,35 @@ export const roles:Roles = Object.freeze({
   Contaduria  : 7,
   Tesoreria   : 8,
   AuditorTI   : 9,
-  Eliminar    : 10,
+  Administrador: 10,
 });
 
-const roleDisplay:DisplayRoles = {
-  1:"Proveedor",
-  2:"Radicacion",
-  3:"Auditor Gestion Humana",
-  4:"Auditor Control",
-  5:"Auditor Riesgos",
-  6:"Gerencia",
-  7:"Contaduria",
-  8:"Tesoreria",
-  9:"Tecnologia & Informacion",
-  10:"Eliminar",
-}
+export const stateFile = Object.freeze({
+  Asignado : 1,
+  Cargado: 2,
+  AprobadoAuditor: 3,
+  AprobadoGerente: 4,
+  AprobadoContabilidad: 5,
+  Finalizado: 6,
+  Rechazado: 7,
+  Devuelto: 8,
+  Pendiente: 9,
+  Temporal: 10,
+  Anulado: 11,
+});
+
+// const roleDisplay:DisplayRoles = {
+//   1:"Proveedor",
+//   2:"Radicacion",
+//   3:"Auditor Gestion Humana",
+//   4:"Auditor Control",
+//   5:"Auditor Riesgos",
+//   6:"Gerencia",
+//   7:"Contaduria",
+//   8:"Tesoreria",
+//   9:"Tecnologia & Informacion",
+//   10:"Eliminar",
+// }
 
 export function set(key:string, item:string): void {
   sessionStorage.setItem(key, item);
@@ -52,28 +65,6 @@ export function viewDisplayRol(role: number): string {
   // @ts-ignore
   return roleDisplay[role] || "role desconocido"
 }
-
-// export function navigationLiks() {
-//   if (!session()) {
-//     return RoutesListNavigation.offline
-//   } else {
-//     const jwt = getJWT();
-
-//     return jwt.data.idroles === 1
-//       ? RoutesListNavigation.online.provider
-//       : jwt.data.idroles === 2
-//       ? RoutesListNavigation.online.settling
-//       : jwt.data.idroles === 3
-//       ? RoutesListNavigation.online.manager
-//       : jwt.data.idroles === 4
-//       ? RoutesListNavigation.online.accounting
-//       : jwt.data.idroles === 5
-//       ? RoutesListNavigation.online.treasury
-//       : jwt.data.idroles === 6
-//       ? RoutesListNavigation.online.ti
-//       : [];
-//   }
-// }
 
 /**
  * headers para objetos

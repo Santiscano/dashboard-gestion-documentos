@@ -8,18 +8,18 @@ import {
 import { Divider, Tooltip } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import InputSelectRedirectTo from "../../../../components/common/InputSelectRedirectTo";
-import PendingTemporaryState from "../common/PendingTemporaryState";
-import Approve from "../Approve/index";
+// import PendingTemporaryState from "../../../../components";
+// import PendingTemporaryState from "../common/PendingTemporaryState";
+// import Approve from "../Approve/index";
 import { GeneralValuesContext } from "../../../../Context/GeneralValuesContext";
-import InputSelectStateFile from "../common/InputSelectStateFile";
-import { useModalForm } from "../../Hooks/useModalForm";
+// import InputSelectStateFile from "../common/InputSelectStateFile";
+// import { useModalForm } from "../../Hooks/useModalForm";
 import { SearchWithSettled } from "./../../../../services/SearchFile.routes";
 import { stateFile } from "../../../../components/tools/SesionSettings";
-import { InputSelectReturnTo } from "../common/InputSelectReturnTo";
-import Return from "../Return";
-import Decline from "../Decline";
-import Finally from "../Finally";
-import Cancel from "../Cancel";
+// import { InputSelectReturnTo } from "../common/InputSelectReturnTo";
+// import Return from "../Return";
+// import Decline from "../Decline";
+// import Finally from "../Finally";
 
 export default function ModalInfoFile(props: any) {
   console.log("props completas: ", props);
@@ -29,6 +29,19 @@ export default function ModalInfoFile(props: any) {
   const { openModalAuth, handleOpenModalAuth, dataUser, setDataUser } =
     useContext(GeneralValuesContext);
   console.log("datauser: ", dataUser);
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "95vw",
+    height: "80vh",
+    overflow: "scroll",
+    bgcolor: "background.paper",
+    borderRadius: "5px",
+    boxShadow: 24,
+    p: 4,
+  };
 
   const {
     users_name,
@@ -55,18 +68,18 @@ export default function ModalInfoFile(props: any) {
     UserAssignedRoles,
   } = dataUser?.row;
 
-  const {
-    activitySelect,
-    setActivitySelect,
-    handleActivitySelect,
-    optionsActivity,
-    redirectTo,
-    setRedirectTo,
-    handleRedirectTo,
-    optionsRedirectTo,
-    optionsReturnTo,
-    style,
-  } = useModalForm();
+  // const {
+  //   activitySelect,
+  //   setActivitySelect,
+  //   handleActivitySelect,
+  //   optionsActivity,
+  //   redirectTo,
+  //   setRedirectTo,
+  //   handleRedirectTo,
+  //   optionsRedirectTo,
+  //   optionsReturnTo,
+  //   style,
+  // } = useModalForm();
 
   const handleListFilesPDF = async () => {
     const getFilesFromSettled = await SearchWithSettled(files_registered);
@@ -97,10 +110,12 @@ export default function ModalInfoFile(props: any) {
           <div className="flex flex-col items-center w-auto mt-2">
             <section className="flex flex-wrap w-full items-center justify-between ">
               <div className="flex justify-between flex-wrap">
-                <div className="text-2xl font-bold mr-8">
-                  {capitalizeFirstLatterUppercase(users_name)}{" "}
-                  {capitalizeFirstLatterUppercase(users_lastname)}
-                </div>
+                {users_name && (
+                  <div className="text-2xl font-bold mr-8">
+                    {capitalizeFirstLatterUppercase(users_name)}{" "}
+                    {capitalizeFirstLatterUppercase(users_lastname)}
+                  </div>
+                )}
               </div>
 
               <div className="flex mt-4 w-full">
@@ -237,119 +252,6 @@ export default function ModalInfoFile(props: any) {
                 </div>
               )}
             </section>
-
-            <section className="flex w-full mt-2">
-              <article className="w-1/2">
-                {optionsActivity && (
-                  <InputSelectStateFile
-                    title="Estado a Generar"
-                    placeholder="Seleccione una Actividad"
-                    value={activitySelect}
-                    onChange={handleActivitySelect}
-                    required
-                    name="accion"
-                    itemDefault="Que Accion tomaras"
-                    items={optionsActivity}
-                  />
-                )}
-              </article>
-              {/* si es Aprobar mostrara */}
-              {(activitySelect == stateFile.AprobadoAuditor ||
-                activitySelect == stateFile.AprobadoGerente ||
-                activitySelect == stateFile.AprobadoContabilidad) && (
-                <article className="w-1/2">
-                  <InputSelectRedirectTo
-                    title="Asignar A"
-                    placeholder="Quien debe continuar?"
-                    type={"number"}
-                    required
-                    value={redirectTo}
-                    onChange={handleRedirectTo}
-                    itemDefault="selecciona el Auditor"
-                    items={optionsRedirectTo}
-                  />
-                </article>
-              )}
-              {/* si es devuelto mostrara */}
-              {activitySelect == stateFile.Devuelto && (
-                <article className="w-1/2">
-                  <InputSelectReturnTo
-                    title="Devolver A"
-                    placeholder="A Quien se asignara?"
-                    type={"number"}
-                    required
-                    value={redirectTo}
-                    onChange={handleRedirectTo}
-                    itemDefault="selecciona el Auditor o Gerente"
-                    items={optionsReturnTo}
-                  />
-                </article>
-              )}
-            </section>
-
-            {/* si es Aprobar mostrara */}
-            {(activitySelect == stateFile.AprobadoAuditor ||
-              activitySelect == stateFile.AprobadoGerente ||
-              activitySelect == stateFile.AprobadoContabilidad) && (
-              <Approve
-                user={dataUser?.row}
-                newAssigned={redirectTo}
-                setRedirectTo={setRedirectTo}
-                activitySelect={activitySelect}
-                setActivitySelect={setActivitySelect}
-              />
-            )}
-
-            {/* finalizar flujo con tesoreria */}
-            {activitySelect == stateFile.Finalizado && (
-              <Finally
-                user={dataUser?.row}
-                endCicle={redirectTo}
-                endActivitySelect={activitySelect}
-              />
-            )}
-
-            {/* si es Rezachazo "falta la logica de los correos"*/}
-            {activitySelect == stateFile.Rechazado && (
-              <Decline
-                user={dataUser?.row}
-                activitySelect={activitySelect}
-                setActivitySelect={setActivitySelect}
-              />
-            )}
-
-            {/* si es devuelto mostrara */}
-            {activitySelect == stateFile.Devuelto && (
-              <Return
-                user={dataUser?.row}
-                redirectTo={redirectTo}
-                setRedirectTo={setRedirectTo}
-                activitySelect={activitySelect}
-                setActivitySelect={setActivitySelect}
-              />
-            )}
-
-            {/* si es pendiente o Temporal */}
-            {(activitySelect == stateFile.Pendiente ||
-              activitySelect == stateFile.Temporal) && (
-              <PendingTemporaryState
-                user={dataUser?.row}
-                activitySelect={activitySelect}
-                setActivitySelect={setActivitySelect}
-              />
-            )}
-
-            {/* si es Anular */}
-            {activitySelect == stateFile.Anulado && (
-              <Cancel
-                user={dataUser?.row}
-                activitySelect={activitySelect}
-                setActivitySelect={setActivitySelect}
-              />
-            )}
-            {/*
-            <h4>Rechazar "estado rechazado"</h4>
-            <h4>Devolver "enviar cualquier auditor o gerente"</h4> */}
           </div>
         </Box>
       </Modal>

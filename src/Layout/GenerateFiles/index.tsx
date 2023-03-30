@@ -295,8 +295,9 @@ function GenerateFiles() {
 
       const responseUploadFile = await uploadfile(filePDFGoogle, idFiles); // guarda pdf
       // console.log("responseUploadFile: ", responseUploadFile);
-      const pathFileUpload = await responseUploadFile?.data.pathFile;
+      const pathFileUpload = await responseUploadFile?.data.pathFile; // almacena ruta asignada en variable
 
+      // relaciona el idfiles con la ruta asignada es decir pathFileUpload
       const responseConcatFilePath = await createFilePath(
         idFiles,
         pathFileUpload,
@@ -305,8 +306,9 @@ function GenerateFiles() {
       ); // relaciona pdf y file
 
       // @ts-ignore
-      const status = responseConcatFilePath?.status;
-      status === 200 && setModalSuccess(true);
+      if (responseConcatFilePath?.status === 200) {
+        setModalSuccess(true);
+      }
     } catch (error) {
       console.log("error: ", error);
     } finally {

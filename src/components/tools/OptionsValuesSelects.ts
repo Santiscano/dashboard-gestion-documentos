@@ -1,11 +1,5 @@
-export const optionsCities = [
-  "Barranquilla",
-  "Bogota",
-  "Cali",
-  "Masivos",
-  "Medellin",
-  "Nacionales",
-];
+import { roles } from "./SesionSettings";
+
 export const optionsInvoiceType = [
   'Administrativo',
   'Operativo'
@@ -13,13 +7,6 @@ export const optionsInvoiceType = [
 export const optionsProvider = [
   'Servientrega',
   'Exito medellin'
-];
-export const optionsRedirectTo = [
-  'Auditor 1',
-  'Auditor 2',
-  'Auditor 3',
-  'Auditor 4',
-  'Gerente'
 ];
 export const optionsRedirectToOperativo = [
   'Grupo Operativo'
@@ -50,7 +37,23 @@ export const optionsCostCenter = [
   {name: 'Nombre 3', value: '03'},
   {name: 'Nombre 4', value: '04'},
 ]
-export const optionsViewsSettled = [2, 9];
-export const optionsViewsAuth = [3, 4, 5, 6, 7, 8, 9];
-export const optionsViewsTI = [9];
-export const optionsViewsDigitization = [3, 9];
+
+// esto es lo unico que deberia mover para los permisos de cada vista.
+export const optionsViewsSettled = [
+  roles.Radicacion, roles.Administrador
+];
+export const optionsViewsAuth = [
+  roles.AuditorGH, roles.AuditorCRTL,
+  roles.AuditorRG, roles.AuditorTI, roles.Gerencia,
+  roles.Contaduria, roles.Tesoreria,  roles.Administrador,
+];
+export const optionsViewsAllFiles = [
+  roles.Radicacion, roles.Administrador,
+  roles.Gerencia, roles.Contaduria, roles.Tesoreria,
+];
+export const optionsViewsTI = [
+  roles.Contaduria, roles.Administrador,
+];
+export const optionsViewsDigitization = [
+  roles.Administrador
+];

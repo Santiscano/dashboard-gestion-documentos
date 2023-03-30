@@ -9,6 +9,7 @@ import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import GroupsRoundedIcon from "@mui/icons-material/GroupsRounded";
 import PostAddRoundedIcon from "@mui/icons-material/PostAddRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import { get, roles } from "../components/tools/SesionSettings";
 
 export default {
   online: {
@@ -23,18 +24,19 @@ export default {
         url: "/dashboard/adjuntar",
         icon: <AttachEmailIcon sx={{ color: "#293184" }} />,
       },
-      {
-        name: "Todos los archivos",
-        url: "/dashboard/todos-los-archivos",
-        icon: <TopicRoundedIcon sx={{ color: "#293184" }} />,
-      },
     ],
-    auth: [
+    authorizations: [
       {
-        name: "Pendientes",
+        name: `${
+          Number(get("idroles")) == roles.Administrador
+            ? "Completadas"
+            : "Pendientes"
+        }`,
         url: "/dashboard/pendientes",
         icon: <PendingActionsRoundedIcon sx={{ color: "#293184" }} />,
       },
+    ],
+    allFiles: [
       {
         name: "Todos los archivos",
         url: "/dashboard/todos-los-archivos",
@@ -43,8 +45,8 @@ export default {
     ],
     ti: [
       {
-        name: "Administracion TI",
-        url: "/dashboard/ti",
+        name: "Administracion Web",
+        url: "/dashboard/admin",
         icon: <LogoDevIcon sx={{ color: "#293184" }} />,
       },
     ],
@@ -71,5 +73,5 @@ export default {
       },
     ],
   },
-  offline: [],
+  offline: {},
 };

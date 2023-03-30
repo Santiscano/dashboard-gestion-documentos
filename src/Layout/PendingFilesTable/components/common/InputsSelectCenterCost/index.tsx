@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 import { alpha, styled } from "@mui/material/styles";
 import {
   getArea,
-  getCostSubAreaById,
+  getSubAreaById,
   getCostCenterById,
 } from "../../../../../services/CenterCost.routes";
 
@@ -18,22 +18,26 @@ const Selecting = styled(FormControl)({
   },
 });
 export default function InputSelect(props: any) {
+  console.log("props: ", props);
   const [area, setArea] = useState<any>();
   const [subArea, setSubArea] = useState<any>();
   const [costCenter, setCostCenter] = useState<any>();
 
   const handleList = async () => {
     const area = await getArea();
+    console.log("area: ", area);
     setArea(area?.data.data);
   };
 
   const handleSubArea = async () => {
-    const subArea = await getCostSubAreaById(props.valueArea);
+    console.log("props.valueArea: ", props.valueArea);
+    const subArea = await getSubAreaById(props.valueArea?.id);
+    console.log("subArea: ", subArea);
     setSubArea(subArea?.data.data);
   };
 
   const handleCostCenter = async () => {
-    const centerCost = await getCostCenterById(props.valueSubArea);
+    const centerCost = await getCostCenterById(props.valueSubArea?.id);
     console.log("centerCost: ", centerCost);
     setCostCenter(centerCost?.data.data);
   };
@@ -77,7 +81,7 @@ export default function InputSelect(props: any) {
             </MenuItem>
             {Array.isArray(listItems) &&
               listItems.map((item: any, index: any) => (
-                <MenuItem key={index} value={item.number}>
+                <MenuItem key={index} value={item}>
                   {item.name} - {item.number}
                 </MenuItem>
               ))}

@@ -1,24 +1,15 @@
-import { Button, SelectChangeEvent } from "@mui/material";
+import { Button } from "@mui/material";
 import { useContext, useState } from "react";
-import InputsSelectCenterCost from "../InputsSelectCenterCost";
-import InputSelectState from "../../../../../components/common/InputSelectState";
-import { optionsCostCenter } from "../../../../../components/tools/OptionsValuesSelects";
-import { get } from "../../../../../components/tools/SesionSettings";
-import { editFile } from "../../../../../services/Files.routes";
-import { GeneralValuesContext } from "../../../../../Context/GeneralValuesContext";
+import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
+import { editFile } from "./../../../../services/Files.routes";
 
-function PendingTemporaryState({
-  user,
-  activitySelect,
-  setActivitySelect,
-}: any) {
+function Cancel({ user, activitySelect, setActivitySelect }: any) {
   console.log("user: ", user);
   const [comments, setComments] = useState("");
   const { handleOpenModalAuth, handleUpdateRows } =
     useContext(GeneralValuesContext);
 
   const handleComments = (e: any) => setComments(e.target.value);
-
   const handleClear = () => {
     setActivitySelect("");
     setComments("");
@@ -30,7 +21,7 @@ function PendingTemporaryState({
     const response = await editFile(
       user.idfiles,
       user.idproviders,
-      Number(get("idusers")),
+      1,
       activitySelect,
       user.files_type,
       user.files_registered,
@@ -68,10 +59,10 @@ function PendingTemporaryState({
           <Button
             type="submit"
             variant="contained"
-            color="warning"
+            color="error"
             sx={{ mx: 2, my: 1 }}
           >
-            Cambiar
+            Rechazar
           </Button>
         </div>
       </form>
@@ -79,4 +70,4 @@ function PendingTemporaryState({
   );
 }
 
-export default PendingTemporaryState;
+export default Cancel;

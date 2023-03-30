@@ -5,7 +5,7 @@ import { session } from "../components/tools/SesionSettings";
 const NotAuthentication = () => {
   const navigate = useNavigate();
   const token = session();
-  console.log("token: ", token);
+  // console.log("token: ", token);
 
   useEffect(() => {
     if (!token) {

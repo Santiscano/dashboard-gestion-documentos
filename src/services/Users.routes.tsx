@@ -50,18 +50,6 @@ export const createUser = async (
   password: string
 ) => {
   try {
-    // console.log(
-    //   idroles,
-    //   idsedes,
-    //   identification_type,
-    //   identification_number,
-    //   name,
-    //   lastname,
-    //   address,
-    //   phone,
-    //   email,
-    //   password
-    // );
     const response = await axios.post(
       Routes.api.users.createUser,
       {

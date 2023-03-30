@@ -12,4 +12,7 @@ export interface GeneralValuesType extends IsLoadingType {
   handleCloseModalAuth: any;
   dataUser: any;
   setDataUser: React.Dispatch<React.SetStateAction<any>>;
+  rows: any,
+  setRows: React.Dispatch<React.SetStateAction<any>>;
+  handleUpdateRows: any;
 }

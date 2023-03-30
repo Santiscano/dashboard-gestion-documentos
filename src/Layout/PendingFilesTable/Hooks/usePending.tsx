@@ -3,16 +3,17 @@ import { GeneralValuesContext } from "../../../Context/GeneralValuesContext";
 import { showTablePending } from "../../../services/showTable.routes";
 
 export const usePending = () => {
-  const [row, setRow] = useState([]);
-  const { setPreLoad, handleCloseModalAuth } = useContext(GeneralValuesContext);
+  // const [row, setRow] = useState([]);
+  const { setPreLoad, handleCloseModalAuth, rows, setRows } =
+    useContext(GeneralValuesContext);
 
   const handleGetTableData = async () => {
     try {
       setPreLoad(true);
       const table = await showTablePending();
-      const rows = await table?.data.dataInfo;
-      setRow(rows ? rows : []);
-      // console.log("row table--: ", rows);
+      const rowsData = await table?.data.dataInfo;
+      setRows(rowsData ? rowsData : []);
+      console.log("row table--: ", rowsData);
     } catch (error) {
       console.log("error: ", error);
     } finally {
@@ -22,13 +23,9 @@ export const usePending = () => {
 
   useEffect(() => {
     handleGetTableData();
-  }, [handleCloseModalAuth]);
-
-  useEffect(() => {
-    handleGetTableData();
   }, []);
 
   return {
-    row,
+    rows,
   };
 };

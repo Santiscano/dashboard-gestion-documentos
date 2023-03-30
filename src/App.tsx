@@ -1,38 +1,39 @@
-import { useState } from "react";
 import "./App.css";
 
-import Auth from "./modules/Auth";
 import Admin from "./modules/Admin";
+import Auth from "./modules/Auth";
 // import { NotFound } from './modules/NotFound';
-import Error from "./Layout/Error";
-import GenerateFiles from "./Layout/GenerateFiles";
-import AttachFile from "./Layout/AttachFile";
-import Ti from "./Layout/Ti";
 import forbidden403Img from "./assets/images/403.jpg";
 import notFound404Img from "./assets/images/404.png";
 import errorServerImg from "./assets/images/500.jpg";
+import AttachFile from "./Layout/AttachFile";
+import Error from "./Layout/Error";
+import GenerateFiles from "./Layout/GenerateFiles";
+import Ti from "./Layout/Ti";
 
 import { Paper, ThemeProvider } from "@mui/material";
 
 import { Styles } from "./config/theme.config";
 
 import { Route, Routes } from "react-router-dom";
-import NotAuthentication from "./Middlewares/NotAuthentication";
-import WithAuthentication from "./Middlewares/WithAuthentication";
-import Home from "./Layout/Home/index";
-import PendingFilesTable from "./Layout/PendingFilesTable/index";
-import AllFilesTable from "./Layout/AllFilesTable";
-import NewEmployee from "./Layout/NewEmployee";
-import AttachEmployeeDocuments from "./Layout/AttachEmployeeDocuments";
-import AllEmployees from "./Layout/AllEmployees";
-import SearchEmployee from "./Layout/SearchEmployee";
-import { WithRoleAllowedComponent } from "./Middlewares/WithRoleAllowed";
 import {
   optionsViewsSettled,
   optionsViewsAuth,
+  optionsViewsAllFiles,
   optionsViewsTI,
   optionsViewsDigitization,
 } from "./components/tools/OptionsValuesSelects";
+import AllEmployees from "./Layout/AllEmployees";
+import AllFilesTable from "./Layout/AllFilesTable";
+import AttachEmployeeDocuments from "./Layout/AttachEmployeeDocuments";
+import Home from "./Layout/Home/index";
+import NewEmployee from "./Layout/NewEmployee";
+import PendingFilesTable from "./Layout/PendingFilesTable/index";
+import SearchEmployee from "./Layout/SearchEmployee";
+import Administracion from "./Layout/Admin";
+import NotAuthentication from "./Middlewares/NotAuthentication";
+import WithAuthentication from "./Middlewares/WithAuthentication";
+import { WithRoleAllowedComponent } from "./Middlewares/WithRoleAllowed";
 
 function App() {
   return (
@@ -47,8 +48,8 @@ function App() {
           <Route element={<NotAuthentication />}>
             <Route path="/dashboard" element={<Admin />}>
               <Route path="home" element={<Home />} />
-              {/* generar - adjuntar */}
 
+              {/* Protegidas por roles */}
               <Route
                 element={
                   // @ts-ignore
@@ -61,19 +62,53 @@ function App() {
                 <Route path="adjuntar" element={<AttachFile />} />
               </Route>
 
-              {/* tablas... pendientes - todos */}
-              <Route path="pendientes" element={<PendingFilesTable />} />
-              <Route path="todos-los-archivos" element={<AllFilesTable />} />
-              {/* TI */}
-              <Route path="ti" element={<Ti />} />
-              {/* DG */}
-              <Route path="nuevo-empleado" element={<NewEmployee />} />
-              <Route path="todos-los-empleados" element={<AllEmployees />} />
               <Route
-                path="adjuntar-documentos-empleado"
-                element={<AttachEmployeeDocuments />}
-              />
-              <Route path="buscar-empleado" element={<SearchEmployee />} />
+                element={
+                  // @ts-ignore
+                  <WithRoleAllowedComponent
+                    allowedRolesList={optionsViewsAuth}
+                  />
+                }
+              >
+                <Route path="pendientes" element={<PendingFilesTable />} />
+              </Route>
+
+              <Route
+                element={
+                  // @ts-ignore
+                  <WithRoleAllowedComponent
+                    allowedRolesList={optionsViewsAllFiles}
+                  />
+                }
+              >
+                <Route path="todos-los-archivos" element={<AllFilesTable />} />
+              </Route>
+
+              <Route
+                element={
+                  // @ts-ignore
+                  <WithRoleAllowedComponent allowedRolesList={optionsViewsTI} />
+                }
+              >
+                <Route path="admin" element={<Ti />} />
+              </Route>
+
+              <Route
+                element={
+                  // @ts-ignore
+                  <WithRoleAllowedComponent
+                    allowedRolesList={optionsViewsDigitization}
+                  />
+                }
+              >
+                <Route path="nuevo-empleado" element={<NewEmployee />} />
+                <Route path="todos-los-empleados" element={<AllEmployees />} />
+                <Route
+                  path="adjuntar-documentos-empleado"
+                  element={<AttachEmployeeDocuments />}
+                />
+                <Route path="buscar-empleado" element={<SearchEmployee />} />
+              </Route>
             </Route>
           </Route>
 

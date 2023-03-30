@@ -1,21 +1,49 @@
+// @ts-nocheck
 import { Button } from "@mui/material";
 import { useContext, useState } from "react";
-import { get } from "../../../../components/tools/SesionSettings";
+import TextFieldOutlined from "../../../../components/common/TextFieldOutline";
+import { get, roles } from "../../../../components/tools/SesionSettings";
 import { editFile } from "../../../../services/Files.routes";
 import InputsSelectCenterCost from "../common/InputsSelectCenterCost";
-import { useNavigate } from "react-router-dom";
 import { GeneralValuesContext } from "./../../../../Context/GeneralValuesContext";
 
-function Approve(user: any) {
+function Approve({
+  user,
+  newAssigned,
+  setRedirectTo,
+  activitySelect,
+  setActivitySelect,
+}: any) {
   console.log("user: ", user);
   const [state, setState] = useState<any>();
-  const [area, setArea] = useState<any>();
-  const [subArea, setSubArea] = useState<any>();
-  const [centerCost, setCenterCost] = useState("");
+  const [area, setArea] = useState<any>({
+    id: 0,
+    number: "",
+    name: "",
+  });
+  const [subArea, setSubArea] = useState<any>({
+    id: 0,
+    fk: 0,
+    number: "",
+    name: "",
+  });
+  const [centerCost, setCenterCost] = useState({
+    id: 0,
+    fk: 0,
+    number: "",
+    name: "",
+  });
+  const [codeAccounting, setCodeAccounting] = useState("");
   const [comments, setComments] = useState("");
 
-  const { setPreLoad, handleOpenModalAuth, handleCloseModalAuth } =
-    useContext(GeneralValuesContext);
+  const {
+    setPreLoad,
+    handleOpenModalAuth,
+    handleCloseModalAuth,
+    rows,
+    setRows,
+    handleUpdateRows,
+  } = useContext(GeneralValuesContext);
 
   const handleState = (e: any) => setState(e.target.value);
   const handleArea = (e: any) => {
@@ -31,8 +59,8 @@ function Approve(user: any) {
   const handleComments = (e: any) => setComments(e.target.value);
 
   const handleClear = () => {
-    user.setActivitySelect("");
-    user.setRedirectTo("");
+    setActivitySelect("");
+    setRedirectTo("");
     setArea("");
     setComments("");
     setPreLoad(false);
@@ -44,35 +72,40 @@ function Approve(user: any) {
       setPreLoad(true);
       e.preventDefault();
       const response = await editFile(
-        user.user.idfiles,
-        user.user.idproviders,
-        user.newAssigned,
-        user.idfiles_state,
-        user.user.files_type,
-        user.user.files_registered,
-        user.user.files_cost_center == null
-          ? `${area}${subArea}${centerCost}`
-          : user.user.files_cost_center,
-        user.user.files_code_accounting,
-        user.user.files_code_treasury,
-        user.user.files_price,
-        user.user.files_account_type,
-        user.user.files_account_type_number,
+        user.idfiles,
+        user.idproviders,
+        newAssigned,
+        activitySelect,
+        user.files_type,
+        user.files_registered,
+        user.files_cost_center == null
+          ? `${area?.number}${subArea?.number}${centerCost?.number}`
+          : user.files_cost_center,
+        user.files_code_accounting == null &&
+          Number(get("idroles")) == roles.Contaduria
+          ? codeAccounting
+          : user.files_code_accounting,
+        user.files_code_treasury,
+        user.files_price,
+        user.files_account_type,
+        user.files_account_type_number,
         comments
       );
       if (response?.status == 200) {
         handleClear();
+        handleUpdateRows();
       }
     } catch (error) {
       console.log("error: ", error);
     } finally {
+      setPreLoad(true);
     }
   };
 
   return (
     <section className="flex flex-wrap w-full items-center justify-between ">
       <form className="w-full my-0" onSubmit={handleSubmit}>
-        {user.user.files_cost_center == null && (
+        {user.files_cost_center == null && (
           <InputsSelectCenterCost
             valueArea={area}
             onChangeArea={handleArea}
@@ -82,6 +115,21 @@ function Approve(user: any) {
             onChangeCostCenter={handleCenter}
           />
         )}
+        {user.files_code_accounting == null &&
+          Number(get("idroles")) == roles.Contaduria && (
+            <article className="md:w-1/2">
+              <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                Codigo Contabilidad
+              </label>
+              <TextFieldOutlined
+                type={"text"}
+                label={"Codigo Contabilidad"}
+                value={codeAccounting}
+                setValue={setCodeAccounting}
+                required
+              />
+            </article>
+          )}
         <div className="flex mt-4 w-full">
           <textarea
             name="Comentario"

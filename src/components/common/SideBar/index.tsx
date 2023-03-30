@@ -26,6 +26,7 @@ import { WithRoleAllowedRoutes } from "./../../../Middlewares/WithRoleAllowed";
 import {
   optionsViewsSettled,
   optionsViewsAuth,
+  optionsViewsAllFiles,
   optionsViewsTI,
   optionsViewsDigitization,
 } from "../../tools/OptionsValuesSelects";
@@ -89,10 +90,6 @@ function index(props: any) {
 
       <Divider />
 
-      {/* <WithRoleAllowed allowedRolesList={optionsViewsSettled}>
-        <h1>test de permisos de roles</h1>
-      </WithRoleAllowed> */}
-
       <WithRoleAllowedRoutes allowedRolesList={optionsViewsSettled}>
         <List>
           <ListItemButton onClick={handleOpenFiles}>
@@ -115,6 +112,7 @@ function index(props: any) {
             </List>
           </Collapse>
         </List>
+        <Divider />
       </WithRoleAllowedRoutes>
 
       <WithRoleAllowedRoutes allowedRolesList={optionsViewsAuth}>
@@ -128,7 +126,7 @@ function index(props: any) {
           </ListItemButton>
           <Collapse in={openAuths} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {rutero.online.auth.map((list, index) => (
+              {rutero.online.authorizations.map((list, index) => (
                 <ListItem key={index} disablePadding>
                   <ListItemButton
                     sx={{ pl: 4 }}
@@ -142,9 +140,22 @@ function index(props: any) {
             </List>
           </Collapse>
         </List>
+        <Divider />
       </WithRoleAllowedRoutes>
 
-      <Divider />
+      <WithRoleAllowedRoutes allowedRolesList={optionsViewsAllFiles}>
+        <List>
+          {rutero.online.allFiles.map((list, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton onClick={() => navigate(`${list.url}`)}>
+                <ListItemIcon>{list.icon}</ListItemIcon>
+                <ListItemText primary={list.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        {/* <Divider /> */}
+      </WithRoleAllowedRoutes>
 
       <WithRoleAllowedRoutes allowedRolesList={optionsViewsTI}>
         <List>

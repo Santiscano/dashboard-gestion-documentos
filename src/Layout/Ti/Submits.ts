@@ -29,37 +29,6 @@ export const handleSubmitCreateRol = async (
   }
 };
 
-export const handleSubmitCreateCedi = async (
-  e:any,
-  city:string,
-  setCity: any,
-  country:string,
-  setCountry: any,
-  address:string,
-  setAddress: any,
-  cediName:string,
-  setCediName: any,
-  type:string,
-  setType: any,
-) => {
-  const { setPreLoad } = useContext(GeneralValuesContext);
-  try{
-    setPreLoad(true);
-    e.preventDefault();
-    const res = await createCedi(city, country, address, cediName, type)
-    console.log('res create cedis: ', res);
-    setCity('');
-    setCountry('');
-    setAddress('');
-    setCediName('');
-    setType('');
-  } catch(error) {
-    console.log('error: ', error);
-  } finally{
-    setPreLoad(false);
-  }
-}
-
 export const handleSubmitCreateUser = async (
   e:any,
   idroles: number,
