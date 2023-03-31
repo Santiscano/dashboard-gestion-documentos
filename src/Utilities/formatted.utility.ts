@@ -32,3 +32,21 @@ export function capitalizeFirstLatterUppercase(text: string): string {
 export function numberToStringWithTwoDigitNumber(num: number): string {
   return num < 10 ? `0${num.toString()}` : num.toString();
 };
+
+export function genereDateNowDMYHM() {
+    const date = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    const formattedTime = date.toLocaleString("en-US", options);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDate = `${day.toString().padStart(2, "0")}/${month
+      .toString()
+      .padStart(2, "0")}/${year.toString()}`;
+
+    return `${formattedDate} - ${formattedTime}`;
+  };

@@ -20,7 +20,7 @@ import AttachEmailRoundedIcon from "@mui/icons-material/AttachEmailRounded";
 import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import { Box, TextField } from "@mui/material";
+import { Box, Modal, TextField } from "@mui/material";
 
 import "animate.css";
 import { getCedis } from "../../services/Cedis.routes";
@@ -40,6 +40,10 @@ import { get } from "../../components/tools/SesionSettings";
 import SearchUser from "../../components/common/SearchUser";
 import { AllUsers } from "./../../interfaces/User";
 import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
+import PDF from "./components/PDF";
+import { PDFViewer } from "@react-pdf/renderer";
+import { width } from "@mui/system";
+import { savePDF, printPDF } from "./components/PDF/print";
 
 function GenerateFiles() {
   // ------------------------------VARIABLES------------------------------//
@@ -265,8 +269,10 @@ function GenerateFiles() {
       // console.log("addFileResponse: ", addFileResponse);
 
       //muestro input file y textarea
-      const status = addFileResponse?.status;
-      status === 200 && setStatusFileResponse(true);
+      if (addFileResponse?.status == 200) {
+        // savePDF(cediType, settledNumber, accountType);
+        setStatusFileResponse(true);
+      }
 
       // guardo respuesta completa en variable result
       // @ts-ignore
@@ -604,9 +610,8 @@ function GenerateFiles() {
                   cedi={cedi.sedes_city}
                   settledNumber={settledNumber}
                   email={email}
+                  cediType={cediType}
                 >
-                  {/* <LoadingMUI/> */}
-
                   <form onSubmit={handleFormSubmit}>
                     <Button name="Crear requerimientos"></Button>
                   </form>
@@ -649,6 +654,7 @@ function GenerateFiles() {
                     newSettledSameUser={newSettledSameUser}
                     resetFullForm={resetFullForm}
                   />
+                  {/* aqui el intento de pdf */}
                 </UploadFileModal>
               </article>
             )}
