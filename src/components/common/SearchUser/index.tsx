@@ -111,7 +111,7 @@ function LocationsSelect({
           renderInput={(params) => (
             <TextField
               {...params}
-              label={!label ? "Lista Proveedores" : label}
+              // label={!label ? "Lista Proveedores" : label}
               variant={"outlined"}
               color={"primary"}
               required={required}

@@ -44,6 +44,7 @@ import PDF from "./components/PDF";
 import { PDFViewer } from "@react-pdf/renderer";
 import { width } from "@mui/system";
 import { savePDF, printPDF } from "./components/PDF/print";
+import { ChildModalPdf } from "../../components/common/ModalUploadFile";
 
 function GenerateFiles() {
   // ------------------------------VARIABLES------------------------------//
@@ -395,6 +396,11 @@ function GenerateFiles() {
                   <ArrowBackRoundedIcon className="arrow" /> Reiniciar{" "}
                 </button>
               )}
+              <ChildModalPdf
+                cediType={cediType}
+                settledNumber={settledNumber}
+                accountType={accountType}
+              />
             </div>
             {!isSettled ? (
               <article className="filing">
@@ -615,6 +621,19 @@ function GenerateFiles() {
                   <form onSubmit={handleFormSubmit}>
                     <Button name="Crear requerimientos"></Button>
                   </form>
+                  {/* aqui el intento de pdf */}
+                  {/* <ChildModalPdf
+                    cediType={cediType}
+                    settledNumber={settledNumber}
+                    accountType={accountType}
+                  /> */}
+                  {/* <PDF
+                      cediType={cediType}
+                      settledNumber={settledNumber}
+                      accountType={accountType}
+                    /> */}
+                  {/* hola mundo */}
+                  {/* </ChildModalPdf> */}
 
                   {statusFileResponse && (
                     <div className="flex rounded justify-between">
@@ -654,7 +673,6 @@ function GenerateFiles() {
                     newSettledSameUser={newSettledSameUser}
                     resetFullForm={resetFullForm}
                   />
-                  {/* aqui el intento de pdf */}
                 </UploadFileModal>
               </article>
             )}

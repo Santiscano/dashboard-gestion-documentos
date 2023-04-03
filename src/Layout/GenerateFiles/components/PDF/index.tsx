@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function PDF({ cediType, settledNumber, accountType }: any) {
+function PDF(cediType: any, settledNumber: any, accountType: any) {
   useEffect(() => {
     console.log(
       "se creo el componente pdf y los valores capturados son: ",
@@ -34,10 +34,10 @@ function PDF({ cediType, settledNumber, accountType }: any) {
     <Document>
       <Page size={{ width: 189, height: 94.5 }}>
         <View>
-          <Image src={LOGO} style={styles.image} />
-          <Text style={styles.text}>{cediType}</Text>
-          <Text style={styles.text}>{settledNumber}</Text>
-          <Text style={styles.text}>{accountType}</Text>
+          {/* <Image src={LOGO} style={styles.image} /> */}
+          {/* <Text style={styles.text}>{cediType}</Text> */}
+          {/* <Text style={styles.text}>{settledNumber}</Text> */}
+          {/* <Text style={styles.text}>{accountType}</Text> */}
           <Text style={styles.text}>Mensaje de prueba</Text>
         </View>
       </Page>

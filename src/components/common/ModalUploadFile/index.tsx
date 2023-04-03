@@ -169,7 +169,11 @@ const UploadFileModal: FC<Props> = ({
             </section>
           </div>
           {children}
-          <ChildModal cediType={cediType} />
+          <ChildModalPdf
+            cediType={cediType}
+            settledNumber={settledNumber}
+            accountType={accountType}
+          />
         </Box>
       </Modal>
     </>
@@ -192,7 +196,12 @@ const stylePDF = {
   p: 4,
 };
 
-function ChildModal({ cediType }: any) {
+export function ChildModalPdf(
+  cediType: any,
+  settledNumber: any,
+  accountType: any,
+  children: any
+) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -203,7 +212,7 @@ function ChildModal({ cediType }: any) {
 
   return (
     <>
-      <Button onClick={handleOpen}>Open Child Modal</Button>
+      <Button onClick={handleOpen}>Open PDF</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -211,9 +220,15 @@ function ChildModal({ cediType }: any) {
         aria-describedby="child-modal-description"
       >
         <Box sx={{ ...stylePDF }}>
-          <PDFViewer style={{ width: "100%", height: "90%" }}>
-            <PDF cediType={cediType} />
-          </PDFViewer>
+          <div>
+            {/* {cediType && <h3>{cediType}</h3>} */}
+            {/* {settledNumber && <h3>{settledNumber}</h3>} */}
+            {/* {accountType && <h3>{accountType}</h3>} */}
+            <h3>si solo sale aqui esta vacio</h3>
+            {/* <PDFViewer style={{ width: "100%", height: "90%" }}>
+            <PDF />
+          </PDFViewer> */}
+          </div>
         </Box>
       </Modal>
     </>

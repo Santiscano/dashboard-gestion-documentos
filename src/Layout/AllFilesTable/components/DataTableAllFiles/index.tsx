@@ -10,6 +10,7 @@ import NotFound from "../../../../assets/images/notFile.jpg";
 import pdf from "../../../../assets/Requerimientos.pdf";
 import LoadingMUI from "../../../../components/common/LoadingMUI";
 import { columnsAllFiles } from "../../../../interfaces/GridColumns";
+import "./datagrid.css";
 
 let open: boolean = false;
 const openModalPDF = (params: any) => {
@@ -71,7 +72,16 @@ function getRowId(row: any) {
   return row.idfiles;
 }
 
+const delayAlerts = (params: any) => {
+  if (params.idfiles == 192) {
+    return "green-row";
+  }
+  return "blue-row";
+};
+
 export default function DataTableAllFiles({ row }: any) {
+  // console.log("row: ", row);
+  // console.log("rowprice: ", row.files_price);
   return (
     <>
       <LoadingMUI />
@@ -89,6 +99,20 @@ export default function DataTableAllFiles({ row }: any) {
           rowsPerPageOptions={[7]}
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
+          getRowClassName={(params) => {
+            console.log("params", params);
+            if (
+              params.row.files_type == "ADMINISTRATIVO" &&
+              params.row.idfiles !== 199
+            ) {
+              return "willExpireSoon";
+            } else if (params.row.idfiles == 199) {
+              console.log("resolvi por aqui", params.row);
+              return "overduePending";
+            } else {
+              return "good";
+            }
+          }}
           components={{
             Toolbar: GridToolbarConfig,
             NoRowsOverlay: CustomNoRowsOverlay,
