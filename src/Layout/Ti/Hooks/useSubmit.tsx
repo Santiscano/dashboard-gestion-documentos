@@ -13,10 +13,14 @@ import {
   createSubArea,
 } from "../../../services/CenterCost.routes";
 import { numberToStringWithTwoDigitNumber as numberToString } from "../../../Utilities/formatted.utility";
+import { deleteFile } from "../../../services/Files.routes";
 
 function useSubmit() {
   // --------------------------Variable-------------------------------//
+  // view options
   const [showValue, setShowValue] = useState(0);
+  // Delete File
+  const [inputDeleted, setInputDeleted] = useState("");
   // create rol
   const [rolName, setRolName] = useState("");
   const [rolDescription, setRolDescription] = useState("");
@@ -359,6 +363,32 @@ function useSubmit() {
       setOpenSnackbar(true);
     }
   };
+  const handleDeleteFile = async (e: any) => {
+    try {
+      setPreLoad(true);
+      e.preventDefault();
+      const res = await deleteFile(inputDeleted);
+      console.log("res: ", res);
+      if (res?.status == 200) {
+        setInputDeleted("");
+        setMessageSnackbar("Archivo Eliminado Con Exito");
+        setSeveritySnackbar("success");
+        setPreLoad(false);
+        setOpenSnackbar(true);
+      }
+      if (res?.status !== 200) {
+        setMessageSnackbar("No se pudo Eliminar archivo, Ocurrio Un Error");
+        setSeveritySnackbar("error");
+        setPreLoad(false);
+        setOpenSnackbar(true);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+      setMessageSnackbar("Ocurrio Un Error Intenta De Nuevo");
+      setSeveritySnackbar("error");
+      setOpenSnackbar(true);
+    }
+  };
 
   // --------------------------Effects-------------------------------//
   useEffect(() => {
@@ -431,6 +461,9 @@ function useSubmit() {
     setCostCenterName,
     connectionSubArea,
     handleConnectionSubArea,
+    inputDeleted,
+    setInputDeleted,
+    handleDeleteFile,
   };
 }
 

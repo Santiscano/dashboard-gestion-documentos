@@ -1,39 +1,19 @@
-import { SyntheticEvent, useContext, useEffect, useState } from "react";
-import "./TI.css";
+import { Alert, Snackbar } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import { SelectChangeEvent } from "@mui/material/Select";
-import TextFieldOutlined from "../../components/common/TextFieldOutline";
 import Button from "../../components/common/Button";
-import {
-  handleSubmitCreateRol,
-  // handleSubmitCreateCedi,
-  // handleSubmitCreateUser,
-  // handleSubmitCreateArea,
-  // handleSubmitCreateSubArea,
-  handleSubmitCreateCostCenter,
-} from "./Submits";
-import InputSelect from "./../../components/common/InputSelect/index";
-import { optionCediType } from "../../components/tools/OptionsValuesSelects";
-import { getCitys } from "./../../services/getCitysColombia";
-import InputSelectCity from "../../components/common/InputSelectCity";
 import InputSelectCedi from "../../components/common/InputSelectCedi";
+import InputSelectCity from "../../components/common/InputSelectCity";
 import InputSelectDocType from "../../components/common/InputSelectDocType";
-import { AllCedis } from "../../interfaces/Cedis";
-import { createCedi, getCedis } from "../../services/Cedis.routes";
-import { getRoles } from "../../services/Roles.routes";
-import InputSelectRol from "../../components/common/InputSelectRol";
-import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
-import { numberToStringWithTwoDigitNumber as numberToString } from "../../Utilities/formatted.utility";
-import LoadingMUI from "../../components/common/LoadingMUI";
-import { createUser } from "../../services/Users.routes";
-import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
-import ModalSuccess from "../../components/common/ModalSuccess";
 import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
-import { get, roles } from "../../components/tools/SesionSettings";
-import { Alert, Snackbar } from "@mui/material";
+import InputSelectRol from "../../components/common/InputSelectRol";
+import LoadingMUI from "../../components/common/LoadingMUI";
+import TextFieldOutlined from "../../components/common/TextFieldOutline";
+import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
+import { optionCediType } from "../../components/tools/OptionsValuesSelects";
 import useSubmit from "./Hooks/useSubmit";
+import "./TI.css";
 import SelectArea from "./components/SelectArea";
 
 function TI() {
@@ -103,6 +83,10 @@ function TI() {
     setCostCenterName,
     connectionSubArea,
     handleConnectionSubArea,
+    //
+    inputDeleted,
+    setInputDeleted,
+    handleDeleteFile,
   } = useSubmit();
 
   return (
@@ -134,9 +118,44 @@ function TI() {
                 </Tabs>
               </Box>
               <TabPanel value={showValue} index={0}>
-                <h3 className="font-bold text-2xl">
-                  Panel Administrativo de Creacion
+                <h3 className="font-bold text-2xl">Panel Administrativo</h3>
+                <h3 className="text-lg mt-4 text-red-500 font-bold">
+                  *Tenga presente que una vez eliminado un archivo, tanto la
+                  trazabilidad como el archivo no podran ser recuperados*
                 </h3>
+                <form onSubmit={() => handleDeleteFile(inputDeleted)}>
+                  <div className="md:flex md:flex-wrap mt-4">
+                    <article className="md:w-1/2">
+                      <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
+                        Direccion
+                      </label>
+                      <TextFieldOutlined
+                        type={"text"}
+                        label={"Direccion Ubicacion"}
+                        value={inputDeleted}
+                        setValue={setInputDeleted}
+                        required
+                      />
+                    </article>
+                  </div>
+                  <Button name="Eliminar Archivo" />
+                  <Snackbar
+                    open={openSnackbar}
+                    autoHideDuration={6000}
+                    TransitionComponent={TransitionLeft}
+                    onClose={handleCloseSnackbar}
+                  >
+                    <Alert
+                      // @ts-ignore
+                      onClose={handleCloseSnackbar}
+                      // @ts-ignore
+                      severity={severitySnackbar}
+                      sx={{ width: "100%" }}
+                    >
+                      {messageSnackbar}
+                    </Alert>
+                  </Snackbar>
+                </form>
               </TabPanel>
               <TabPanel value={showValue} index={1}>
                 <form onSubmit={() => handleSubmitCreateCedi(event)}>

@@ -119,13 +119,16 @@ export const editFile = async (
   }
 };
 
-export const deleteFile = async () => {
+export const deleteFile = async (files_registered: string) => {
   try {
-    const response = await axios.delete(
+    const response = await axios.post(
       Routes.api.files.deleteFile,
+      {
+        api_key: import.meta.env.VITE_API_KEY,
+        files_registered,
+      },
       getHeader()
     );
-    console.log("response: ", response);
     return response;
   } catch (error) {
     console.log("error: ", error);

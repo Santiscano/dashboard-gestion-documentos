@@ -228,11 +228,9 @@ function GenerateFiles() {
   const handleSettledSubmit = async (e: any) => {
     try {
       setPreLoad(true);
-      // console.log(preLoad);
       e.preventDefault();
       // @ts-ignore
-      const newSettled = await getSettled(cedi.sedes_city);
-      // console.log("newSettled: ", newSettled);
+      const newSettled = await getSettled();
 
       setSettledNumber(newSettled);
       newSettled ? setIsSettled(true) : setIsSettled(false);
@@ -353,7 +351,7 @@ function GenerateFiles() {
    * seteo los valores para esconder modales y limpiar las partes del formulario que son necesarias volver a llenar.
    */
   const newSettledSameUser = async () => {
-    const newSettled = await getSettled(cedi);
+    const newSettled = await getSettled();
     setSettledNumber(newSettled);
     // setAccountType('');
     setPrice("");

@@ -73,10 +73,15 @@ function getRowId(row: any) {
 }
 
 const delayAlerts = (params: any) => {
-  if (params.idfiles == 192) {
-    return "green-row";
+  console.log("params", params);
+  if (params.row.files_type == "ADMINISTRATIVO" && params.row.idfiles !== 199) {
+    return "willExpireSoon";
+  } else if (params.row.idfiles == 199) {
+    console.log("resolvi por aqui", params.row);
+    return "overduePending";
+  } else {
+    return "good";
   }
-  return "blue-row";
 };
 
 export default function DataTableAllFiles({ row }: any) {
@@ -99,20 +104,7 @@ export default function DataTableAllFiles({ row }: any) {
           rowsPerPageOptions={[7]}
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
-          getRowClassName={(params) => {
-            console.log("params", params);
-            if (
-              params.row.files_type == "ADMINISTRATIVO" &&
-              params.row.idfiles !== 199
-            ) {
-              return "willExpireSoon";
-            } else if (params.row.idfiles == 199) {
-              console.log("resolvi por aqui", params.row);
-              return "overduePending";
-            } else {
-              return "good";
-            }
-          }}
+          getRowClassName={delayAlerts}
           components={{
             Toolbar: GridToolbarConfig,
             NoRowsOverlay: CustomNoRowsOverlay,
