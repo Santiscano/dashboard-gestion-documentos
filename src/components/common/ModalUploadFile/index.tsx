@@ -9,7 +9,7 @@ import {
 } from "../../../Utilities/formatted.utility";
 import LoadingMUI from "./../LoadingMUI/index";
 import { Button } from "@mui/material";
-import PDF from "../../../Layout/GenerateFiles/components/PDF";
+// import PDF from "../../../Layout/GenerateFiles/components/PDF";
 import { PDFViewer } from "@react-pdf/renderer";
 
 const style = {
