@@ -66,7 +66,7 @@ import { styled } from '@mui/material/styles';
 //           />
 //         ))}
 //       </SpeedDial>
-      
+
 
 //       <Modal
 //         open={openModal}
@@ -105,7 +105,7 @@ function MenuDials({ actions  }:any) {
         },
       }));
   return (
-    
+
     <Box sx={{ height: 50, transform: "translateZ(0px)"}}>
       <StyledSpeedDial
         ariaLabel="SpeedDial openIcon example"

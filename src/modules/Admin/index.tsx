@@ -1,41 +1,34 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import NavBar from '../../components/common/NavBar'
-import SideBar from '../../components/common/SideBar';
-import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
-import Updates from '../../Layout/Updates';
-import Provider from '../../Layout/Provider';
+import * as React from "react";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import NavBar from "../../components/common/NavBar";
+import SideBar from "../../components/common/SideBar";
+import { useNavigate, Outlet } from "react-router-dom";
+import "./admin.css";
+import Loading from "../../components/common/Loading";
+import { validateUserFirebase } from "../../services/Firebase.routes";
+import { GeneralValuesContext } from "./../../Context/GeneralValuesContext";
+import { useContext } from "react";
+import { get, session } from "../../components/tools/SesionSettings";
 
 // width drawer desplegable
 const drawerWidth = 240;
 
 // info main "layout"
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
-  transition: theme.transitions.create('margin', {
+  transition: theme.transitions.create("margin", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginLeft: `-${drawerWidth}px`,
   ...(open && {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -49,16 +42,16 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
+  transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -66,18 +59,21 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 // SIDEBAR "drawer"
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
+  justifyContent: "flex-end",
 }));
 
+// METODOS
 function index() {
-  // variables y methodos para visualizacion y navegacion
-  const [open, setOpen] = React.useState(true);
+  const { user, setUser, setIsLoading } = useContext(GeneralValuesContext);
+
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -90,7 +86,9 @@ function index() {
   const navigate = useNavigate();
 
   // open & close menu user avatar
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -98,30 +96,55 @@ function index() {
     setAnchorElUser(null);
   };
 
+  /**
+   * validamos usuario
+   * ?setUser crea el usuario con la respuesta
+   */
+  const loadingUser = async () => {
+    const userValidate = await validateUserFirebase();
+    if (
+      userValidate?.status === 201 &&
+      userValidate?.data.users_status === "ACTIVO"
+    ) {
+      setUser(userValidate?.data);
+    } else if (!session() && userValidate?.data.users_status !== "ACTIVO") {
+      navigate("/login");
+    } else if (userValidate?.data.users_status !== "ACTIVO") {
+      navigate("/forbidden403");
+    }
+  };
+
+  React.useEffect(() => {
+    loadingUser();
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, []);
 
   return (
     <>
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      
-      <NavBar
-      handleDrawerOpen={handleDrawerOpen}
-      open={open}
-      />
+      <Box sx={{ display: "flex", height: "100vh", width: "100vw" }}>
+        <CssBaseline />
 
-      <SideBar
-      open={open}
-      handleDrawerClose={handleDrawerClose}
-      />
+        {loading ? (
+          <div className="w-screen h-screen flex flex-col justify-center">
+            <Loading />
+          </div>
+        ) : (
+          <>
+            <NavBar handleDrawerOpen={handleDrawerOpen} open={open} />
 
-      <Main open={open} sx={{ padding: 0 }}>
-        <DrawerHeader />
-        <Outlet/>
-      </Main>
+            <SideBar open={open} handleDrawerClose={handleDrawerClose} />
 
-    </Box>
+            <Main open={open} sx={{ padding: 0 }}>
+              <DrawerHeader />
+              <Outlet />
+            </Main>
+          </>
+        )}
+      </Box>
     </>
   );
 }
 
-export default index
+export default index;
