@@ -43,7 +43,7 @@ import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
 import PDF from "./components/PDF";
 import { PDFViewer } from "@react-pdf/renderer";
 import { width } from "@mui/system";
-import { savePDF, printPDF } from "./components/PDF/print";
+// import { savePDF, printPDF } from "./components/PDF/print";
 import { ChildModalPdf } from "../../components/common/ModalUploadFile";
 
 function GenerateFiles() {

@@ -51,9 +51,9 @@ const ButtonOpenUploadFile = (props: any) => {
         }}
         onClick={handleOpen}
       >
-        Crear requerimientos
+        Crear requerimiento
       </Button>
-      <UploadFileModal open={open} close={handleClose} />
+      {/* <UploadFileModal open={open} close={handleClose} /> */}
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { getDeviceList } from "usb";
 
-const searchDe;
+// const searchDe;
 const devices = getDeviceList();
 
 for (const device of devices) {
