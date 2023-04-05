@@ -20,7 +20,7 @@ import AttachEmailRoundedIcon from "@mui/icons-material/AttachEmailRounded";
 import AttachMoneyRoundedIcon from "@mui/icons-material/AttachMoneyRounded";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import { Box, TextField } from "@mui/material";
+import { Box, Modal, TextField } from "@mui/material";
 
 import "animate.css";
 import { getCedis } from "../../services/Cedis.routes";
@@ -40,6 +40,11 @@ import { get } from "../../components/tools/SesionSettings";
 import SearchUser from "../../components/common/SearchUser";
 import { AllUsers } from "./../../interfaces/User";
 import InputSelectOnlyValue from "../../components/common/InputSelectOnlyValue";
+import PDF from "./components/PDF";
+import { PDFViewer } from "@react-pdf/renderer";
+import { width } from "@mui/system";
+// import { savePDF, printPDF } from "./components/PDF/print";
+import { ChildModalPdf } from "../../components/common/ModalUploadFile";
 
 function GenerateFiles() {
   // ------------------------------VARIABLES------------------------------//
@@ -223,11 +228,9 @@ function GenerateFiles() {
   const handleSettledSubmit = async (e: any) => {
     try {
       setPreLoad(true);
-      // console.log(preLoad);
       e.preventDefault();
       // @ts-ignore
-      const newSettled = await getSettled(cedi.sedes_city);
-      // console.log("newSettled: ", newSettled);
+      const newSettled = await getSettled();
 
       setSettledNumber(newSettled);
       newSettled ? setIsSettled(true) : setIsSettled(false);
@@ -265,8 +268,10 @@ function GenerateFiles() {
       // console.log("addFileResponse: ", addFileResponse);
 
       //muestro input file y textarea
-      const status = addFileResponse?.status;
-      status === 200 && setStatusFileResponse(true);
+      if (addFileResponse?.status == 200) {
+        // savePDF(cediType, settledNumber, accountType);
+        setStatusFileResponse(true);
+      }
 
       // guardo respuesta completa en variable result
       // @ts-ignore
@@ -346,7 +351,7 @@ function GenerateFiles() {
    * seteo los valores para esconder modales y limpiar las partes del formulario que son necesarias volver a llenar.
    */
   const newSettledSameUser = async () => {
-    const newSettled = await getSettled(cedi);
+    const newSettled = await getSettled();
     setSettledNumber(newSettled);
     // setAccountType('');
     setPrice("");
@@ -389,6 +394,11 @@ function GenerateFiles() {
                   <ArrowBackRoundedIcon className="arrow" /> Reiniciar{" "}
                 </button>
               )}
+              <ChildModalPdf
+                cediType={cediType}
+                settledNumber={settledNumber}
+                accountType={accountType}
+              />
             </div>
             {!isSettled ? (
               <article className="filing">
@@ -604,12 +614,24 @@ function GenerateFiles() {
                   cedi={cedi.sedes_city}
                   settledNumber={settledNumber}
                   email={email}
+                  cediType={cediType}
                 >
-                  {/* <LoadingMUI/> */}
-
                   <form onSubmit={handleFormSubmit}>
                     <Button name="Crear requerimientos"></Button>
                   </form>
+                  {/* aqui el intento de pdf */}
+                  {/* <ChildModalPdf
+                    cediType={cediType}
+                    settledNumber={settledNumber}
+                    accountType={accountType}
+                  /> */}
+                  {/* <PDF
+                      cediType={cediType}
+                      settledNumber={settledNumber}
+                      accountType={accountType}
+                    /> */}
+                  {/* hola mundo */}
+                  {/* </ChildModalPdf> */}
 
                   {statusFileResponse && (
                     <div className="flex rounded justify-between">

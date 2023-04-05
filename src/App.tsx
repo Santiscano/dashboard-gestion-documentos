@@ -30,7 +30,7 @@ import Home from "./Layout/Home/index";
 import NewEmployee from "./Layout/NewEmployee";
 import PendingFilesTable from "./Layout/PendingFilesTable/index";
 import SearchEmployee from "./Layout/SearchEmployee";
-import Administracion from "./Layout/Admin";
+// import Administracion from "./Layout/Admin";
 import NotAuthentication from "./Middlewares/NotAuthentication";
 import WithAuthentication from "./Middlewares/WithAuthentication";
 import { WithRoleAllowedComponent } from "./Middlewares/WithRoleAllowed";
