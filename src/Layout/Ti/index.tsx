@@ -14,7 +14,8 @@ import { TabPanel, a11yProps } from "../../components/tools/MultiViewPanel";
 import { optionCediType } from "../../components/tools/OptionsValuesSelects";
 import useSubmit from "./Hooks/useSubmit";
 import "./TI.css";
-import SelectArea from "./components/SelectArea";
+import SelectArea from "./components/common/SelectArea";
+import AlertDialogSlide from "./components/common/AlertDialogSlide";
 
 function TI() {
   const {
@@ -119,26 +120,30 @@ function TI() {
               </Box>
               <TabPanel value={showValue} index={0}>
                 <h3 className="font-bold text-2xl">Panel Administrativo</h3>
-                <h3 className="text-lg mt-4 text-red-500 font-bold">
+                <h3 className="font-bold mt-6 text-xl">Eliminar Archivo</h3>
+                <h3 className="text-lg mt-2 text-red-500 font-bold">
                   *Tenga presente que una vez eliminado un archivo, tanto la
                   trazabilidad como el archivo no podran ser recuperados*
                 </h3>
-                <form onSubmit={() => handleDeleteFile(inputDeleted)}>
+                <form>
                   <div className="md:flex md:flex-wrap mt-4">
                     <article className="md:w-1/2">
                       <label className="block my-2 mx-2 mt-4 text-base font-semibold dark:text-white">
-                        Direccion
+                        Numero De Radicado Del Archivo
                       </label>
                       <TextFieldOutlined
                         type={"text"}
-                        label={"Direccion Ubicacion"}
+                        label={"Numero Radicado"}
                         value={inputDeleted}
                         setValue={setInputDeleted}
                         required
                       />
                     </article>
                   </div>
-                  <Button name="Eliminar Archivo" />
+                  <AlertDialogSlide
+                    handleDeleteFile={handleDeleteFile}
+                    inputDeleted={inputDeleted}
+                  />
                   <Snackbar
                     open={openSnackbar}
                     autoHideDuration={6000}

@@ -364,30 +364,31 @@ function useSubmit() {
     }
   };
   const handleDeleteFile = async (e: any) => {
-    try {
-      setPreLoad(true);
-      e.preventDefault();
-      const res = await deleteFile(inputDeleted);
-      console.log("res: ", res);
-      if (res?.status == 200) {
-        setInputDeleted("");
-        setMessageSnackbar("Archivo Eliminado Con Exito");
-        setSeveritySnackbar("success");
-        setPreLoad(false);
-        setOpenSnackbar(true);
-      }
-      if (res?.status !== 200) {
-        setMessageSnackbar("No se pudo Eliminar archivo, Ocurrio Un Error");
-        setSeveritySnackbar("error");
-        setPreLoad(false);
-        setOpenSnackbar(true);
-      }
-    } catch (error) {
-      console.log("error: ", error);
-      setMessageSnackbar("Ocurrio Un Error Intenta De Nuevo");
-      setSeveritySnackbar("error");
-      setOpenSnackbar(true);
-    }
+    console.log("funciono a la perfeccion");
+    // try {
+    //   setPreLoad(true);
+    //   e.preventDefault();
+    //   const res = await deleteFile(inputDeleted);
+    //   console.log("res: ", res);
+    //   if (res?.status == 200) {
+    //     setInputDeleted("");
+    //     setMessageSnackbar("Archivo Eliminado Con Exito");
+    //     setSeveritySnackbar("success");
+    //     setPreLoad(false);
+    //     setOpenSnackbar(true);
+    //   }
+    //   if (res?.status !== 200) {
+    //     setMessageSnackbar("No se pudo Eliminar archivo, Ocurrio Un Error");
+    //     setSeveritySnackbar("error");
+    //     setPreLoad(false);
+    //     setOpenSnackbar(true);
+    //   }
+    // } catch (error) {
+    //   console.log("error: ", error);
+    //   setMessageSnackbar("Ocurrio Un Error Intenta De Nuevo");
+    //   setSeveritySnackbar("error");
+    //   setOpenSnackbar(true);
+    // }
   };
 
   // --------------------------Effects-------------------------------//
